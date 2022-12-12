@@ -1,5 +1,5 @@
 ---
-name: Super-Linter
+name: integrity-validator
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   super-lint:
-    name: Lint codebase
+    name: Validate codebase integrity
     runs-on: ubuntu-latest
     steps:
       - name: Setup repository
