@@ -8,6 +8,10 @@ jobs:
     name: Lint codebase
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+      - name: Install Pub Dependencies
+        run: dart pub get
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Run Super-Linter
