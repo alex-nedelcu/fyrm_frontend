@@ -1,0 +1,16 @@
+---
+pre-commit:
+  parallel: false
+  commands:
+    format_code:
+      glob: '*.dart'
+      run: flutter format .
+    lint_code:
+      glob: '*.dart'
+      run: dart fix --apply
+    analyze_code:
+      glob: '*.dart'
+      run: flutter analyze
+    test_code:
+      glob: '*.dart'
+      run: flutter test

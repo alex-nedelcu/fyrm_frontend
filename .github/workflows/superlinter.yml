@@ -1,19 +1,30 @@
 ---
 name: Super-Linter
 
-on: push
+on:
+  push:
+    branches: [ '**' ]
 
 jobs:
   super-lint:
     name: Lint codebase
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Setup repository
         uses: actions/checkout@v3
-
-      - name: Run Super-Linter
-        uses: github/super-linter@v4.9.7
-        env:
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OUTPUT_DETAILS: detailed
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.3.7'
+          channel: 'stable'
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+      - run: flutter --version
+      - name: Install dependencies
+        run: dart pub get
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+      - name: Analyze project source
+        run: dart analyze --fatal-infos
+      - name: Run tests
+        run: flutter test
