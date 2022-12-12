@@ -11,7 +11,7 @@ jobs:
       - name: Setup Dart
         uses: dart-lang/setup-dart@v1
       - name: Install Pub Dependencies
-        run: dart pub get
+        run: flutter pub get
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Run Super-Linter
