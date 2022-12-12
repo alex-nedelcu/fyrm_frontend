@@ -8,11 +8,12 @@ jobs:
     name: Lint codebase
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
-        flutter-version: '3.3.7'
-        channel: 'stable'
+          flutter-version: '3.3.7'
+          channel: 'stable'
       - run: flutter --version
       - name: Install dependencies
         run: dart pub get
@@ -22,24 +23,18 @@ jobs:
         run: dart analyze --fatal-infos
       - name: Run tests
         run: flutter test
-
-
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#      - name: Setup Dart
-#        uses: dart-lang/setup-dart@v1
-#      - name: Run Super-Linter
-#        uses: github/super-linter@v4.9.7
-#        env:
-#          DEFAULT_BRANCH: main
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          OUTPUT_DETAILS: detailed
-#          VALIDATE_ALL_CODEBASE: true
-#          VALIDATE_CLANG_FORMAT: false
-#          VALIDATE_CPP: false
-#          VALIDATE_GROOVY: false
-#          VALIDATE_KOTLIN: false
-#          VALIDATE_KOTLIN_ANDROID: false
-#          VALIDATE_HTML: false
-#          VALIDATE_BASH_EXEC: false
-#          VALIDATE_BASH: false
+      - name: Run Super-Linter
+        uses: github/super-linter@v4.9.7
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OUTPUT_DETAILS: detailed
+          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_CLANG_FORMAT: false
+          VALIDATE_CPP: false
+          VALIDATE_GROOVY: false
+          VALIDATE_KOTLIN: false
+          VALIDATE_KOTLIN_ANDROID: false
+          VALIDATE_HTML: false
+          VALIDATE_BASH_EXEC: false
+          VALIDATE_BASH: false
