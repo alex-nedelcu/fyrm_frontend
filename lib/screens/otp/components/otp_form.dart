@@ -75,7 +75,6 @@ class _OtpFormState extends State<OtpForm> {
                 width: getProportionateScreenWidth(45),
                 height: getProportionateScreenHeight(50),
                 child: TextFormField(
-                  autofocus: true,
                   style: const TextStyle(fontSize: 18),
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,

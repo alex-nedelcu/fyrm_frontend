@@ -5,6 +5,7 @@ import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
+import 'package:fyrm_frontend/helper/keyboard.dart';
 import 'package:fyrm_frontend/screens/otp/otp_screen.dart';
 import 'package:fyrm_frontend/size_configuration.dart';
 
@@ -46,6 +47,7 @@ class _SignUpFormState extends State<SignUpForm> {
   void handleFormSubmission() async {
     if (_formKey.currentState!.validate() && errors.isEmpty) {
       _formKey.currentState!.save();
+      KeyboardUtil.hideKeyboard(context);
       SignupResponseDto signupResponseDto = await authenticationService.signup(
         username: username!,
         email: email!,
