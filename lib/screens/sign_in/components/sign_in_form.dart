@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/authentication/authentication_service.dart';
-import 'package:fyrm_frontend/api/dto/signup_response_dto.dart';
+import 'package:fyrm_frontend/api/dto/login_request_dto.dart';
+import 'package:fyrm_frontend/api/dto/login_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
-import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
-import 'package:fyrm_frontend/screens/otp/otp_screen.dart';
+import 'package:fyrm_frontend/helper/keyboard.dart';
+import 'package:fyrm_frontend/screens/home/home_screen.dart';
 import 'package:fyrm_frontend/size_configuration.dart';
 
+import '../../../components/default_button.dart';
 import '../../../constants.dart';
 
-class SignUpForm extends StatefulWidget {
-  const SignUpForm({super.key});
+class SignInForm extends StatefulWidget {
+  const SignInForm({super.key});
 
   @override
-  _SignUpFormState createState() => _SignUpFormState();
+  _SignInFormState createState() => _SignInFormState();
 }
 
-class _SignUpFormState extends State<SignUpForm> {
+class _SignInFormState extends State<SignInForm> {
   final AuthenticationService authenticationService = AuthenticationService();
   final List<String?> errors = [];
   final _formKey = GlobalKey<FormState>();
   String? username;
-  String? email;
   String? password;
-  String? passwordConfirmation;
-  String? role = "ROLE_USER";
+  bool? remember = false;
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -46,18 +46,21 @@ class _SignUpFormState extends State<SignUpForm> {
   void handleFormSubmission() async {
     if (_formKey.currentState!.validate() && errors.isEmpty) {
       _formKey.currentState!.save();
-      SignupResponseDto signupResponseDto = await authenticationService.signup(
+      KeyboardUtil.hideKeyboard(context);
+      LoginRequestDto loginRequestDto = LoginRequestDto(
         username: username!,
-        email: email!,
         password: password!,
-        role: role!,
       );
 
-      if (ApiHelper.is2xx(signupResponseDto.statusCode) && mounted) {
+      LoginResponseDto loginResponseDto = await authenticationService.login(
+        loginRequestDto: loginRequestDto,
+      );
+
+      if (ApiHelper.is2xx(loginResponseDto.statusCode) && mounted) {
         Navigator.pushNamed(
           context,
-          OtpScreen.routeName,
-          arguments: OtpScreenArguments(signupResponse: signupResponseDto),
+          HomeScreen.routeName,
+          arguments: HomeScreenArguments(loginResponse: loginResponseDto),
         );
       }
     }
@@ -71,15 +74,36 @@ class _SignUpFormState extends State<SignUpForm> {
         children: [
           buildUsernameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildEmailField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordConfirmationField(),
           if (errors.isNotEmpty)
             SizedBox(height: SizeConfiguration.screenHeight * 0.02),
           FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(40)),
+          SizedBox(height: getProportionateScreenHeight(15)),
+          Row(
+            children: [
+              Checkbox(
+                value: remember,
+                activeColor: kPrimaryColor,
+                onChanged: (value) {
+                  setState(() {
+                    remember = value;
+                  });
+                },
+              ),
+              const Text("Remember me"),
+              const Spacer(),
+              GestureDetector(
+                onTap: () => {
+                  // TODO: handle change password use case
+                },
+                child: const Text(
+                  "Forgot Password",
+                  style: TextStyle(decoration: TextDecoration.underline),
+                ),
+              )
+            ],
+          ),
+          SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Continue",
             press: handleFormSubmission,
@@ -128,45 +152,6 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildEmailField() {
-    return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (value) => email = value,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kMissingEmailError);
-        } else {
-          addError(error: kMissingEmailError);
-        }
-
-        if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        } else {
-          addError(error: kInvalidEmailError);
-        }
-
-        email = value;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kMissingEmailError);
-        }
-
-        if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-        }
-
-        return null;
-      },
-      decoration: const InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),
-      ),
-    );
-  }
-
   TextFormField buildPasswordField() {
     return TextFormField(
       obscureText: true,
@@ -200,45 +185,6 @@ class _SignUpFormState extends State<SignUpForm> {
       decoration: const InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Lock.svg"),
-      ),
-    );
-  }
-
-  TextFormField buildPasswordConfirmationField() {
-    return TextFormField(
-      obscureText: true,
-      onSaved: (value) => passwordConfirmation = value,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kMissingPasswordConfirmationError);
-        } else {
-          addError(error: kMissingPasswordConfirmationError);
-        }
-
-        if (value == password) {
-          removeError(error: kNotMatchingPasswords);
-        } else {
-          addError(error: kNotMatchingPasswords);
-        }
-
-        passwordConfirmation = value;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kMissingPasswordConfirmationError);
-        }
-
-        if (value != password) {
-          addError(error: kNotMatchingPasswords);
-        }
-
-        return null;
-      },
-      decoration: const InputDecoration(
-        labelText: "Password Confirmation",
-        hintText: "Re-enter your password",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Lock.svg"),
       ),

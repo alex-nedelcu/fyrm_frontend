@@ -5,18 +5,27 @@ import 'package:fyrm_frontend/size_configuration.dart';
 import '../../../constants.dart';
 
 class OtpForm extends StatefulWidget {
-  const OtpForm({
-    Key? key,
-  }) : super(key: key);
+  final void Function(String confirmationCode) onConfirmCallback;
+
+  const OtpForm({Key? key, required this.onConfirmCallback}) : super(key: key);
 
   @override
   _OtpFormState createState() => _OtpFormState();
 }
 
 class _OtpFormState extends State<OtpForm> {
+  String? confirmationCodeFirstCharacter;
+  String? confirmationCodeSecondCharacter;
+  String? confirmationCodeThirdCharacter;
+  String? confirmationCodeFourthCharacter;
+  String? confirmationCodeFifthCharacter;
+  String? confirmationCodeSixthCharacter;
+
   FocusNode? pin2FocusNode;
   FocusNode? pin3FocusNode;
   FocusNode? pin4FocusNode;
+  FocusNode? pin5FocusNode;
+  FocusNode? pin6FocusNode;
 
   @override
   void initState() {
@@ -24,6 +33,8 @@ class _OtpFormState extends State<OtpForm> {
     pin2FocusNode = FocusNode();
     pin3FocusNode = FocusNode();
     pin4FocusNode = FocusNode();
+    pin5FocusNode = FocusNode();
+    pin6FocusNode = FocusNode();
   }
 
   @override
@@ -32,12 +43,23 @@ class _OtpFormState extends State<OtpForm> {
     pin2FocusNode!.dispose();
     pin3FocusNode!.dispose();
     pin4FocusNode!.dispose();
+    pin5FocusNode!.dispose();
+    pin6FocusNode!.dispose();
   }
 
   void nextField(String value, FocusNode? focusNode) {
     if (value.length == 1) {
       focusNode!.requestFocus();
     }
+  }
+
+  String assembleConfirmationCode() {
+    return confirmationCodeFirstCharacter! +
+        confirmationCodeSecondCharacter! +
+        confirmationCodeThirdCharacter! +
+        confirmationCodeFourthCharacter! +
+        confirmationCodeFifthCharacter! +
+        confirmationCodeSixthCharacter!;
   }
 
   @override
@@ -50,56 +72,93 @@ class _OtpFormState extends State<OtpForm> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: getProportionateScreenWidth(60),
+                width: getProportionateScreenWidth(45),
+                height: getProportionateScreenHeight(50),
                 child: TextFormField(
                   autofocus: true,
-                  obscureText: true,
-                  style: const TextStyle(fontSize: 24),
+                  style: const TextStyle(fontSize: 18),
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   decoration: otpInputDecoration,
                   onChanged: (value) {
+                    confirmationCodeFirstCharacter = value;
                     nextField(value, pin2FocusNode);
                   },
                 ),
               ),
               SizedBox(
-                width: getProportionateScreenWidth(60),
+                width: getProportionateScreenWidth(45),
+                height: getProportionateScreenHeight(50),
                 child: TextFormField(
                   focusNode: pin2FocusNode,
-                  obscureText: true,
-                  style: const TextStyle(fontSize: 24),
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  decoration: otpInputDecoration,
-                  onChanged: (value) => nextField(value, pin3FocusNode),
-                ),
-              ),
-              SizedBox(
-                width: getProportionateScreenWidth(60),
-                child: TextFormField(
-                  focusNode: pin3FocusNode,
-                  obscureText: true,
-                  style: const TextStyle(fontSize: 24),
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  decoration: otpInputDecoration,
-                  onChanged: (value) => nextField(value, pin4FocusNode),
-                ),
-              ),
-              SizedBox(
-                width: getProportionateScreenWidth(60),
-                child: TextFormField(
-                  focusNode: pin4FocusNode,
-                  obscureText: true,
-                  style: const TextStyle(fontSize: 24),
+                  style: const TextStyle(fontSize: 18),
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   decoration: otpInputDecoration,
                   onChanged: (value) {
+                    confirmationCodeSecondCharacter = value;
+                    nextField(value, pin3FocusNode);
+                  },
+                ),
+              ),
+              SizedBox(
+                width: getProportionateScreenWidth(45),
+                height: getProportionateScreenHeight(50),
+                child: TextFormField(
+                  focusNode: pin3FocusNode,
+                  style: const TextStyle(fontSize: 18),
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  decoration: otpInputDecoration,
+                  onChanged: (value) {
+                    confirmationCodeThirdCharacter = value;
+                    nextField(value, pin4FocusNode);
+                  },
+                ),
+              ),
+              SizedBox(
+                width: getProportionateScreenWidth(45),
+                height: getProportionateScreenHeight(50),
+                child: TextFormField(
+                  focusNode: pin4FocusNode,
+                  style: const TextStyle(fontSize: 18),
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  decoration: otpInputDecoration,
+                  onChanged: (value) {
+                    confirmationCodeFourthCharacter = value;
+                    nextField(value, pin5FocusNode);
+                  },
+                ),
+              ),
+              SizedBox(
+                width: getProportionateScreenWidth(45),
+                height: getProportionateScreenHeight(50),
+                child: TextFormField(
+                  focusNode: pin5FocusNode,
+                  style: const TextStyle(fontSize: 18),
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  decoration: otpInputDecoration,
+                  onChanged: (value) {
+                    confirmationCodeFifthCharacter = value;
+                    nextField(value, pin6FocusNode);
+                  },
+                ),
+              ),
+              SizedBox(
+                width: getProportionateScreenWidth(45),
+                height: getProportionateScreenHeight(50),
+                child: TextFormField(
+                  focusNode: pin6FocusNode,
+                  style: const TextStyle(fontSize: 18),
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  decoration: otpInputDecoration,
+                  onChanged: (value) {
+                    confirmationCodeSixthCharacter = value;
                     if (value.length == 1) {
-                      pin4FocusNode!.unfocus();
-                      // Then you need to check is the code is correct or not
+                      pin6FocusNode!.unfocus();
                     }
                   },
                 ),
@@ -108,8 +167,11 @@ class _OtpFormState extends State<OtpForm> {
           ),
           SizedBox(height: SizeConfiguration.screenHeight * 0.15),
           DefaultButton(
-            text: "Continue",
-            press: () {},
+            text: "Confirm",
+            press: () {
+              String confirmationCode = assembleConfirmationCode();
+              widget.onConfirmCallback(confirmationCode);
+            },
           )
         ],
       ),

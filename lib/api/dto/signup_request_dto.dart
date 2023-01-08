@@ -11,24 +11,29 @@ class SignupRequestDto {
       required this.role});
 
   Map<String, Object?> toJSON() => {
-        SignupRequestDtoJsonFields.username: username,
-        SignupRequestDtoJsonFields.email: email,
-        SignupRequestDtoJsonFields.password: password,
-        SignupRequestDtoJsonFields.role: role,
+        usernameJsonField: username,
+        emailJsonField: email,
+        passwordJsonField: password,
+        roleJsonField: role,
       };
 
-  SignupRequestDto copy(
-          {String? username, String? email, String? password, String? role}) =>
+  SignupRequestDto copy({
+    String? username,
+    String? email,
+    String? password,
+    String? role,
+  }) =>
       SignupRequestDto(
           username: username ?? this.username,
           email: email ?? this.email,
           password: password ?? this.password,
           role: role ?? this.role);
-}
 
-class SignupRequestDtoJsonFields {
-  static String username = 'username';
-  static String email = 'email';
-  static String password = 'password';
-  static String role = 'role';
+  static String get usernameJsonField => "username";
+
+  static String get emailJsonField => "email";
+
+  static String get passwordJsonField => "password";
+
+  static String get roleJsonField => "role";
 }

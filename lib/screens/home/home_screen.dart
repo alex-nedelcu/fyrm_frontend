@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fyrm_frontend/api/dto/login_response_dto.dart';
 import 'package:fyrm_frontend/components/coustom_bottom_nav_bar.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
 
 import '../../enums.dart';
 import 'components/body.dart';
@@ -12,10 +12,18 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfiguration().init(context);
-    return const Scaffold(
-      body: Body(),
-      bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.home),
+    final HomeScreenArguments arguments =
+        ModalRoute.of(context)!.settings.arguments as HomeScreenArguments;
+    return Scaffold(
+      body: Body(loginResponse: arguments.loginResponse),
+      bottomNavigationBar:
+          const CustomBottomNavBar(selectedMenu: MenuState.home),
     );
   }
+}
+
+class HomeScreenArguments {
+  final LoginResponseDto loginResponse;
+
+  HomeScreenArguments({required this.loginResponse});
 }

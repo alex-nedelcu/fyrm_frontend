@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/providers/test_provider.dart';
 import 'package:fyrm_frontend/routes.dart';
+import 'package:fyrm_frontend/screens/splash/splash_screen.dart';
 import 'package:fyrm_frontend/theme.dart';
 import 'package:provider/provider.dart';
-
-import 'screens/sign_up/sign_up_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: theme(),
-        initialRoute: SignUpScreen.routeName,
+        initialRoute: SplashScreen.routeName,
         routes: routes,
       ),
     );

@@ -29,8 +29,7 @@ class PopularProducts extends StatelessWidget {
                     return ProductCard(product: demoProducts[index]);
                   }
 
-                  return const SizedBox
-                      .shrink(); // here by default width and height is 0
+                  return const SizedBox.shrink();
                 },
               ),
               SizedBox(width: getProportionateScreenWidth(20)),

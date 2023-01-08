@@ -18,17 +18,18 @@ class Body extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: SizeConfiguration.screenHeight * 0.04), // 4%
+                SizedBox(height: SizeConfiguration.screenHeight * 0.04),
                 Text("Register account", style: headingStyle),
-                const Text(
-                  "Use your official student\n email address",
+                Text(
+                  "Use your official student email address",
                   textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 SizedBox(height: SizeConfiguration.screenHeight * 0.08),
                 const SignUpForm(),
-                SizedBox(height: SizeConfiguration.screenHeight * 0.08),
+                SizedBox(height: SizeConfiguration.screenHeight * 0.04),
                 Text(
-                  'By continuing your confirm that you agree \nwith our Term and Condition',
+                  'By continuing your confirm that you agree \nwith our Terms and Conditions',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.caption,
                 )

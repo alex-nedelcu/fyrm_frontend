@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyrm_frontend/api/dto/login_response_dto.dart';
 
 import '../../../size_configuration.dart';
 import 'categories.dart';
@@ -8,10 +9,15 @@ import 'popular_product.dart';
 import 'special_offers.dart';
 
 class Body extends StatelessWidget {
-  const Body({super.key});
+  final LoginResponseDto loginResponse;
+
+  const Body({Key? key, required this.loginResponse}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print("USER ID: ${loginResponse.userId}");
+    print("TOKEN: ${loginResponse.token}");
+
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(

@@ -1,41 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:fyrm_frontend/api/authentication/authentication_service.dart';
+import 'package:fyrm_frontend/api/dto/signup_response_dto.dart';
+import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/constants.dart';
+import 'package:fyrm_frontend/screens/sign_in/sign_in_screen.dart';
 import 'package:fyrm_frontend/size_configuration.dart';
 
 import 'otp_form.dart';
 
-class Body extends StatelessWidget {
-  const Body({super.key});
+class Body extends StatefulWidget {
+  final SignupResponseDto signupResponse;
+
+  const Body({Key? key, required this.signupResponse}) : super(key: key);
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final AuthenticationService authenticationService = AuthenticationService();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: SizeConfiguration.screenHeight * 0.05),
-              Text(
-                "OTP Verification",
-                style: headingStyle,
-              ),
-              const Text("We sent your code to +1 898 860 ***"),
-              buildTimer(),
-              const OtpForm(),
-              SizedBox(height: SizeConfiguration.screenHeight * 0.1),
-              GestureDetector(
-                onTap: () {
-                  // OTP code resend
-                },
-                child: const Text(
-                  "Resend OTP Code",
-                  style: TextStyle(decoration: TextDecoration.underline),
+    SizeConfiguration().init(context);
+    return SafeArea(
+      child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: SizeConfiguration.screenHeight * 0.04),
+                Text(
+                  "Account confirmation",
+                  style: headingStyle,
                 ),
-              )
-            ],
+                Text(
+                  "We sent your code to ${widget.signupResponse.email!}",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                buildTimer(),
+                OtpForm(
+                  onConfirmCallback: (String confirmationCode) async {
+                    int statusCode = await authenticationService.confirmAccount(
+                      userId: widget.signupResponse.userId!,
+                      confirmationCode: confirmationCode,
+                    );
+
+                    if (ApiHelper.is2xx(statusCode) && mounted) {
+                      Navigator.pushNamed(context, SignInScreen.routeName);
+                    }
+                  },
+                ),
+                SizedBox(height: SizeConfiguration.screenHeight * 0.1),
+                GestureDetector(
+                  child: const Text(
+                    "Resend confirmation code",
+                    style: TextStyle(decoration: TextDecoration.underline),
+                  ),
+                  onTap: () async {
+                    int statusCode =
+                        await authenticationService.resendConfirmationCode(
+                      userId: widget.signupResponse.userId!,
+                    );
+
+                    if (ApiHelper.is2xx(statusCode)) {
+                      print("RESEND CONFIRMATION CODE SUCCESS");
+                      // TODO: handle confirmation code successfully resent
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -46,15 +85,16 @@ class Body extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("This code will expired in "),
+        const Text("This code will expire in "),
         TweenAnimationBuilder(
-          tween: Tween(begin: 30.0, end: 0.0),
-          duration: const Duration(seconds: 30),
+          tween: Tween(begin: 29.99, end: 0.0),
+          duration: const Duration(minutes: 30),
           builder: (_, dynamic value, child) => Text(
-            "00:${value.toInt()}",
+            "${value.toInt()}",
             style: const TextStyle(color: kPrimaryColor),
           ),
         ),
+        const Text(" minutes"),
       ],
     );
   }

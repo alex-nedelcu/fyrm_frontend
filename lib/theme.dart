@@ -40,13 +40,16 @@ TextTheme textTheme() {
 }
 
 AppBarTheme appBarTheme() {
-  return const AppBarTheme(
+  return AppBarTheme(
     color: Colors.white,
     elevation: 0,
-    iconTheme: IconThemeData(color: Colors.black), toolbarTextStyle: TextTheme(
+    iconTheme: const IconThemeData(color: Colors.black),
+    toolbarTextStyle: const TextTheme(
       headline6: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18),
-    ).bodyText2, titleTextStyle: TextTheme(
+    ).bodyText2,
+    titleTextStyle: const TextTheme(
       headline6: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18),
-    ).headline6, systemOverlayStyle: SystemUiOverlayStyle.dark,
+    ).headline6,
+    systemOverlayStyle: SystemUiOverlayStyle.dark,
   );
 }

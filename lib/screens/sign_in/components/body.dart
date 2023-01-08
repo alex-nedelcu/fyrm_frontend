@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/components/no_account_text.dart';
-import 'package:fyrm_frontend/components/socal_card.dart';
 import 'package:fyrm_frontend/size_configuration.dart';
 
-import 'sign_form.dart';
+import 'sign_in_form.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -29,30 +28,12 @@ class Body extends StatelessWidget {
                   ),
                 ),
                 const Text(
-                  "Sign in with your email and password  \nor continue with social media",
+                  "Sign in with your username and password",
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfiguration.screenHeight * 0.08),
-                const SignForm(),
+                const SignInForm(),
                 SizedBox(height: SizeConfiguration.screenHeight * 0.08),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SocalCard(
-                      icon: "assets/icons/google-icon.svg",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/facebook-2.svg",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/twitter.svg",
-                      press: () {},
-                    ),
-                  ],
-                ),
-                SizedBox(height: getProportionateScreenHeight(20)),
                 const NoAccountText(),
               ],
             ),
