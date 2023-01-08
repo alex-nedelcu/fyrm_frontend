@@ -7,6 +7,7 @@ import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
 import 'package:fyrm_frontend/helper/keyboard.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
+import 'package:fyrm_frontend/helper/toast.dart';
 import 'package:fyrm_frontend/screens/otp/otp_screen.dart';
 
 import '../../../helper/constants.dart';
@@ -22,6 +23,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final AuthenticationService authenticationService = AuthenticationService();
   final List<String?> errors = [];
   final _formKey = GlobalKey<FormState>();
+  bool isToastShown = false;
   String? username;
   String? email;
   String? password;
@@ -61,8 +63,44 @@ class _SignUpFormState extends State<SignUpForm> {
           OtpScreen.routeName,
           arguments: OtpScreenArguments(signupResponse: signupResponseDto),
         );
+      } else {
+        handleInvalidSignupInformationToast(displayedError: signupResponseDto.message!);
       }
+    } else {
+      handleFormValidationToast();
     }
+  }
+
+  void handleInvalidSignupInformationToast({required String displayedError}) {
+    if (isToastShown) {
+      return;
+    }
+
+    isToastShown = true;
+
+    showCustomToast(
+      text: displayedError,
+      context: context,
+      backgroundColor: Colors.red.shade500,
+    );
+
+    isToastShown = false;
+  }
+
+  void handleFormValidationToast() {
+    if (isToastShown) {
+      return;
+    }
+
+    isToastShown = true;
+
+    showCustomToast(
+      text: "Please check form validation issues",
+      context: context,
+      backgroundColor: Colors.red.shade500,
+    );
+
+    isToastShown = false;
   }
 
   @override

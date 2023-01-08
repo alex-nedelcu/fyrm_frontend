@@ -24,10 +24,10 @@ class _SignInFormState extends State<SignInForm> {
   final AuthenticationService authenticationService = AuthenticationService();
   final List<String?> errors = [];
   final _formKey = GlobalKey<FormState>();
+  bool isToastShown = false;
   String? username;
   String? password;
   bool? remember = false;
-  bool isToastShown = false;
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
