@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 
-import '../../../constants.dart';
+import '../../../helper/constants.dart';
 
 class SplashContent extends StatelessWidget {
   const SplashContent({

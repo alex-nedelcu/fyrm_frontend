@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fyrm_frontend/constants.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 
 class DefaultButton extends StatelessWidget {
   const DefaultButton({
@@ -19,8 +19,7 @@ class DefaultButton extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           backgroundColor: kPrimaryColor,
         ),
         onPressed: press as void Function()?,

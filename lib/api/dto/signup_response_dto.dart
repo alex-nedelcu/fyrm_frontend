@@ -16,4 +16,6 @@ class SignupResponseDto {
   static String get messageJsonField => "message";
 
   static String get emailJsonField => "email";
+
+  static String get errorMessagesJsonField => "messages";
 }

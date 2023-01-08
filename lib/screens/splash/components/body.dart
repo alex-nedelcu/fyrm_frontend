@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
-import 'package:fyrm_frontend/constants.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/screens/sign_in/sign_in_screen.dart';
 import 'package:fyrm_frontend/screens/splash/components/splash_content.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -15,14 +15,8 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> splashData = [
-    {
-      "text": "We'll help you find your best rent mate",
-      "image": "assets/images/splash_1.png"
-    },
-    {
-      "text": "Create an account unless you already have one and ...",
-      "image": "assets/images/splash_2.png"
-    },
+    {"text": "We'll help you find your best rent mate", "image": "assets/images/splash_1.png"},
+    {"text": "Create an account unless you already have one and ...", "image": "assets/images/splash_2.png"},
     {"text": "Let the search begin!", "image": "assets/images/splash_3.png"},
   ];
 
@@ -51,8 +45,7 @@ class _BodyState extends State<Body> {
             Expanded(
               flex: 2,
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20)),
+                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
                 child: Column(
                   children: <Widget>[
                     const Spacer(),

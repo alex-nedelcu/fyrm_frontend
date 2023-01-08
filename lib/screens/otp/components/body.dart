@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/authentication/authentication_service.dart';
 import 'package:fyrm_frontend/api/dto/signup_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
-import 'package:fyrm_frontend/constants.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
+import 'package:fyrm_frontend/helper/toast.dart';
 import 'package:fyrm_frontend/screens/sign_in/sign_in_screen.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
 
 import 'otp_form.dart';
 
@@ -19,6 +20,23 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final AuthenticationService authenticationService = AuthenticationService();
+  bool isToastShown = false;
+
+  void handleToast({int? statusCode, String? message}) {
+    if (isToastShown) {
+      return;
+    }
+
+    isToastShown = true;
+
+    showToastByCase(
+      context: context,
+      statusCode: statusCode,
+      optionalMessage: message,
+    );
+
+    isToastShown = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +44,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -49,13 +66,15 @@ class _BodyState extends State<Body> {
                       confirmationCode: confirmationCode,
                     );
 
-                    if (ApiHelper.is2xx(statusCode) && mounted) {
+                    if (ApiHelper.isSuccess(statusCode) && mounted) {
                       Navigator.pushNamed(
                         context,
                         SignInScreen.routeName,
-                        arguments: SignInScreenArguments(
-                            fromAccountConfirmationScreen: true),
+                        arguments: SignInScreenArguments(fromAccountConfirmationScreen: true),
                       );
+                      handleToast(statusCode: statusCode, message: kConfirmAccountSuccess);
+                    } else {
+                      handleToast(statusCode: statusCode, message: kConfirmAccountFailure);
                     }
                   },
                 ),
@@ -66,14 +85,13 @@ class _BodyState extends State<Body> {
                     style: TextStyle(decoration: TextDecoration.underline),
                   ),
                   onTap: () async {
-                    int statusCode =
-                        await authenticationService.resendConfirmationCode(
+                    int statusCode = await authenticationService.resendConfirmationCode(
                       userId: widget.signupResponse.userId!,
                     );
-
-                    if (ApiHelper.is2xx(statusCode)) {
-                      print("RESEND CONFIRMATION CODE SUCCESS");
-                      // TODO: handle confirmation code successfully resent
+                    if (ApiHelper.isSuccess(statusCode)) {
+                      handleToast(statusCode: statusCode, message: kResendConfirmationCodeSuccess);
+                    } else {
+                      handleToast(statusCode: statusCode, message: kResendConfirmationCodeFailure);
                     }
                   },
                 )

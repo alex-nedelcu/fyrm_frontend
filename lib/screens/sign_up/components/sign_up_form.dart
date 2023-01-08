@@ -6,10 +6,11 @@ import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
 import 'package:fyrm_frontend/helper/keyboard.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
+import 'package:fyrm_frontend/helper/toast.dart';
 import 'package:fyrm_frontend/screens/otp/otp_screen.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
 
-import '../../../constants.dart';
+import '../../../helper/constants.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -22,6 +23,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final AuthenticationService authenticationService = AuthenticationService();
   final List<String?> errors = [];
   final _formKey = GlobalKey<FormState>();
+  bool isToastShown = false;
   String? username;
   String? email;
   String? password;
@@ -55,14 +57,37 @@ class _SignUpFormState extends State<SignUpForm> {
         role: role!,
       );
 
-      if (ApiHelper.is2xx(signupResponseDto.statusCode) && mounted) {
+      if (ApiHelper.isSuccess(signupResponseDto.statusCode) && mounted) {
         Navigator.pushNamed(
           context,
           OtpScreen.routeName,
           arguments: OtpScreenArguments(signupResponse: signupResponseDto),
         );
+      } else {
+        handleToast(
+          statusCode: signupResponseDto.statusCode,
+          message: signupResponseDto.message,
+        );
       }
+    } else {
+      handleToast(message: kFormValidationErrorsMessage);
     }
+  }
+
+  void handleToast({int? statusCode, String? message}) {
+    if (isToastShown) {
+      return;
+    }
+
+    isToastShown = true;
+
+    showToastByCase(
+      context: context,
+      statusCode: statusCode,
+      optionalMessage: message,
+    );
+
+    isToastShown = false;
   }
 
   @override
@@ -78,8 +103,7 @@ class _SignUpFormState extends State<SignUpForm> {
           buildPasswordField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordConfirmationField(),
-          if (errors.isNotEmpty)
-            SizedBox(height: SizeConfiguration.screenHeight * 0.02),
+          if (errors.isNotEmpty) SizedBox(height: SizeConfiguration.screenHeight * 0.02),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 
 class Categories extends StatelessWidget {
   const Categories({super.key});

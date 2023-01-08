@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 
-import '../../../constants.dart';
+import '../../../helper/constants.dart';
 
 class SearchField extends StatelessWidget {
   const SearchField({
@@ -20,8 +20,7 @@ class SearchField extends StatelessWidget {
         onChanged: (value) => print(value),
         decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenWidth(20),
-                vertical: getProportionateScreenWidth(9)),
+                horizontal: getProportionateScreenWidth(20), vertical: getProportionateScreenWidth(9)),
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
             enabledBorder: InputBorder.none,

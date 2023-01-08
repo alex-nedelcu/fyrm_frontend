@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fyrm_frontend/constants.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 
 import 'sign_up_form.dart';
 
@@ -13,13 +13,15 @@ class Body extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             child: Column(
               children: [
                 SizedBox(height: SizeConfiguration.screenHeight * 0.04),
-                Text("Register account", style: headingStyle),
+                Text(
+                  "Register account",
+                  style: headingStyle,
+                ),
                 Text(
                   "Use your official student email address",
                   textAlign: TextAlign.center,
