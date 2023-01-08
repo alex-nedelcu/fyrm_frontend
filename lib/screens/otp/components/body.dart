@@ -22,7 +22,6 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfiguration().init(context);
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -51,7 +50,12 @@ class _BodyState extends State<Body> {
                     );
 
                     if (ApiHelper.is2xx(statusCode) && mounted) {
-                      Navigator.pushNamed(context, SignInScreen.routeName);
+                      Navigator.pushNamed(
+                        context,
+                        SignInScreen.routeName,
+                        arguments: SignInScreenArguments(
+                            fromAccountConfirmationScreen: true),
+                      );
                     }
                   },
                 ),
