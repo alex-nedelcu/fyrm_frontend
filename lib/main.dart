@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fyrm_frontend/helper/routes.dart';
+import 'package:fyrm_frontend/helper/theme.dart';
 import 'package:fyrm_frontend/providers/test_provider.dart';
-import 'package:fyrm_frontend/routes.dart';
 import 'package:fyrm_frontend/screens/splash/splash_screen.dart';
-import 'package:fyrm_frontend/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() {

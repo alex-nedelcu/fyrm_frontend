@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/models/Product.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
 
-import '../constants.dart';
+import '../helper/constants.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -73,9 +73,7 @@ class ProductCard extends StatelessWidget {
                       ),
                       child: SvgPicture.asset(
                         "assets/icons/Heart Icon_2.svg",
-                        color: product.isFavourite
-                            ? const Color(0xFFFF4848)
-                            : const Color(0xFFDBDEE4),
+                        color: product.isFavourite ? const Color(0xFFFF4848) : const Color(0xFFDBDEE4),
                       ),
                     ),
                   ),

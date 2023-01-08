@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/screens/sign_up/sign_up_screen.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
 
-import '../constants.dart';
+import '../helper/constants.dart';
 
 class NoAccountText extends StatelessWidget {
   const NoAccountText({
@@ -22,9 +22,7 @@ class NoAccountText extends StatelessWidget {
           onTap: () => Navigator.pushNamed(context, SignUpScreen.routeName),
           child: Text(
             "Sign Up",
-            style: TextStyle(
-                fontSize: getProportionateScreenWidth(16),
-                color: kPrimaryColor),
+            style: TextStyle(fontSize: getProportionateScreenWidth(16), color: kPrimaryColor),
           ),
         ),
       ],

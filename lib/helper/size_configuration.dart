@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyrm_frontend/constants.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
 
 class SizeConfiguration {
   static late MediaQueryData _mediaQueryData;

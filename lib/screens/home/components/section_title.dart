@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 
 class SectionTitle extends StatelessWidget {
   const SectionTitle({

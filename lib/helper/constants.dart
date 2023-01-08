@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 
 // Colors and styles
 const kPrimaryColor = Color(0xFFFF7643);
@@ -23,12 +23,9 @@ const kAnimationDuration = Duration(milliseconds: 200);
 const defaultDuration = Duration(milliseconds: 250);
 
 // Regular expressions
-final RegExp usernameValidatorRegExp =
-    RegExp(r"^(?=[a-zA-Z0-9._]{3,32}$)(?!.*[_.]{2})[^_.].*[^_.]$");
-final RegExp emailValidatorRegExp =
-    RegExp(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-final RegExp passwordValidatorRegExp =
-    RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
+final RegExp usernameValidatorRegExp = RegExp(r"^(?=[a-zA-Z0-9._]{3,32}$)(?!.*[_.]{2})[^_.].*[^_.]$");
+final RegExp emailValidatorRegExp = RegExp(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+final RegExp passwordValidatorRegExp = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
 
 // Form errors
 const String kMissingUsernameError = "Please fill in your username!";
@@ -37,13 +34,11 @@ const String kMissingEmailError = "Please fill in your email!";
 const String kInvalidEmailError = "Email format is invalid!";
 const String kMissingPasswordError = "Please fill in your password";
 const String kInvalidPasswordError = "Password format is invalid!";
-const String kMissingPasswordConfirmationError =
-    "Please fill in your password confirmation";
+const String kMissingPasswordConfirmationError = "Please fill in your password confirmation";
 const String kNotMatchingPasswords = "Password and confirmation are different!";
 
 final otpInputDecoration = InputDecoration(
-  contentPadding:
-      EdgeInsets.symmetric(vertical: getProportionateScreenWidth(15)),
+  contentPadding: EdgeInsets.symmetric(vertical: getProportionateScreenWidth(15)),
   border: outlineInputBorder(),
   focusedBorder: outlineInputBorder(),
   enabledBorder: outlineInputBorder(),

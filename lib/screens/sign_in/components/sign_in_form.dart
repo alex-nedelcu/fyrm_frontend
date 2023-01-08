@@ -6,11 +6,12 @@ import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
 import 'package:fyrm_frontend/helper/keyboard.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
+import 'package:fyrm_frontend/helper/toast.dart';
 import 'package:fyrm_frontend/screens/home/home_screen.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
 
 import '../../../components/default_button.dart';
-import '../../../constants.dart';
+import '../../../helper/constants.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -26,6 +27,7 @@ class _SignInFormState extends State<SignInForm> {
   String? username;
   String? password;
   bool? remember = false;
+  bool isToastShown = false;
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -62,8 +64,44 @@ class _SignInFormState extends State<SignInForm> {
           HomeScreen.routeName,
           arguments: HomeScreenArguments(loginResponse: loginResponseDto),
         );
+      } else if (ApiHelper.isUnauthorized(loginResponseDto.statusCode)) {
+        handleBadCredentialsToast();
       }
+    } else {
+      handleFormValidationToast();
     }
+  }
+
+  void handleBadCredentialsToast() {
+    if (isToastShown) {
+      return;
+    }
+
+    isToastShown = true;
+
+    showCustomToast(
+      text: "Invalid username or password",
+      context: context,
+      backgroundColor: Colors.red.shade500,
+    );
+
+    isToastShown = false;
+  }
+
+  void handleFormValidationToast() {
+    if (isToastShown) {
+      return;
+    }
+
+    isToastShown = true;
+
+    showCustomToast(
+      text: "Please check form validation issues",
+      context: context,
+      backgroundColor: Colors.red.shade500,
+    );
+
+    isToastShown = false;
   }
 
   @override
@@ -75,8 +113,7 @@ class _SignInFormState extends State<SignInForm> {
           buildUsernameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordField(),
-          if (errors.isNotEmpty)
-            SizedBox(height: SizeConfiguration.screenHeight * 0.02),
+          if (errors.isNotEmpty) SizedBox(height: SizeConfiguration.screenHeight * 0.02),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(15)),
           Row(

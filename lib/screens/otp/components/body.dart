@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/authentication/authentication_service.dart';
 import 'package:fyrm_frontend/api/dto/signup_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
-import 'package:fyrm_frontend/constants.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/screens/sign_in/sign_in_screen.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
 
 import 'otp_form.dart';
 
@@ -26,8 +26,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -53,8 +52,7 @@ class _BodyState extends State<Body> {
                       Navigator.pushNamed(
                         context,
                         SignInScreen.routeName,
-                        arguments: SignInScreenArguments(
-                            fromAccountConfirmationScreen: true),
+                        arguments: SignInScreenArguments(fromAccountConfirmationScreen: true),
                       );
                     }
                   },
@@ -66,8 +64,7 @@ class _BodyState extends State<Body> {
                     style: TextStyle(decoration: TextDecoration.underline),
                   ),
                   onTap: () async {
-                    int statusCode =
-                        await authenticationService.resendConfirmationCode(
+                    int statusCode = await authenticationService.resendConfirmationCode(
                       userId: widget.signupResponse.userId!,
                     );
 

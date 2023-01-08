@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/dto/login_response_dto.dart';
 
-import '../../../size_configuration.dart';
+import '../../../helper/size_configuration.dart';
 import 'categories.dart';
 import 'discount_banner.dart';
 import 'home_header.dart';

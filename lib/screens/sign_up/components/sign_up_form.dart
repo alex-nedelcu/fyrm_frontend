@@ -6,10 +6,10 @@ import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
 import 'package:fyrm_frontend/helper/keyboard.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/screens/otp/otp_screen.dart';
-import 'package:fyrm_frontend/size_configuration.dart';
 
-import '../../../constants.dart';
+import '../../../helper/constants.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -78,8 +78,7 @@ class _SignUpFormState extends State<SignUpForm> {
           buildPasswordField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordConfirmationField(),
-          if (errors.isNotEmpty)
-            SizedBox(height: SizeConfiguration.screenHeight * 0.02),
+          if (errors.isNotEmpty) SizedBox(height: SizeConfiguration.screenHeight * 0.02),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
