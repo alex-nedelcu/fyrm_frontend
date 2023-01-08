@@ -5,6 +5,7 @@ import 'package:fyrm_frontend/api/dto/login_request_dto.dart';
 import 'package:fyrm_frontend/api/dto/login_response_dto.dart';
 import 'package:fyrm_frontend/api/dto/signup_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:http/http.dart' as http;
 
 import '../dto/signup_request_dto.dart';
@@ -33,7 +34,7 @@ class AuthenticationService {
   SignupResponseDto _buildSignupResponse(int statusCode, dynamic decodedResponse) {
     SignupResponseDto signupResponseDto;
 
-    if (ApiHelper.is2xx(statusCode)) {
+    if (ApiHelper.isSuccess(statusCode)) {
       signupResponseDto = SignupResponseDto(
         userId: decodedResponse[SignupResponseDto.userIdJsonField] as int,
         email: decodedResponse[SignupResponseDto.emailJsonField] as String,
@@ -41,13 +42,10 @@ class AuthenticationService {
         statusCode: statusCode,
       );
     } else {
-      List<dynamic> errors = decodedResponse[SignupResponseDto.errorMessagesJsonField] as List<dynamic>;
-      String displayedError = errors.first as String;
+      List<dynamic>? errors = decodedResponse[SignupResponseDto.errorMessagesJsonField] as List<dynamic>?;
+      String displayedError = errors?.first as String? ?? kDefaultErrorMessage;
 
-      signupResponseDto = SignupResponseDto(
-        statusCode: statusCode,
-        message: displayedError,
-      );
+      signupResponseDto = SignupResponseDto(statusCode: statusCode, message: displayedError);
     }
 
     return signupResponseDto;
@@ -75,7 +73,7 @@ class AuthenticationService {
   LoginResponseDto _buildLoginResponse(int statusCode, dynamic decodedResponse) {
     LoginResponseDto loginResponseDto;
 
-    if (ApiHelper.is2xx(statusCode)) {
+    if (ApiHelper.isSuccess(statusCode)) {
       loginResponseDto = LoginResponseDto(
         userId: decodedResponse[LoginResponseDto.userIdJsonField] as int,
         token: decodedResponse[LoginResponseDto.tokenJsonField] as String,

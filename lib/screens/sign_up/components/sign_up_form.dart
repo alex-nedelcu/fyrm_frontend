@@ -57,47 +57,34 @@ class _SignUpFormState extends State<SignUpForm> {
         role: role!,
       );
 
-      if (ApiHelper.is2xx(signupResponseDto.statusCode) && mounted) {
+      if (ApiHelper.isSuccess(signupResponseDto.statusCode) && mounted) {
         Navigator.pushNamed(
           context,
           OtpScreen.routeName,
           arguments: OtpScreenArguments(signupResponse: signupResponseDto),
         );
       } else {
-        handleInvalidSignupInformationToast(displayedError: signupResponseDto.message!);
+        handleToast(
+          statusCode: signupResponseDto.statusCode,
+          message: signupResponseDto.message,
+        );
       }
     } else {
-      handleFormValidationToast();
+      handleToast(message: kFormValidationErrorsMessage);
     }
   }
 
-  void handleInvalidSignupInformationToast({required String displayedError}) {
+  void handleToast({int? statusCode, String? message}) {
     if (isToastShown) {
       return;
     }
 
     isToastShown = true;
 
-    showCustomToast(
-      text: displayedError,
+    showToastByCase(
       context: context,
-      backgroundColor: Colors.red.shade500,
-    );
-
-    isToastShown = false;
-  }
-
-  void handleFormValidationToast() {
-    if (isToastShown) {
-      return;
-    }
-
-    isToastShown = true;
-
-    showCustomToast(
-      text: "Please check form validation issues",
-      context: context,
-      backgroundColor: Colors.red.shade500,
+      statusCode: statusCode,
+      optionalMessage: message,
     );
 
     isToastShown = false;

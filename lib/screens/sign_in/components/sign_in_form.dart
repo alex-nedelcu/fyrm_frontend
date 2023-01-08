@@ -58,47 +58,31 @@ class _SignInFormState extends State<SignInForm> {
         loginRequestDto: loginRequestDto,
       );
 
-      if (ApiHelper.is2xx(loginResponseDto.statusCode) && mounted) {
+      if (ApiHelper.isSuccess(loginResponseDto.statusCode) && mounted) {
         Navigator.pushNamed(
           context,
           HomeScreen.routeName,
           arguments: HomeScreenArguments(loginResponse: loginResponseDto),
         );
-      } else if (ApiHelper.isUnauthorized(loginResponseDto.statusCode)) {
-        handleBadCredentialsToast();
+      } else {
+        handleToast(statusCode: loginResponseDto.statusCode);
       }
     } else {
-      handleFormValidationToast();
+      handleToast(message: kFormValidationErrorsMessage);
     }
   }
 
-  void handleBadCredentialsToast() {
+  void handleToast({int? statusCode, String? message}) {
     if (isToastShown) {
       return;
     }
 
     isToastShown = true;
 
-    showCustomToast(
-      text: "Invalid username or password",
+    showToastByCase(
       context: context,
-      backgroundColor: Colors.red.shade500,
-    );
-
-    isToastShown = false;
-  }
-
-  void handleFormValidationToast() {
-    if (isToastShown) {
-      return;
-    }
-
-    isToastShown = true;
-
-    showCustomToast(
-      text: "Please check form validation issues",
-      context: context,
-      backgroundColor: Colors.red.shade500,
+      statusCode: statusCode,
+      optionalMessage: message,
     );
 
     isToastShown = false;

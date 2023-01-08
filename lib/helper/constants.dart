@@ -27,6 +27,18 @@ final RegExp usernameValidatorRegExp = RegExp(r"^(?=[a-zA-Z0-9._]{3,32}$)(?!.*[_
 final RegExp emailValidatorRegExp = RegExp(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 final RegExp passwordValidatorRegExp = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
 
+// API errors
+const String kDefaultErrorMessage = "Something went wrong";
+const String kDefaultSuccessMessage = "Operation successfully finished";
+const String kFormValidationErrorsMessage = "Please check form validation issues";
+const String kBadCredentials = "Invalid username or password";
+const String kResendConfirmationCodeSuccess = "Confirmation code was resent";
+const String kResendConfirmationCodeFailure = "Confirmation code could not be resent";
+const String kConfirmAccountSuccess = "Your account is confirmed";
+const String kConfirmAccountFailure = "Confirmation code is invalid. Try resending";
+Color kSuccessColor = Colors.green.shade500;
+Color kFailureColor = Colors.red.shade500;
+
 // Form errors
 const String kMissingUsernameError = "Please fill in your username!";
 const String kInvalidUsernameError = "Username format is invalid!";
