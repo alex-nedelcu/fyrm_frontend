@@ -10,7 +10,7 @@ class AuthenticationApi {
   Future<http.Response> signup(
       {required SignupRequestDto signupRequestDto}) async {
     var endpoint =
-        Uri.parse("${ApiConfiguration.localBaseUrl}/authentication/signup");
+        Uri.parse("${ApiConfiguration.baseUrl}/authentication/signup");
     var headers = ApiConfiguration.writeOperationHeaders;
     var body = jsonEncode(signupRequestDto.toJSON());
 
@@ -21,7 +21,7 @@ class AuthenticationApi {
   Future<http.Response> confirmAccount(
       {required int userId, required String confirmationCode}) async {
     var endpoint = Uri.parse(
-        "${ApiConfiguration.localBaseUrl}/authentication/confirm?code=$confirmationCode");
+        "${ApiConfiguration.baseUrl}/authentication/confirm?code=$confirmationCode");
     var headers = ApiConfiguration.writeOperationHeaders;
     var body = jsonEncode(ApiHelper.intToJson("userId", userId));
 
@@ -31,7 +31,7 @@ class AuthenticationApi {
 
   Future<http.Response> resendConfirmationCode({required int userId}) async {
     var endpoint = Uri.parse(
-        "${ApiConfiguration.localBaseUrl}/authentication/confirmationcode/resend");
+        "${ApiConfiguration.baseUrl}/authentication/confirmationcode/resend");
     var headers = ApiConfiguration.writeOperationHeaders;
     var body = jsonEncode(ApiHelper.intToJson("userId", userId));
 
@@ -42,7 +42,7 @@ class AuthenticationApi {
   Future<http.Response> login(
       {required LoginRequestDto loginRequestDto}) async {
     var endpoint =
-        Uri.parse("${ApiConfiguration.localBaseUrl}/authentication/login");
+        Uri.parse("${ApiConfiguration.baseUrl}/authentication/login");
     var headers = ApiConfiguration.writeOperationHeaders;
     var body = jsonEncode(loginRequestDto.toJSON());
 

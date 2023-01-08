@@ -14,7 +14,12 @@ class OtpScreen extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as OtpScreenArguments;
     return Scaffold(
       appBar: AppBar(title: const Text("Activation")),
-      body: Body(signupResponse: arguments.signupResponse),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Body(signupResponse: arguments.signupResponse),
+      ),
     );
   }
 }

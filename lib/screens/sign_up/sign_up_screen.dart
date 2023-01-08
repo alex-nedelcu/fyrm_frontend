@@ -13,7 +13,12 @@ class SignUpScreen extends StatelessWidget {
     SizeConfiguration().init(context);
     return Scaffold(
       appBar: AppBar(title: const Text("Registration")),
-      body: const Body(),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: const Body(),
+      ),
     );
   }
 }

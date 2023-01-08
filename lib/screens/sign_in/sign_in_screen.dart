@@ -18,7 +18,12 @@ class SignInScreen extends StatelessWidget {
         title: const Text("Log in"),
         automaticallyImplyLeading: !hideBackButton,
       ),
-      body: const Body(),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: const Body(),
+      ),
     );
   }
 }
