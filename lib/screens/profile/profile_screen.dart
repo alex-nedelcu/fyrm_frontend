@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
         title: const Text("Profile"),
       ),
       body: const Body(),
-      bottomNavigationBar: const CustomBottomNavBar(selectedMenu: MenuState.profile),
+      bottomNavigationBar: const CustomBottomNavBar(selectedMenu: MenuState.rentConnection),
     );
   }
 }

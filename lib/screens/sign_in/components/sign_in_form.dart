@@ -7,7 +7,9 @@ import 'package:fyrm_frontend/components/form_error.dart';
 import 'package:fyrm_frontend/helper/keyboard.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/helper/toast.dart';
+import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/screens/home/home_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../../../components/default_button.dart';
 import '../../../helper/constants.dart';
@@ -44,7 +46,7 @@ class _SignInFormState extends State<SignInForm> {
     }
   }
 
-  void handleFormSubmission() async {
+  void handleFormSubmission({required ConnectedUserProvider connectedUserProvider}) async {
     if (_formKey.currentState!.validate() && errors.isEmpty) {
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
@@ -60,8 +62,8 @@ class _SignInFormState extends State<SignInForm> {
         Navigator.pushNamed(
           context,
           HomeScreen.routeName,
-          arguments: HomeScreenArguments(loginResponse: loginResponseDto),
         );
+        connectedUserProvider.connectedUserDetails = loginResponseDto;
       } else {
         handleToast(statusCode: statusCode, message: optionalMessage);
       }
@@ -88,6 +90,8 @@ class _SignInFormState extends State<SignInForm> {
 
   @override
   Widget build(BuildContext context) {
+    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+
     return Form(
       key: _formKey,
       child: Column(
@@ -120,7 +124,10 @@ class _SignInFormState extends State<SignInForm> {
             ],
           ),
           SizedBox(height: getProportionateScreenHeight(20)),
-          DefaultButton(text: "Continue", press: handleFormSubmission),
+          DefaultButton(
+            text: "Continue",
+            press: () => handleFormSubmission(connectedUserProvider: connectedUserProvider),
+          ),
         ],
       ),
     );
@@ -160,7 +167,7 @@ class _SignInFormState extends State<SignInForm> {
         labelText: "Username",
         hintText: "Enter your username",
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/User.svg"),
+        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/user-grey.svg"),
       ),
     );
   }
@@ -199,7 +206,7 @@ class _SignInFormState extends State<SignInForm> {
         labelText: "Password",
         hintText: "Enter your password",
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/lock.svg"),
       ),
     );
   }

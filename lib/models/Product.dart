@@ -48,7 +48,7 @@ List<Product> demoProducts = [
   Product(
     id: 2,
     images: [
-      "assets/images/Image Popular Product 2.png",
+      "assets/images/popular_product_2.png",
     ],
     colors: [
       const Color(0xFFF6625E),
