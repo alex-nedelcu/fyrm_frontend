@@ -26,10 +26,7 @@ class Body extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Text(
-                  "Sign in with your username and password",
-                  textAlign: TextAlign.center,
-                ),
+                const Text("Sign in with your username and password", textAlign: TextAlign.center),
                 SizedBox(height: SizeConfiguration.screenHeight * 0.08),
                 const SignInForm(),
                 SizedBox(height: SizeConfiguration.screenHeight * 0.08),

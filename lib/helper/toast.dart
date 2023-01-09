@@ -4,7 +4,31 @@ import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 
-void showCustomToast({
+void showToastWrapper({
+  required BuildContext context,
+  int? statusCode,
+  String? optionalMessage,
+}) {
+  _showCustomToast(
+    text: optionalMessage ?? _getSpecificErrorMessageIfAnyElseGeneric(statusCode),
+    context: context,
+    backgroundColor: ApiHelper.isSuccess(statusCode) ? kSuccessColor : kFailureColor,
+  );
+}
+
+String _getSpecificErrorMessageIfAnyElseGeneric(int? statusCode) {
+  if (ApiHelper.isUnauthorized(statusCode)) {
+    return kBadCredentials;
+  }
+
+  if (ApiHelper.isExpectedError(statusCode)) {
+    return kExpectedErrorMessage;
+  }
+
+  return ApiHelper.isSuccess(statusCode) ? kDefaultSuccessMessage : kDefaultErrorMessage;
+}
+
+void _showCustomToast({
   required String text,
   required BuildContext context,
   required Color backgroundColor,
@@ -28,28 +52,4 @@ void showCustomToast({
     backgroundColor: backgroundColor,
     toastHorizontalMargin: 50.0,
   );
-}
-
-void showToastByCase({
-  required BuildContext context,
-  int? statusCode,
-  String? optionalMessage,
-}) {
-  showCustomToast(
-    text: optionalMessage ?? _getSpecificErrorMessageIfAnyElseGeneric(statusCode),
-    context: context,
-    backgroundColor: ApiHelper.isSuccess(statusCode) ? kSuccessColor : kFailureColor,
-  );
-}
-
-String _getSpecificErrorMessageIfAnyElseGeneric(int? statusCode) {
-  if (ApiHelper.isUnauthorized(statusCode)) {
-    return kBadCredentials;
-  }
-
-  if (ApiHelper.isExpectedError(statusCode)) {
-    return kExpectedErrorMessage;
-  }
-
-  return ApiHelper.isSuccess(statusCode) ? kDefaultSuccessMessage : kDefaultErrorMessage;
 }

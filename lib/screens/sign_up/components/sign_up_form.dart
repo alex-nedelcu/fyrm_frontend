@@ -50,24 +50,24 @@ class _SignUpFormState extends State<SignUpForm> {
     if (_formKey.currentState!.validate() && errors.isEmpty) {
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
+
       SignupResponseDto signupResponseDto = await authenticationService.signup(
         username: username!,
         email: email!,
         password: password!,
         role: role!,
       );
+      int statusCode = signupResponseDto.statusCode;
+      String? optionalMessage = signupResponseDto.message;
 
-      if (ApiHelper.isSuccess(signupResponseDto.statusCode) && mounted) {
+      if (ApiHelper.isSuccess(statusCode) && mounted) {
         Navigator.pushNamed(
           context,
           OtpScreen.routeName,
           arguments: OtpScreenArguments(signupResponse: signupResponseDto),
         );
       } else {
-        handleToast(
-          statusCode: signupResponseDto.statusCode,
-          message: signupResponseDto.message,
-        );
+        handleToast(statusCode: statusCode, message: optionalMessage);
       }
     } else {
       handleToast(message: kFormValidationErrorsMessage);
@@ -81,7 +81,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
     isToastShown = true;
 
-    showToastByCase(
+    showToastWrapper(
       context: context,
       statusCode: statusCode,
       optionalMessage: message,

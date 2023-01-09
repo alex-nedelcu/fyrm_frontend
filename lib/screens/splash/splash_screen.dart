@@ -6,9 +6,12 @@ class SplashScreen extends StatelessWidget {
   static String routeName = "/splash";
 
   const SplashScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     SizeConfiguration().init(context);
-    return const Scaffold(body: Body());
+    return const Scaffold(
+      body: Body(),
+    );
   }
 }

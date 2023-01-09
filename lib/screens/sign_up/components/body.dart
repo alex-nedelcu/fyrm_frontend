@@ -18,10 +18,7 @@ class Body extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: SizeConfiguration.screenHeight * 0.04),
-                Text(
-                  "Register account",
-                  style: headingStyle,
-                ),
+                Text("Register account", style: headingStyle),
                 Text(
                   "Use your official student email address",
                   textAlign: TextAlign.center,

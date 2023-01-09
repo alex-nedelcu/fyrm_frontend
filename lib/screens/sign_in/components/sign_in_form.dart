@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/authentication/authentication_service.dart';
-import 'package:fyrm_frontend/api/dto/login_request_dto.dart';
 import 'package:fyrm_frontend/api/dto/login_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
@@ -49,23 +48,21 @@ class _SignInFormState extends State<SignInForm> {
     if (_formKey.currentState!.validate() && errors.isEmpty) {
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
-      LoginRequestDto loginRequestDto = LoginRequestDto(
+
+      LoginResponseDto loginResponseDto = await authenticationService.login(
         username: username!,
         password: password!,
       );
+      int statusCode = loginResponseDto.statusCode;
 
-      LoginResponseDto loginResponseDto = await authenticationService.login(
-        loginRequestDto: loginRequestDto,
-      );
-
-      if (ApiHelper.isSuccess(loginResponseDto.statusCode) && mounted) {
+      if (ApiHelper.isSuccess(statusCode) && mounted) {
         Navigator.pushNamed(
           context,
           HomeScreen.routeName,
           arguments: HomeScreenArguments(loginResponse: loginResponseDto),
         );
       } else {
-        handleToast(statusCode: loginResponseDto.statusCode);
+        handleToast(statusCode: statusCode);
       }
     } else {
       handleToast(message: kFormValidationErrorsMessage);
@@ -79,7 +76,7 @@ class _SignInFormState extends State<SignInForm> {
 
     isToastShown = true;
 
-    showToastByCase(
+    showToastWrapper(
       context: context,
       statusCode: statusCode,
       optionalMessage: message,
@@ -115,20 +112,14 @@ class _SignInFormState extends State<SignInForm> {
               const Spacer(),
               GestureDetector(
                 onTap: () => {
-                  // TODO: handle change password use case
+                  // TODO: handle change password
                 },
-                child: const Text(
-                  "Forgot Password",
-                  style: TextStyle(decoration: TextDecoration.underline),
-                ),
+                child: const Text("Forgot Password", style: TextStyle(decoration: TextDecoration.underline)),
               )
             ],
           ),
           SizedBox(height: getProportionateScreenHeight(20)),
-          DefaultButton(
-            text: "Continue",
-            press: handleFormSubmission,
-          ),
+          DefaultButton(text: "Continue", press: handleFormSubmission),
         ],
       ),
     );
