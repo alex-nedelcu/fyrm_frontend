@@ -5,6 +5,7 @@ class LoginResponseDto {
   String? username;
   String? email;
   String? role;
+  String? message;
   int statusCode;
 
   LoginResponseDto({
@@ -14,6 +15,7 @@ class LoginResponseDto {
     this.username,
     this.email,
     this.role,
+    this.message,
     required this.statusCode,
   });
 
@@ -28,4 +30,6 @@ class LoginResponseDto {
   static String get emailJsonField => "email";
 
   static String get roleJsonField => "role";
+
+  static String get errorMessagesJsonField => "messages";
 }
