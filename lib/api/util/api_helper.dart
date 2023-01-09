@@ -9,10 +9,6 @@ class ApiHelper {
     return statusCode != null && statusCode == 401;
   }
 
-  static bool isServerError(int? statusCode) {
-    return statusCode != null && statusCode == 500;
-  }
-
   static bool isExpectedError(int? statusCode) {
     return statusCode != null && statusCode == 400 || statusCode == 422;
   }

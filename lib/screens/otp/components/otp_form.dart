@@ -53,7 +53,12 @@ class _OtpFormState extends State<OtpForm> {
     }
   }
 
-  String assembleConfirmationCode() {
+  void onConfirm() {
+    String confirmationCode = _assembleConfirmationCode();
+    widget.onConfirmCallback(confirmationCode);
+  }
+
+  String _assembleConfirmationCode() {
     return confirmationCodeFirstCharacter! +
         confirmationCodeSecondCharacter! +
         confirmationCodeThirdCharacter! +
@@ -167,10 +172,7 @@ class _OtpFormState extends State<OtpForm> {
           SizedBox(height: SizeConfiguration.screenHeight * 0.15),
           DefaultButton(
             text: "Confirm",
-            press: () {
-              String confirmationCode = assembleConfirmationCode();
-              widget.onConfirmCallback(confirmationCode);
-            },
+            press: onConfirm,
           )
         ],
       ),

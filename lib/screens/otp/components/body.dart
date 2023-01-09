@@ -22,6 +22,35 @@ class _BodyState extends State<Body> {
   final AuthenticationService authenticationService = AuthenticationService();
   bool isToastShown = false;
 
+  void onConfirm(String confirmationCode) async {
+    int statusCode = await authenticationService.confirmAccount(
+      userId: widget.signupResponse.userId!,
+      confirmationCode: confirmationCode,
+    );
+
+    if (ApiHelper.isSuccess(statusCode) && mounted) {
+      Navigator.pushNamed(
+        context,
+        SignInScreen.routeName,
+        arguments: SignInScreenArguments(fromAccountConfirmationScreen: true),
+      );
+      handleToast(statusCode: statusCode, message: kConfirmAccountSuccess);
+    } else {
+      handleToast(statusCode: statusCode, message: kConfirmAccountFailure);
+    }
+  }
+
+  void onResend() async {
+    int statusCode = await authenticationService.resendConfirmationCode(
+      userId: widget.signupResponse.userId!,
+    );
+    if (ApiHelper.isSuccess(statusCode)) {
+      handleToast(statusCode: statusCode, message: kResendConfirmationCodeSuccess);
+    } else {
+      handleToast(statusCode: statusCode, message: kResendConfirmationCodeFailure);
+    }
+  }
+
   void handleToast({int? statusCode, String? message}) {
     if (isToastShown) {
       return;
@@ -29,7 +58,7 @@ class _BodyState extends State<Body> {
 
     isToastShown = true;
 
-    showToastByCase(
+    showToastWrapper(
       context: context,
       statusCode: statusCode,
       optionalMessage: message,
@@ -49,51 +78,21 @@ class _BodyState extends State<Body> {
             child: Column(
               children: [
                 SizedBox(height: SizeConfiguration.screenHeight * 0.04),
-                Text(
-                  "Account confirmation",
-                  style: headingStyle,
-                ),
+                Text("Account confirmation", style: headingStyle),
                 Text(
                   "We sent your code to ${widget.signupResponse.email!}",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 buildTimer(),
-                OtpForm(
-                  onConfirmCallback: (String confirmationCode) async {
-                    int statusCode = await authenticationService.confirmAccount(
-                      userId: widget.signupResponse.userId!,
-                      confirmationCode: confirmationCode,
-                    );
-
-                    if (ApiHelper.isSuccess(statusCode) && mounted) {
-                      Navigator.pushNamed(
-                        context,
-                        SignInScreen.routeName,
-                        arguments: SignInScreenArguments(fromAccountConfirmationScreen: true),
-                      );
-                      handleToast(statusCode: statusCode, message: kConfirmAccountSuccess);
-                    } else {
-                      handleToast(statusCode: statusCode, message: kConfirmAccountFailure);
-                    }
-                  },
-                ),
+                OtpForm(onConfirmCallback: onConfirm),
                 SizedBox(height: SizeConfiguration.screenHeight * 0.1),
                 GestureDetector(
+                  onTap: onResend,
                   child: const Text(
                     "Resend confirmation code",
                     style: TextStyle(decoration: TextDecoration.underline),
                   ),
-                  onTap: () async {
-                    int statusCode = await authenticationService.resendConfirmationCode(
-                      userId: widget.signupResponse.userId!,
-                    );
-                    if (ApiHelper.isSuccess(statusCode)) {
-                      handleToast(statusCode: statusCode, message: kResendConfirmationCodeSuccess);
-                    } else {
-                      handleToast(statusCode: statusCode, message: kResendConfirmationCodeFailure);
-                    }
-                  },
                 )
               ],
             ),

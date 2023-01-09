@@ -21,9 +21,6 @@ InputDecorationTheme inputDecorationTheme() {
     gapPadding: 10,
   );
   return InputDecorationTheme(
-    // If  you are using latest version of flutter then lable text and hint text shown like this
-    // if you r using flutter less then 1.20.* then maybe this is not working properly
-    // if we are define our floatingLabelBehavior in our theme then it's not applayed
     floatingLabelBehavior: FloatingLabelBehavior.always,
     contentPadding: const EdgeInsets.symmetric(horizontal: 42, vertical: 20),
     enabledBorder: outlineInputBorder,
@@ -44,12 +41,8 @@ AppBarTheme appBarTheme() {
     color: Colors.white,
     elevation: 0,
     iconTheme: const IconThemeData(color: Colors.black),
-    toolbarTextStyle: const TextTheme(
-      headline6: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18),
-    ).bodyText2,
-    titleTextStyle: const TextTheme(
-      headline6: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18),
-    ).headline6,
+    toolbarTextStyle: const TextTheme(headline6: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18)).bodyText2,
+    titleTextStyle: const TextTheme(headline6: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18)).headline6,
     systemOverlayStyle: SystemUiOverlayStyle.dark,
   );
 }

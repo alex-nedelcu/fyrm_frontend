@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Find your rent mate',
         theme: theme(),
         initialRoute: SplashScreen.routeName,
         routes: routes,

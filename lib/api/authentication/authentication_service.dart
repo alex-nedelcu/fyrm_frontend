@@ -5,7 +5,6 @@ import 'package:fyrm_frontend/api/dto/login_request_dto.dart';
 import 'package:fyrm_frontend/api/dto/login_response_dto.dart';
 import 'package:fyrm_frontend/api/dto/signup_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
-import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:http/http.dart' as http;
 
 import '../dto/signup_request_dto.dart';
@@ -19,12 +18,8 @@ class AuthenticationService {
     required String password,
     required String role,
   }) async {
-    SignupRequestDto signupRequestDto = SignupRequestDto(
-      username: username,
-      email: email,
-      password: password,
-      role: role,
-    );
+    SignupRequestDto signupRequestDto =
+        SignupRequestDto(username: username, email: email, password: password, role: role);
 
     http.Response response = await authenticationApi.signup(signupRequestDto: signupRequestDto);
     final decodedResponse = jsonDecode(response.body);
@@ -43,7 +38,7 @@ class AuthenticationService {
       );
     } else {
       List<dynamic>? errors = decodedResponse[SignupResponseDto.errorMessagesJsonField] as List<dynamic>?;
-      String displayedError = errors?.first as String? ?? kDefaultErrorMessage;
+      String? displayedError = errors?.first as String?;
 
       signupResponseDto = SignupResponseDto(statusCode: statusCode, message: displayedError);
     }
@@ -64,7 +59,9 @@ class AuthenticationService {
     return response.statusCode;
   }
 
-  Future<LoginResponseDto> login({required LoginRequestDto loginRequestDto}) async {
+  Future<LoginResponseDto> login({required String username, required String password}) async {
+    LoginRequestDto loginRequestDto = LoginRequestDto(username: username, password: password);
+
     http.Response response = await authenticationApi.login(loginRequestDto: loginRequestDto);
     final decodedResponse = jsonDecode(response.body);
     return _buildLoginResponse(response.statusCode, decodedResponse);

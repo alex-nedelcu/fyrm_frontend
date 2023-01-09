@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fyrm_frontend/helper/size_configuration.dart';
 
 import 'components/body.dart';
 
@@ -10,7 +9,6 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfiguration().init(context);
     return Scaffold(
       appBar: AppBar(title: const Text("Registration")),
       body: GestureDetector(
