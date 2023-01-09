@@ -54,6 +54,7 @@ class _SignInFormState extends State<SignInForm> {
         password: password!,
       );
       int statusCode = loginResponseDto.statusCode;
+      String? optionalMessage = loginResponseDto.message;
 
       if (ApiHelper.isSuccess(statusCode) && mounted) {
         Navigator.pushNamed(
@@ -62,7 +63,7 @@ class _SignInFormState extends State<SignInForm> {
           arguments: HomeScreenArguments(loginResponse: loginResponseDto),
         );
       } else {
-        handleToast(statusCode: statusCode);
+        handleToast(statusCode: statusCode, message: optionalMessage);
       }
     } else {
       handleToast(message: kFormValidationErrorsMessage);
@@ -114,7 +115,7 @@ class _SignInFormState extends State<SignInForm> {
                 onTap: () => {
                   // TODO: handle change password
                 },
-                child: const Text("Forgot Password", style: TextStyle(decoration: TextDecoration.underline)),
+                child: const Text("Forgot password", style: TextStyle(decoration: TextDecoration.underline)),
               )
             ],
           ),

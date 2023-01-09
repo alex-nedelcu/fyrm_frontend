@@ -10,10 +10,12 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final OtpScreenArguments arguments =
-        ModalRoute.of(context)!.settings.arguments as OtpScreenArguments;
+    final OtpScreenArguments arguments = ModalRoute.of(context)!.settings.arguments as OtpScreenArguments;
     return Scaffold(
-      appBar: AppBar(title: const Text("Activation")),
+      appBar: AppBar(
+        title: const Text("Activation"),
+        automaticallyImplyLeading: false,
+      ),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());

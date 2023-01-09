@@ -81,7 +81,10 @@ class AuthenticationService {
         statusCode: statusCode,
       );
     } else {
-      loginResponseDto = LoginResponseDto(statusCode: statusCode);
+      List<dynamic>? errors = decodedResponse[LoginResponseDto.errorMessagesJsonField] as List<dynamic>?;
+      String? displayedError = errors?.first as String?;
+
+      loginResponseDto = LoginResponseDto(statusCode: statusCode, message: displayedError);
     }
 
     return loginResponseDto;

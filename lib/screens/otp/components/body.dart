@@ -5,7 +5,7 @@ import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/helper/toast.dart';
-import 'package:fyrm_frontend/screens/sign_in/sign_in_screen.dart';
+import 'package:fyrm_frontend/screens/account_confirmation_success/account_confirmation_success_screen.dart';
 
 import 'otp_form.dart';
 
@@ -31,10 +31,8 @@ class _BodyState extends State<Body> {
     if (ApiHelper.isSuccess(statusCode) && mounted) {
       Navigator.pushNamed(
         context,
-        SignInScreen.routeName,
-        arguments: SignInScreenArguments(fromAccountConfirmationScreen: true),
+        AccountConfirmationSuccessScreen.routeName,
       );
-      handleToast(statusCode: statusCode, message: kConfirmAccountSuccess);
     } else {
       handleToast(statusCode: statusCode, message: kConfirmAccountFailure);
     }
