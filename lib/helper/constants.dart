@@ -30,6 +30,7 @@ final RegExp passwordValidatorRegExp = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[
 // API errors
 const String kDefaultErrorMessage = "Something went wrong";
 const String kDefaultSuccessMessage = "Operation successfully finished";
+const String kExpectedErrorMessage = "You fell into an expected wrong behaviour";
 const String kFormValidationErrorsMessage = "Please check form validation issues";
 const String kBadCredentials = "Invalid username or password";
 const String kResendConfirmationCodeSuccess = "Confirmation code was resent";

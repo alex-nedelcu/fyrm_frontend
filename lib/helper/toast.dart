@@ -35,29 +35,21 @@ void showToastByCase({
   int? statusCode,
   String? optionalMessage,
 }) {
-  String? text = optionalMessage;
-
-  if (text == null) {
-    if (ApiHelper.isUnauthorized(statusCode)) {
-      text = kBadCredentials;
-    }
-
-    if (ApiHelper.isServerError(statusCode)) {
-      text = kDefaultErrorMessage;
-    }
-
-    if (ApiHelper.isSuccess(statusCode)) {
-      text = kDefaultSuccessMessage;
-    }
-
-    if (ApiHelper.isExpectedError(statusCode)) {
-      text = kDefaultErrorMessage;
-    }
-  }
-
   showCustomToast(
-    text: text!,
+    text: optionalMessage ?? _getSpecificErrorMessageIfAnyElseGeneric(statusCode),
     context: context,
     backgroundColor: ApiHelper.isSuccess(statusCode) ? kSuccessColor : kFailureColor,
   );
+}
+
+String _getSpecificErrorMessageIfAnyElseGeneric(int? statusCode) {
+  if (ApiHelper.isUnauthorized(statusCode)) {
+    return kBadCredentials;
+  }
+
+  if (ApiHelper.isExpectedError(statusCode)) {
+    return kExpectedErrorMessage;
+  }
+
+  return ApiHelper.isSuccess(statusCode) ? kDefaultSuccessMessage : kDefaultErrorMessage;
 }
