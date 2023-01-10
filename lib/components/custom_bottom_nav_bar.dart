@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fyrm_frontend/components/icon_button_with_counter.dart';
+import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/screens/home/home_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../helper/constants.dart';
 import '../helper/enums.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
-  const CustomBottomNavBar({Key? key, required this.selectedMenu}) : super(key: key);
+  final MenuState? selectedMenu;
 
-  final MenuState selectedMenu;
+  const CustomBottomNavBar({Key? key, this.selectedMenu}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    const Color inActiveIconColor = Color(0xFFB6B6B6);
+    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14),
       decoration: BoxDecoration(
@@ -37,7 +41,7 @@ class CustomBottomNavBar extends StatelessWidget {
               IconButton(
                 icon: SvgPicture.asset(
                   "assets/icons/home.svg",
-                  color: MenuState.home == selectedMenu ? kPrimaryColor : inActiveIconColor,
+                  color: MenuState.home == selectedMenu ? kPrimaryColor : kInactiveIconColor,
                 ),
                 onPressed: () {
                   if (selectedMenu != MenuState.home) {
@@ -48,27 +52,27 @@ class CustomBottomNavBar extends StatelessWidget {
               IconButton(
                 icon: SvgPicture.asset(
                   "assets/icons/search.svg",
-                  color: MenuState.rentConnection == selectedMenu ? kPrimaryColor : inActiveIconColor,
+                  color: MenuState.rentConnection == selectedMenu ? kPrimaryColor : kInactiveIconColor,
+                  height: 20.0,
+                  width: 20.0,
                 ),
                 onPressed: () {
                   // TODO: redirect to rent connections page page
                 },
               ),
-              IconButton(
-                icon: SvgPicture.asset(
-                  "assets/icons/chat.svg",
-                  color: MenuState.chat == selectedMenu ? kPrimaryColor : inActiveIconColor,
-                ),
-                onPressed: () {
+              IconButtonWithCounter(
+                svgSrc: "assets/icons/chat.svg",
+                color: MenuState.chat == selectedMenu ? kPrimaryColor : kInactiveIconColor,
+                count: connectedUserProvider.unreadChatCount,
+                press: () {
                   // TODO: redirect to chat page
                 },
               ),
-              IconButton(
-                icon: SvgPicture.asset(
-                  "assets/icons/notifications.svg",
-                  color: MenuState.notifications == selectedMenu ? kPrimaryColor : inActiveIconColor,
-                ),
-                onPressed: () {
+              IconButtonWithCounter(
+                svgSrc: "assets/icons/notifications.svg",
+                color: MenuState.notifications == selectedMenu ? kPrimaryColor : kInactiveIconColor,
+                count: connectedUserProvider.notificationCount,
+                press: () {
                   // TODO: redirect to notifications page
                 },
               ),

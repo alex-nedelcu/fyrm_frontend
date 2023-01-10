@@ -9,4 +9,8 @@ class ConnectedUserProvider with ChangeNotifier {
   String get token => _connectedUserDetails.token!;
 
   String get tokenType => _connectedUserDetails.tokenType!;
+
+  int get unreadChatCount => 5;
+
+  int get notificationCount => 8;
 }

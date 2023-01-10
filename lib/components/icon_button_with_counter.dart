@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 
-import '../../../helper/constants.dart';
+class IconButtonWithCounter extends StatelessWidget {
+  final String svgSrc;
+  final GestureTapCallback press;
+  final int count;
+  final Color color;
 
-class IconBtnWithCounter extends StatelessWidget {
-  const IconBtnWithCounter({
+  const IconButtonWithCounter({
     Key? key,
     required this.svgSrc,
-    this.numOfitem = 0,
     required this.press,
+    required this.count,
+    required this.color,
   }) : super(key: key);
-
-  final String svgSrc;
-  final int numOfitem;
-  final GestureTapCallback press;
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +28,18 @@ class IconBtnWithCounter extends StatelessWidget {
             padding: EdgeInsets.all(getProportionateScreenWidth(12)),
             height: getProportionateScreenWidth(46),
             width: getProportionateScreenWidth(46),
-            decoration: BoxDecoration(
-              color: kSecondaryColor.withOpacity(0.1),
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
             ),
-            child: SvgPicture.asset(svgSrc),
+            child: SvgPicture.asset(svgSrc, color: color),
           ),
-          if (numOfitem != 0)
+          if (count > 0)
             Positioned(
               top: -3,
               right: 0,
               child: Container(
-                height: getProportionateScreenWidth(16),
-                width: getProportionateScreenWidth(16),
+                height: getProportionateScreenWidth(18),
+                width: getProportionateScreenWidth(18),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFF4848),
                   shape: BoxShape.circle,
@@ -48,7 +47,7 @@ class IconBtnWithCounter extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    "$numOfitem",
+                    "$count",
                     style: TextStyle(
                       fontSize: getProportionateScreenWidth(10),
                       height: 1,

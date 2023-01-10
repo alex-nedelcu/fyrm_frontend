@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../components/profile_picture.dart';
 import 'profile_menu.dart';
-import 'profile_pic.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -12,21 +12,16 @@ class Body extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
-          const ProfilePic(),
-          const SizedBox(height: 20),
+          const ProfilePicture(isUpdatable: true),
+          const SizedBox(height: 30),
           ProfileMenu(
             text: "My Account",
             icon: "assets/icons/user-white.svg",
             press: () => {},
           ),
           ProfileMenu(
-            text: "Notifications",
+            text: "Manage Search Profiles",
             icon: "assets/icons/notifications.svg",
-            press: () {},
-          ),
-          ProfileMenu(
-            text: "Settings",
-            icon: "assets/icons/settings.svg",
             press: () {},
           ),
           ProfileMenu(

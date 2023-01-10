@@ -27,6 +27,7 @@ class ProfileMenu extends StatelessWidget {
         ),
         onPressed: press,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
               icon,
@@ -34,7 +35,11 @@ class ProfileMenu extends StatelessWidget {
               width: 22,
             ),
             const SizedBox(width: 20),
-            Expanded(child: Text(text)),
+            Expanded(
+                child: Text(
+              text,
+              style: const TextStyle(fontSize: 16),
+            )),
             const Icon(Icons.arrow_forward_ios),
           ],
         ),
