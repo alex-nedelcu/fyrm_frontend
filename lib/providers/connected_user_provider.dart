@@ -10,6 +10,16 @@ class ConnectedUserProvider with ChangeNotifier {
 
   String? get tokenType => _connectedUserDetails?.tokenType;
 
+  String? get username => _connectedUserDetails?.username;
+
+  String? get email => _connectedUserDetails?.email;
+
+  String? get description => _connectedUserDetails?.description;
+
+  String? get birthDate => _connectedUserDetails?.birthDate;
+
+  bool? get isSearching => _connectedUserDetails?.isSearching;
+
   int get unreadChatCount => 12;
 
   int get notificationCount => 5;

@@ -78,6 +78,9 @@ class AuthenticationService {
         email: decodedResponse[LoginResponseDto.emailJsonField] as String,
         username: decodedResponse[LoginResponseDto.usernameJsonField] as String,
         role: decodedResponse[LoginResponseDto.roleJsonField] as String,
+        description: decodedResponse[LoginResponseDto.descriptionJsonField] as String?,
+        isSearching: decodedResponse[LoginResponseDto.isSearchingJsonField] as bool,
+        birthDate: decodedResponse[LoginResponseDto.birthDateJsonField] as String,
         statusCode: statusCode,
       );
     } else {

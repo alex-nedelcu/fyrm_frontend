@@ -118,7 +118,7 @@ class _SignInFormState extends State<SignInForm> {
                 onTap: () => {
                   // TODO: handle change password
                 },
-                child: const Text("Forgot password", style: TextStyle(decoration: TextDecoration.underline)),
+                child: const Text("Reset password", style: TextStyle(decoration: TextDecoration.underline)),
               )
             ],
           ),

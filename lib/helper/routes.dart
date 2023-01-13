@@ -7,7 +7,8 @@ import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat/chat_screen.dart
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/home/home_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/notifications/notifications_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/rent_connections/rent_connections_screen.dart';
-import 'package:fyrm_frontend/screens/profile_links/profile/profile_screen.dart';
+import 'package:fyrm_frontend/screens/profile_links/my_profile/my_profile_screen.dart';
+import 'package:fyrm_frontend/screens/profile_links/profile_menu/profile_menu_screen.dart';
 import 'package:fyrm_frontend/screens/splash/splash_screen.dart';
 
 final Map<String, WidgetBuilder> routes = {
@@ -16,7 +17,8 @@ final Map<String, WidgetBuilder> routes = {
   SignUpScreen.routeName: (context) => const SignUpScreen(),
   OtpScreen.routeName: (context) => const OtpScreen(),
   AccountConfirmationSuccessScreen.routeName: (context) => const AccountConfirmationSuccessScreen(),
-  ProfileScreen.routeName: (context) => const ProfileScreen(),
+  ProfileMenuScreen.routeName: (context) => const ProfileMenuScreen(),
+  MyProfileScreen.routeName: (context) => const MyProfileScreen(),
   HomeScreen.routeName: (context) => const HomeScreen(),
   RentConnectionsScreen.routeName: (context) => const RentConnectionsScreen(),
   ChatScreen.routeName: (context) => const ChatScreen(),

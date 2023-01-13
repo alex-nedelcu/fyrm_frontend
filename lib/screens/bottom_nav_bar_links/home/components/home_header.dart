@@ -3,7 +3,7 @@ import 'package:fyrm_frontend/components/profile_picture.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/date.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
-import 'package:fyrm_frontend/screens/profile_links/profile/profile_screen.dart';
+import 'package:fyrm_frontend/screens/profile_links/profile_menu/profile_menu_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:timer_builder/timer_builder.dart';
 
@@ -35,7 +35,7 @@ class HomeHeader extends StatelessWidget {
             ),
             height: size.height * 0.2,
             decoration: BoxDecoration(
-              color: kPrimaryColor.withOpacity(0.85),
+              color: kPrimaryColor.withOpacity(1),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(35),
                 bottomRight: Radius.circular(35),
@@ -54,7 +54,7 @@ class HomeHeader extends StatelessWidget {
                     width: 64,
                     isUpdatable: false,
                     onProfilePicturePress: () {
-                      Navigator.pushNamed(context, ProfileScreen.routeName);
+                      Navigator.pushNamed(context, ProfileMenuScreen.routeName);
                     },
                   ),
                 ],

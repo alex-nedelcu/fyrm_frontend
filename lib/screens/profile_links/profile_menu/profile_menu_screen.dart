@@ -3,10 +3,10 @@ import 'package:fyrm_frontend/components/custom_bottom_nav_bar.dart';
 
 import 'components/body.dart';
 
-class ProfileScreen extends StatelessWidget {
-  static String routeName = "/profile";
+class ProfileMenuScreen extends StatelessWidget {
+  static String routeName = "/profile-menu";
 
-  const ProfileScreen({super.key});
+  const ProfileMenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
