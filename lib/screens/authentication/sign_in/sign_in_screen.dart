@@ -9,9 +9,8 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SignInScreenArguments? arguments =
-        ModalRoute.of(context)!.settings.arguments as SignInScreenArguments?;
-    bool hideBackButton = arguments?.fromAccountConfirmationScreen ?? false;
+    final SignInScreenArguments? arguments = ModalRoute.of(context)!.settings.arguments as SignInScreenArguments?;
+    bool hideBackButton = arguments?.hideBackButton ?? false;
 
     return Scaffold(
       appBar: AppBar(
@@ -29,7 +28,7 @@ class SignInScreen extends StatelessWidget {
 }
 
 class SignInScreenArguments {
-  late bool fromAccountConfirmationScreen;
+  late bool hideBackButton;
 
-  SignInScreenArguments({this.fromAccountConfirmationScreen = false});
+  SignInScreenArguments({this.hideBackButton = false});
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
-import 'package:fyrm_frontend/screens/sign_up/sign_up_screen.dart';
+import 'package:fyrm_frontend/screens/authentication/sign_up/sign_up_screen.dart';
 
 import '../helper/constants.dart';
 

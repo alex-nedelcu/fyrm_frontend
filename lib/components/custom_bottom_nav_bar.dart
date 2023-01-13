@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fyrm_frontend/components/icon_button_with_counter.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
-import 'package:fyrm_frontend/screens/home/home_screen.dart';
+import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat/chat_screen.dart';
+import 'package:fyrm_frontend/screens/bottom_nav_bar_links/home/home_screen.dart';
+import 'package:fyrm_frontend/screens/bottom_nav_bar_links/notifications/notifications_screen.dart';
+import 'package:fyrm_frontend/screens/bottom_nav_bar_links/rent_connections/rent_connections_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../helper/constants.dart';
@@ -52,12 +55,14 @@ class CustomBottomNavBar extends StatelessWidget {
               IconButton(
                 icon: SvgPicture.asset(
                   "assets/icons/search.svg",
-                  color: MenuState.rentConnection == selectedMenu ? kPrimaryColor : kInactiveIconColor,
+                  color: MenuState.rentConnections == selectedMenu ? kPrimaryColor : kInactiveIconColor,
                   height: 20.0,
                   width: 20.0,
                 ),
                 onPressed: () {
-                  // TODO: redirect to rent connections page page
+                  if (selectedMenu != MenuState.rentConnections) {
+                    Navigator.pushNamed(context, RentConnectionsScreen.routeName);
+                  }
                 },
               ),
               IconButtonWithCounter(
@@ -65,7 +70,9 @@ class CustomBottomNavBar extends StatelessWidget {
                 color: MenuState.chat == selectedMenu ? kPrimaryColor : kInactiveIconColor,
                 count: connectedUserProvider.unreadChatCount,
                 press: () {
-                  // TODO: redirect to chat page
+                  if (selectedMenu != MenuState.chat) {
+                    Navigator.pushNamed(context, ChatScreen.routeName);
+                  }
                 },
               ),
               IconButtonWithCounter(
@@ -73,7 +80,9 @@ class CustomBottomNavBar extends StatelessWidget {
                 color: MenuState.notifications == selectedMenu ? kPrimaryColor : kInactiveIconColor,
                 count: connectedUserProvider.notificationCount,
                 press: () {
-                  // TODO: redirect to notifications page
+                  if (selectedMenu != MenuState.notifications) {
+                    Navigator.pushNamed(context, NotificationsScreen.routeName);
+                  }
                 },
               ),
             ],

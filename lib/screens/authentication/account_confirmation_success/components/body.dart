@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
-import 'package:fyrm_frontend/screens/sign_in/sign_in_screen.dart';
+import 'package:fyrm_frontend/screens/authentication/sign_in/sign_in_screen.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -30,7 +30,7 @@ class Body extends StatelessWidget {
               Navigator.pushNamed(
                 context,
                 SignInScreen.routeName,
-                arguments: SignInScreenArguments(fromAccountConfirmationScreen: true),
+                arguments: SignInScreenArguments(hideBackButton: true),
               );
             },
           ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fyrm_frontend/components/profile_picture.dart';
+import 'package:fyrm_frontend/providers/connected_user_provider.dart';
+import 'package:fyrm_frontend/screens/authentication/sign_in/sign_in_screen.dart';
+import 'package:provider/provider.dart';
 
-import '../../../components/profile_picture.dart';
 import 'profile_menu.dart';
 
 class Body extends StatelessWidget {
@@ -8,6 +11,8 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
@@ -32,7 +37,14 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Log Out",
             icon: "assets/icons/log-out.svg",
-            press: () {},
+            press: () {
+              connectedUserProvider.connectedUserDetails = null;
+              Navigator.pushNamed(
+                context,
+                SignInScreen.routeName,
+                arguments: SignInScreenArguments(hideBackButton: true),
+              );
+            },
           ),
         ],
       ),

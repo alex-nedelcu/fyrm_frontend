@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 
 class IconButtonWithCounter extends StatelessWidget {
@@ -38,16 +39,16 @@ class IconButtonWithCounter extends StatelessWidget {
               top: -3,
               right: 0,
               child: Container(
-                height: getProportionateScreenWidth(18),
-                width: getProportionateScreenWidth(18),
+                height: getProportionateScreenWidth(19),
+                width: getProportionateScreenWidth(19),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFF4848),
+                  color: kPrimaryColor,
                   shape: BoxShape.circle,
                   border: Border.all(width: 1.5, color: Colors.white),
                 ),
                 child: Center(
                   child: Text(
-                    "$count",
+                    "${count > 9 ? "9+" : count}",
                     style: TextStyle(
                       fontSize: getProportionateScreenWidth(10),
                       height: 1,

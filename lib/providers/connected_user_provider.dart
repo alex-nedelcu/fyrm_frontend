@@ -2,15 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:fyrm_frontend/api/dto/login_response_dto.dart';
 
 class ConnectedUserProvider with ChangeNotifier {
-  late LoginResponseDto _connectedUserDetails;
+  late LoginResponseDto? _connectedUserDetails;
 
-  set connectedUserDetails(LoginResponseDto connectedUserDetails) => _connectedUserDetails = connectedUserDetails;
+  set connectedUserDetails(LoginResponseDto? connectedUserDetails) => _connectedUserDetails = connectedUserDetails;
 
-  String get token => _connectedUserDetails.token!;
+  String? get token => _connectedUserDetails?.token;
 
-  String get tokenType => _connectedUserDetails.tokenType!;
+  String? get tokenType => _connectedUserDetails?.tokenType;
 
-  int get unreadChatCount => 5;
+  int get unreadChatCount => 12;
 
-  int get notificationCount => 8;
+  int get notificationCount => 5;
 }

@@ -5,7 +5,7 @@ import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/helper/toast.dart';
-import 'package:fyrm_frontend/screens/account_confirmation_success/account_confirmation_success_screen.dart';
+import 'package:fyrm_frontend/screens/authentication/account_confirmation_success/account_confirmation_success_screen.dart';
 
 import 'otp_form.dart';
 

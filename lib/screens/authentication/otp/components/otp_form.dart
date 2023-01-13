@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
-
-import '../../../helper/constants.dart';
 
 class OtpForm extends StatefulWidget {
   final void Function(String confirmationCode) onConfirmCallback;

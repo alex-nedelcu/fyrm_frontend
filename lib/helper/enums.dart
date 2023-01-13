@@ -1,1 +1,1 @@
-enum MenuState { home, rentConnection, chat, notifications }
+enum MenuState { home, rentConnections, chat, notifications }

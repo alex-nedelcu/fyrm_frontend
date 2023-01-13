@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
-import 'package:fyrm_frontend/screens/sign_in/sign_in_screen.dart';
+import 'package:fyrm_frontend/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:fyrm_frontend/screens/splash/components/splash_content.dart';
 
 class Body extends StatefulWidget {

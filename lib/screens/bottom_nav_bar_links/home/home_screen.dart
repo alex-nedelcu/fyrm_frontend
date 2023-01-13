@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/components/custom_bottom_nav_bar.dart';
+import 'package:fyrm_frontend/helper/enums.dart';
 
-import '../../helper/enums.dart';
 import 'components/body.dart';
 
 class HomeScreen extends StatelessWidget {

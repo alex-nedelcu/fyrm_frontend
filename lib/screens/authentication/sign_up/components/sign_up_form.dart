@@ -5,12 +5,11 @@ import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/keyboard.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/helper/toast.dart';
-import 'package:fyrm_frontend/screens/otp/otp_screen.dart';
-
-import '../../../helper/constants.dart';
+import 'package:fyrm_frontend/screens/authentication/otp/otp_screen.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});

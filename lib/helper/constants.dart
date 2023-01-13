@@ -68,3 +68,4 @@ OutlineInputBorder outlineInputBorder() {
 // Dimensions
 const kUniversalLayoutHeight = 812.0;
 const kUniversalLayoutWidth = 375.0;
+const kDefaultPadding = 20.0;
