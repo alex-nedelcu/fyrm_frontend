@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 
+// Keys
+const String mapsAndroidApiKey = "AIzaSyBCWtwbMosk9t9gDR2AMP1TPEAvSIPq9vA";
+const String mapsiOSApiKey = "AIzaSyDrd4X3PAtzzfUcM8szVXyyUf1fWBmr4eo";
+
 // Regular expressions validators
 final RegExp usernameValidatorRegExp = RegExp(r"^(?=[a-zA-Z0-9._]{3,32}$)(?!.*[_.]{2})[^_.].*[^_.]$");
 final RegExp emailValidatorRegExp = RegExp(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
