@@ -23,7 +23,7 @@ class FormError extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SvgPicture.asset(
-          "assets/icons/Error.svg",
+          "assets/icons/error.svg",
           height: getProportionateScreenWidth(16),
           width: getProportionateScreenWidth(16),
         ),

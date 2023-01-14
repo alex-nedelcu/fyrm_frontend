@@ -46,6 +46,7 @@ const kPrimaryGradientColor = LinearGradient(
 );
 const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Color(0xFF757575);
+const kInactiveIconColor = Color(0xFFB6B6B6);
 
 final headingStyle = TextStyle(
   fontSize: getProportionateScreenWidth(28),
@@ -67,3 +68,4 @@ OutlineInputBorder outlineInputBorder() {
 // Dimensions
 const kUniversalLayoutHeight = 812.0;
 const kUniversalLayoutWidth = 375.0;
+const kDefaultPadding = 20.0;
