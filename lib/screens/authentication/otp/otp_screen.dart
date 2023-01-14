@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyrm_frontend/api/dto/signup_response_dto.dart';
+import 'package:fyrm_frontend/api/authentication/dto/signup_response_dto.dart';
 
 import 'components/body.dart';
 

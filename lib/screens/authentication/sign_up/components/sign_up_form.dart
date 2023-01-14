@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/authentication/authentication_service.dart';
-import 'package:fyrm_frontend/api/dto/signup_response_dto.dart';
+import 'package:fyrm_frontend/api/authentication/dto/signup_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
 import 'package:fyrm_frontend/components/default_button.dart';

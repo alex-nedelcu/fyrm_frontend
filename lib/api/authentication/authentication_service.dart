@@ -1,13 +1,12 @@
 import 'dart:convert';
 
 import 'package:fyrm_frontend/api/authentication/authentication_api.dart';
-import 'package:fyrm_frontend/api/dto/login_request_dto.dart';
-import 'package:fyrm_frontend/api/dto/login_response_dto.dart';
-import 'package:fyrm_frontend/api/dto/signup_response_dto.dart';
+import 'package:fyrm_frontend/api/authentication/dto/login_request_dto.dart';
+import 'package:fyrm_frontend/api/authentication/dto/login_response_dto.dart';
+import 'package:fyrm_frontend/api/authentication/dto/signup_request_dto.dart';
+import 'package:fyrm_frontend/api/authentication/dto/signup_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:http/http.dart' as http;
-
-import '../dto/signup_request_dto.dart';
 
 class AuthenticationService {
   final AuthenticationApi authenticationApi = AuthenticationApi();

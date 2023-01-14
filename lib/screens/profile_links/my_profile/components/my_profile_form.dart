@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fyrm_frontend/api/user/user_service.dart';
+import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/keyboard.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
+import 'package:fyrm_frontend/screens/profile_links/profile_menu/profile_menu_screen.dart';
 import 'package:provider/provider.dart';
 
 class MyProfileForm extends StatefulWidget {
@@ -16,6 +19,7 @@ class MyProfileForm extends StatefulWidget {
 }
 
 class _MyProfileFormState extends State<MyProfileForm> {
+  final UserService userService = UserService();
   final _formKey = GlobalKey<FormState>();
   late bool isSearching;
   bool switchedIsSearching = false;
@@ -26,8 +30,19 @@ class _MyProfileFormState extends State<MyProfileForm> {
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
 
-      print("Desc: $description");
-      print("Is s: $isSearching");
+      int statusCode = await userService.updateUser(
+        userId: connectedUserProvider.userId!,
+        token: connectedUserProvider.token!,
+        tokenType: connectedUserProvider.tokenType!,
+        description: description,
+        isSearching: isSearching,
+      );
+
+      if (ApiHelper.isSuccess(statusCode) && mounted) {
+        connectedUserProvider.description = description;
+        connectedUserProvider.isSearching = isSearching;
+        Navigator.pushNamed(context, ProfileMenuScreen.routeName);
+      }
     }
   }
 

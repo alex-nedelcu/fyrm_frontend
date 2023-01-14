@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:fyrm_frontend/api/dto/login_response_dto.dart';
+import 'package:fyrm_frontend/api/authentication/dto/login_response_dto.dart';
 
 class ConnectedUserProvider with ChangeNotifier {
   late LoginResponseDto? _connectedUserDetails;
 
   set connectedUserDetails(LoginResponseDto? connectedUserDetails) => _connectedUserDetails = connectedUserDetails;
+
+  int? get userId => _connectedUserDetails?.userId;
 
   String? get token => _connectedUserDetails?.token;
 
@@ -23,4 +25,12 @@ class ConnectedUserProvider with ChangeNotifier {
   int get unreadChatCount => 12;
 
   int get notificationCount => 5;
+
+  set description(String? description) {
+    _connectedUserDetails?.description = description;
+  }
+
+  set isSearching(bool? isSearching) {
+    _connectedUserDetails?.isSearching = isSearching;
+  }
 }
