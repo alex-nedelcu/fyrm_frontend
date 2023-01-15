@@ -19,7 +19,8 @@ const String kBadCredentials = "Invalid username or password";
 const String kResendConfirmationCodeSuccess = "Confirmation code was resent";
 const String kResendConfirmationCodeFailure = "Confirmation code could not be resent";
 const String kConfirmAccountSuccess = "Your account is confirmed";
-const String kConfirmAccountFailure = "Confirmation code is invalid. Try resending";
+const String kConfirmAccountFailure = "Confirmation code is invalid";
+const String kRentLocationNotSelected = "Please pick the desired rent location";
 Color kSuccessColor = Colors.green.shade500;
 Color kFailureColor = Colors.red.shade500;
 

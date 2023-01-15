@@ -1,8 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fyrm_frontend/api/location/LocationService.dart';
+import 'package:fyrm_frontend/components/default_button.dart';
+import 'package:fyrm_frontend/components/form_error.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/keyboard.dart';
+import 'package:fyrm_frontend/helper/size_configuration.dart';
+import 'package:fyrm_frontend/helper/toast.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -16,16 +24,78 @@ class SearchProfileForm extends StatefulWidget {
 }
 
 class _SearchProfileFormState extends State<SearchProfileForm> {
+  static const String uniqueMarkerId = "UNIQUE";
   final _formKey = GlobalKey<FormState>();
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  final List<String?> errors = [];
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  final LocationService locationService = LocationService();
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  LatLng? desiredRentLocation;
+  bool isToastShown = false;
+
+  void addError({String? error}) {
+    if (!errors.contains(error)) {
+      setState(() {
+        errors.add(error);
+      });
+    }
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error)) {
+      setState(() {
+        errors.remove(error);
+      });
+    }
+  }
 
   void handleFormSubmission({required ConnectedUserProvider connectedUserProvider}) async {
-    if (_formKey.currentState!.validate()) {
+    if (desiredRentLocation == null) {
+      addError(error: kRentLocationNotSelected);
+    }
+
+    if (_formKey.currentState!.validate() && errors.isEmpty) {
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
-      // TODO: continue handling create/update search profile form submission
+    } else {
+      handleToast(message: kFormValidationErrorsMessage);
     }
+  }
+
+  void handleToast({int? statusCode, String? message}) {
+    if (isToastShown) {
+      return;
+    }
+
+    isToastShown = true;
+
+    showToastWrapper(
+      context: context,
+      statusCode: statusCode,
+      optionalMessage: message,
+    );
+
+    isToastShown = false;
+  }
+
+  Future<void> _addMarkerLongPressed(LatLng markerLatitudeLongitude) async {
+    setState(() {
+      const MarkerId markerId = MarkerId(uniqueMarkerId);
+      Marker marker = Marker(
+        markerId: markerId,
+        draggable: true,
+        position: markerLatitudeLongitude,
+        infoWindow: const InfoWindow(title: "Desired rent location"),
+        icon: BitmapDescriptor.defaultMarker,
+      );
+
+      markers[markerId] = marker;
+      desiredRentLocation = marker.position;
+      removeError(error: kRentLocationNotSelected);
+    });
+
+    GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newLatLngZoom(markerLatitudeLongitude, 17.0));
   }
 
   @override
@@ -34,95 +104,60 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
 
     return Form(
       key: _formKey,
-      child: buildLocationPicker(),
-      // child: Column(
-      //   children: [
-      //     SizedBox(height: getProportionateScreenHeight(30)),
-      //     // TODO: add all the search profile dimensions but start with location picker
-      //     buildLocationPicker(),
-      //     DefaultButton(
-      //       text: widget.isCreate ? "Create" : "Update",
-      //       press: () => handleFormSubmission(connectedUserProvider: connectedUserProvider),
-      //     ),
-      //     SizedBox(height: getProportionateScreenHeight(30)),
-      //   ],
-      // ),
+      child: Column(
+        children: [
+          SizedBox(height: getProportionateScreenHeight(30)),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Long press on the desired rent location",
+              style: TextStyle(
+                color: kSecondaryColor,
+                fontSize: getProportionateScreenWidth(16),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(height: getProportionateScreenHeight(15)),
+          FutureBuilder<Position>(
+            future: locationService.getUserPosition(),
+            builder: (context, snapshot) => snapshot.hasData
+                ? buildLocationPicker(userPosition: snapshot.requireData)
+                : SpinKitThreeInOut(color: kSecondaryColor.withOpacity(0.5)),
+          ),
+          SizedBox(height: getProportionateScreenHeight(15)),
+          if (errors.isNotEmpty) SizedBox(height: SizeConfiguration.screenHeight * 0.02),
+          FormError(errors: errors),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          DefaultButton(
+            text: widget.isCreate ? "Create" : "Update",
+            press: () => handleFormSubmission(connectedUserProvider: connectedUserProvider),
+          ),
+          SizedBox(height: getProportionateScreenHeight(30)),
+        ],
+      ),
     );
   }
 
-  Future _addMarkerLongPressed(LatLng latlang) async {
-    setState(() {
-      final MarkerId markerId = MarkerId("RANDOM_ID");
-      Marker marker = Marker(
-        markerId: markerId,
-        draggable: true,
-        position: latlang, //With this parameter you automatically obtain latitude and longitude
-        infoWindow: InfoWindow(
-          title: "Marker here",
-          snippet: 'This looks good',
+  Widget buildLocationPicker({required Position userPosition}) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height / 3,
+      width: double.infinity,
+      child: GoogleMap(
+        mapType: MapType.terrain,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(userPosition.latitude, userPosition.longitude),
+          zoom: 15,
         ),
-        icon: BitmapDescriptor.defaultMarker,
-      );
-
-      markers[markerId] = marker;
-    });
-
-    //This is optional, it will zoom when the marker has been created
-    GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newLatLngZoom(latlang, 17.0));
-  }
-
-  Widget buildLocationPicker() {
-    return Stack(
-      children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 2.5,
-          width: double.infinity,
-          child: GoogleMap(
-            myLocationEnabled: true,
-            myLocationButtonEnabled: true,
-            initialCameraPosition: CameraPosition(
-              target: LatLng(47.7, 23.6),
-              zoom: 10,
-            ),
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-            compassEnabled: true,
-            tiltGesturesEnabled: false,
-            onLongPress: (latlang) {
-              _addMarkerLongPressed(latlang); //we will call this function when pressed on the map
-            },
-            markers: Set<Marker>.of(markers.values),
-          ),
-        ),
-        // Positioned(
-        //   top: 15,
-        //   left: 10,
-        //   right: 10,
-        //   child: Padding(
-        //     padding: const EdgeInsets.all(8.0),
-        //     child: TextField(
-        //       autocorrect: false,
-        //       decoration: InputDecoration(
-        //         filled: true,
-        //         fillColor: Colors.white,
-        //         hintText: "Enter rent location...",
-        //         suffixIcon: const Icon(Icons.search, color: kSecondaryColor),
-        //         contentPadding: const EdgeInsets.only(left: 20, bottom: 5, right: 5),
-        //         focusedBorder: OutlineInputBorder(
-        //           borderRadius: BorderRadius.circular(10),
-        //           borderSide: const BorderSide(color: Colors.white),
-        //         ),
-        //         enabledBorder: OutlineInputBorder(
-        //           borderRadius: BorderRadius.circular(10),
-        //           borderSide: const BorderSide(color: Colors.white),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
-      ],
+        zoomControlsEnabled: true,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: true,
+        onMapCreated: (GoogleMapController controller) => _controller.complete(controller),
+        compassEnabled: true,
+        tiltGesturesEnabled: false,
+        onLongPress: (latitudeLongitude) => _addMarkerLongPressed(latitudeLongitude),
+        markers: Set<Marker>.of(markers.values),
+      ),
     );
   }
 }
