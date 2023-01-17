@@ -11,7 +11,7 @@ class ManageSearchProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ManageSearchProfileScreenArguments arguments =
         ModalRoute.of(context)!.settings.arguments as ManageSearchProfileScreenArguments;
-    String title = arguments.isCreate ? "Create new profile" : "Update profile";
+    String title = arguments.isCreate ? "New search profile" : "Update search profile";
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
