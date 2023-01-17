@@ -35,7 +35,18 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
   final List<bool> isRentMateCountOptionSelected = [false, false, false, false];
   final List<String> associatedRentMateCountOptions = ['1', '2', '3', '> 3'];
   final List<bool> isRentMateGenderOptionSelected = [false, false, false];
-  final List<String> associatedRentMateGenderOptions = ['M', 'F', 'any'];
+  final List<Widget> associatedRentMateGenderOptions = [
+    const Icon(Icons.man),
+    const Icon(Icons.woman),
+    Text(
+      "any",
+      style: TextStyle(
+        color: kSecondaryColor,
+        fontSize: getProportionateScreenWidth(14),
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ];
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   LatLng? desiredRentLocation;
   bool isToastShown = false;
@@ -152,11 +163,11 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     );
   }
 
-  Align buildRentMateGendersToggleButtons({required List<String> options}) {
-    List<Widget> optionsToWidgets = options
+  Align buildRentMateGendersToggleButtons({required List<Widget> options}) {
+    List<Widget> styledOptions = options
         .map((option) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: buildStyledText(text: option, size: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 14.0),
+              child: option,
             ))
         .toList();
 
@@ -184,7 +195,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
             }
           });
         },
-        children: optionsToWidgets,
+        children: styledOptions,
       ),
     );
   }
@@ -192,7 +203,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
   Align buildRentMateCountToggleButtons({required List<String> options}) {
     List<Widget> optionsToWidgets = options
         .map((option) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 14.0),
               child: buildStyledText(text: option, size: 14),
             ))
         .toList();
