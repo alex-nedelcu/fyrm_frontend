@@ -47,6 +47,10 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
       ),
     ),
   ];
+  final List<bool> isBedroomOptionSelected = [false, false];
+  final List<String> associatedBedroomOptions = ['own', 'shared'];
+  final List<bool> isBathroomCountOptionSelected = [false, false, false];
+  final List<String> associatedBathroomCountOptions = ['1', '2', '> 2'];
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   LatLng? desiredRentLocation;
   bool isToastShown = false;
@@ -76,9 +80,12 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     if (_formKey.currentState!.validate() && errors.isEmpty) {
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
+
+      // TODO: handle no selection for gender of rent mates, number of rent mates
       print(rentPriceRange.start);
       print(rentPriceRange.end);
       print(isRentMateCountOptionSelected);
+      print(isRentMateGenderOptionSelected);
     } else {
       handleToast(message: kFormValidationErrorsMessage);
     }
@@ -128,28 +135,54 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(height: getProportionateScreenHeight(15)),
-          buildAlignedText(text: "Select rent price range", alignment: Alignment.centerLeft),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          buildPriceRangeSlider(),
-          SizedBox(height: getProportionateScreenHeight(45)),
-          buildAlignedText(text: "Long press on the desired rent location", alignment: Alignment.centerLeft),
-          SizedBox(height: getProportionateScreenHeight(15)),
-          FutureBuilder<Position>(
-            future: locationService.getUserPosition(),
-            builder: (context, snapshot) => snapshot.hasData
-                ? buildLocationPicker(userPosition: snapshot.requireData)
-                : SpinKitThreeInOut(color: kSecondaryColor.withOpacity(0.5)),
+          buildFormField(
+            topSpacing: 15,
+            title: "How much are you willing to pay?",
+            helpNote: "unit is €/month",
+            component: buildPriceRangeSlider(),
+            textComponentSpacing: 10,
           ),
-          SizedBox(height: getProportionateScreenHeight(45)),
-          buildAlignedText(text: "Pick gender of rent mates", alignment: Alignment.centerLeft),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          buildRentMateGendersToggleButtons(options: associatedRentMateGenderOptions),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          buildAlignedText(text: "Pick number of rent mates", alignment: Alignment.centerLeft),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          buildRentMateCountToggleButtons(options: associatedRentMateCountOptions),
-          SizedBox(height: getProportionateScreenHeight(15)),
+          buildFormField(
+            topSpacing: 45,
+            title: "Choose rent location",
+            helpNote: "a 3km radius will be considered",
+            component: FutureBuilder<Position>(
+              future: locationService.getUserPosition(),
+              builder: (context, snapshot) => snapshot.hasData
+                  ? buildLocationPicker(userPosition: snapshot.requireData)
+                  : SpinKitThreeInOut(color: kSecondaryColor.withOpacity(0.5)),
+            ),
+            textComponentSpacing: 15,
+          ),
+          buildFormField(
+            topSpacing: 45,
+            title: "Who do you want to stay with?",
+            helpNote: "select one option",
+            component: buildRentMateGendersToggleButtons(options: associatedRentMateGenderOptions),
+            textComponentSpacing: 10,
+          ),
+          buildFormField(
+            topSpacing: 20,
+            title: "How many rent mates?",
+            helpNote: "select multiple options",
+            component: buildRentMateCountToggleButtons(options: associatedRentMateCountOptions),
+            textComponentSpacing: 10,
+          ),
+          buildFormField(
+            topSpacing: 20,
+            title: "What about bedrooms?",
+            helpNote: "select one option",
+            component: buildBedroomToggleButtons(options: associatedBedroomOptions),
+            textComponentSpacing: 10,
+          ),
+          buildFormField(
+            topSpacing: 20,
+            title: "How many bathrooms?",
+            helpNote: "select multiple options",
+            component: buildBathroomCountToggleButtons(options: associatedBathroomCountOptions),
+            textComponentSpacing: 10,
+            bottomSpacing: 15,
+          ),
           if (errors.isNotEmpty) SizedBox(height: SizeConfiguration.screenHeight * 0.02),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(30)),
@@ -163,13 +196,50 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     );
   }
 
+  Widget buildFormField({
+    required double topSpacing,
+    required String title,
+    required Widget component,
+    required double textComponentSpacing,
+    String? helpNote,
+    double? bottomSpacing,
+  }) {
+    return Column(
+      children: [
+        SizedBox(height: getProportionateScreenHeight(topSpacing)),
+        buildAlignedText(text: title, alignment: Alignment.centerLeft),
+        if (helpNote != null) buildHelpNote(text: helpNote, alignment: Alignment.centerLeft),
+        SizedBox(height: getProportionateScreenHeight(textComponentSpacing)),
+        component,
+        SizedBox(height: getProportionateScreenHeight(bottomSpacing ?? 0)),
+      ],
+    );
+  }
+
+  Widget buildLocationPicker({required Position userPosition}) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height / 3,
+      width: double.infinity,
+      child: GoogleMap(
+        mapType: MapType.terrain,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(userPosition.latitude, userPosition.longitude),
+          zoom: 15,
+        ),
+        zoomControlsEnabled: true,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: true,
+        onMapCreated: (GoogleMapController controller) => _controller.complete(controller),
+        compassEnabled: true,
+        tiltGesturesEnabled: false,
+        onLongPress: (latitudeLongitude) => _addMarkerLongPressed(latitudeLongitude),
+        markers: Set<Marker>.of(markers.values),
+      ),
+    );
+  }
+
   Align buildRentMateGendersToggleButtons({required List<Widget> options}) {
-    List<Widget> styledOptions = options
-        .map((option) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14.0),
-              child: option,
-            ))
-        .toList();
+    List<Widget> styledOptions = withPadding(widgets: options, padding: 14.0);
 
     return Align(
       alignment: Alignment.centerLeft,
@@ -201,12 +271,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
   }
 
   Align buildRentMateCountToggleButtons({required List<String> options}) {
-    List<Widget> optionsToWidgets = options
-        .map((option) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14.0),
-              child: buildStyledText(text: option, size: 14),
-            ))
-        .toList();
+    List<Widget> styledOptions = withPadding(widgets: toTextWidgets(values: options, size: 14.0), padding: 14.0);
 
     return Align(
       alignment: Alignment.centerLeft,
@@ -226,7 +291,65 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
             isRentMateCountOptionSelected[index] = !isRentMateCountOptionSelected[index];
           });
         },
-        children: optionsToWidgets,
+        children: styledOptions,
+      ),
+    );
+  }
+
+  Align buildBedroomToggleButtons({required List<String> options}) {
+    List<Widget> styledOptions = withPadding(widgets: toTextWidgets(values: options, size: 14.0), padding: 14.0);
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ToggleButtons(
+        borderWidth: 1.5,
+        color: Colors.black.withOpacity(0.60),
+        selectedColor: kPrimaryColor,
+        selectedBorderColor: kPrimaryColor,
+        fillColor: kPrimaryColor.withOpacity(0.02),
+        splashColor: kPrimaryColor.withOpacity(0.08),
+        hoverColor: kPrimaryColor.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(6),
+        constraints: BoxConstraints(minHeight: 36, minWidth: getProportionateScreenWidth(70)),
+        isSelected: isBedroomOptionSelected,
+        onPressed: (index) {
+          setState(() {
+            for (int buttonIndex = 0; buttonIndex < isBedroomOptionSelected.length; buttonIndex++) {
+              if (buttonIndex == index) {
+                isBedroomOptionSelected[buttonIndex] = true;
+              } else {
+                isBedroomOptionSelected[buttonIndex] = false;
+              }
+            }
+          });
+        },
+        children: styledOptions,
+      ),
+    );
+  }
+
+  Align buildBathroomCountToggleButtons({required List<String> options}) {
+    List<Widget> styledOptions = withPadding(widgets: toTextWidgets(values: options, size: 14.0), padding: 14.0);
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ToggleButtons(
+        borderWidth: 1.5,
+        color: Colors.black.withOpacity(0.60),
+        selectedColor: kPrimaryColor,
+        selectedBorderColor: kPrimaryColor,
+        fillColor: kPrimaryColor.withOpacity(0.02),
+        splashColor: kPrimaryColor.withOpacity(0.08),
+        hoverColor: kPrimaryColor.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(6),
+        constraints: const BoxConstraints(minHeight: 36),
+        isSelected: isBathroomCountOptionSelected,
+        onPressed: (index) {
+          setState(() {
+            isBathroomCountOptionSelected[index] = !isBathroomCountOptionSelected[index];
+          });
+        },
+        children: styledOptions,
       ),
     );
   }
@@ -267,6 +390,41 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     );
   }
 
+  Align buildHelpNote({required String text, required Alignment alignment}) {
+    return Align(
+      alignment: alignment,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.mark_chat_read_outlined,
+            color: kSecondaryColor.withOpacity(0.6),
+            size: 15,
+          ),
+          const SizedBox(width: 5),
+          Text(
+            text,
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.4),
+              fontSize: getProportionateScreenWidth(11),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> toTextWidgets({required List<String> values, required double size}) {
+    return values.map((value) => buildStyledText(text: value, size: size)).toList();
+  }
+
+  List<Widget> withPadding({required List<Widget> widgets, required double padding}) {
+    return widgets
+        .map((widget) => Padding(padding: EdgeInsets.symmetric(horizontal: padding), child: widget))
+        .toList();
+  }
+
   Text buildStyledText({required String text, required double size}) {
     return Text(
       text,
@@ -274,28 +432,6 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         color: kSecondaryColor,
         fontSize: getProportionateScreenWidth(size),
         fontWeight: FontWeight.bold,
-      ),
-    );
-  }
-
-  Widget buildLocationPicker({required Position userPosition}) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 3,
-      width: double.infinity,
-      child: GoogleMap(
-        mapType: MapType.terrain,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(userPosition.latitude, userPosition.longitude),
-          zoom: 15,
-        ),
-        zoomControlsEnabled: true,
-        myLocationEnabled: true,
-        myLocationButtonEnabled: true,
-        onMapCreated: (GoogleMapController controller) => _controller.complete(controller),
-        compassEnabled: true,
-        tiltGesturesEnabled: false,
-        onLongPress: (latitudeLongitude) => _addMarkerLongPressed(latitudeLongitude),
-        markers: Set<Marker>.of(markers.values),
       ),
     );
   }
