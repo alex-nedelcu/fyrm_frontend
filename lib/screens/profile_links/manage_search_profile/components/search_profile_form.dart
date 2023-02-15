@@ -10,6 +10,7 @@ import 'package:fyrm_frontend/helper/keyboard.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/helper/toast.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
+import 'package:fyrm_frontend/screens/profile_links/manage_search_profile/components/form_enums.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -33,24 +34,13 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
   final LocationService locationService = LocationService();
   final List<bool> isRentMateCountOptionSelected = [false, false, false, false];
-  final List<String> associatedRentMateCountOptions = ['1', '2', '3', '> 3'];
+  final List<String> associatedRentMateCountOptions = RentMateCountOption.options;
   final List<bool> isRentMateGenderOptionSelected = [false, false, false];
-  final List<Widget> associatedRentMateGenderOptions = [
-    const Icon(Icons.man),
-    const Icon(Icons.woman),
-    Text(
-      "any",
-      style: TextStyle(
-        color: kSecondaryColor,
-        fontSize: getProportionateScreenWidth(14),
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  ];
-  final List<bool> isBedroomOptionSelected = [false, false];
-  final List<String> associatedBedroomOptions = ['own', 'shared'];
+  final List<Widget> associatedRentMateGenderOptions = RentMateGenderOption.icons;
+  final List<bool> isBedroomOptionSelected = [false, false, false];
+  final List<String> associatedBedroomOptions = BedroomOption.options;
   final List<bool> isBathroomCountOptionSelected = [false, false, false];
-  final List<String> associatedBathroomCountOptions = ['1', '2', '> 2'];
+  final List<String> associatedBathroomCountOptions = BathroomCountOption.options;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   LatLng? desiredRentLocation;
   bool isToastShown = false;
@@ -73,22 +63,44 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
   }
 
   void handleFormSubmission({required ConnectedUserProvider connectedUserProvider}) async {
-    if (desiredRentLocation == null) {
-      addError(error: kRentLocationNotSelected);
-    }
+    handleInvalidInput();
 
     if (_formKey.currentState!.validate() && errors.isEmpty) {
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
-
-      // TODO: handle no selection for gender of rent mates, number of rent mates
-      print(rentPriceRange.start);
-      print(rentPriceRange.end);
-      print(isRentMateCountOptionSelected);
-      print(isRentMateGenderOptionSelected);
+      print(RentMateCountOption.findSelectedOptions(isRentMateCountOptionSelected));
+      print(RentMateGenderOption.findSelectedOptions(isRentMateGenderOptionSelected));
+      print(BedroomOption.findSelectedOptions(isBedroomOptionSelected));
+      print(BathroomCountOption.findSelectedOptions(isBathroomCountOptionSelected));
     } else {
       handleToast(message: kFormValidationErrorsMessage);
     }
+  }
+
+  void handleInvalidInput() {
+    if (noOptionSelected(isRentMateGenderOptionSelected)) {
+      addError(error: kRentMateGenderNotSelected);
+    }
+
+    if (noOptionSelected(isRentMateCountOptionSelected)) {
+      addError(error: kRentMateCountNotSelected);
+    }
+
+    if (noOptionSelected(isBedroomOptionSelected)) {
+      addError(error: kBedroomOptionNotSelected);
+    }
+
+    if (noOptionSelected(isBathroomCountOptionSelected)) {
+      addError(error: kBathroomCountNotSelected);
+    }
+
+    if (desiredRentLocation == null) {
+      addError(error: kRentLocationNotSelected);
+    }
+  }
+
+  bool noOptionSelected(List<bool> selection) {
+    return !selection.contains(true);
   }
 
   void handleToast({int? statusCode, String? message}) {
@@ -136,14 +148,43 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
       child: Column(
         children: [
           buildFormField(
-            topSpacing: 15,
+            topSpacing: 10,
             title: "How much are you willing to pay?",
             helpNote: "unit is €/month",
             component: buildPriceRangeSlider(),
             textComponentSpacing: 10,
           ),
           buildFormField(
-            topSpacing: 45,
+            topSpacing: 40,
+            title: "Who do you want to stay with?",
+            helpNote: "select one option",
+            component: buildRentMateGendersToggleButtons(options: associatedRentMateGenderOptions),
+            textComponentSpacing: 10,
+          ),
+          buildFormField(
+            topSpacing: 25,
+            title: "How many rent mates?",
+            helpNote: "select multiple options",
+            component: buildRentMateCountToggleButtons(options: associatedRentMateCountOptions),
+            textComponentSpacing: 10,
+          ),
+          buildFormField(
+            topSpacing: 25,
+            title: "What about bedrooms?",
+            helpNote: "select one option",
+            component: buildBedroomToggleButtons(options: associatedBedroomOptions),
+            textComponentSpacing: 10,
+          ),
+          buildFormField(
+            topSpacing: 25,
+            title: "How many bathrooms?",
+            helpNote: "select multiple options",
+            component: buildBathroomCountToggleButtons(options: associatedBathroomCountOptions),
+            textComponentSpacing: 10,
+            bottomSpacing: 15,
+          ),
+          buildFormField(
+            topSpacing: 25,
             title: "Choose rent location",
             helpNote: "a 3km radius will be considered",
             component: FutureBuilder<Position>(
@@ -154,38 +195,9 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
             ),
             textComponentSpacing: 15,
           ),
-          buildFormField(
-            topSpacing: 45,
-            title: "Who do you want to stay with?",
-            helpNote: "select one option",
-            component: buildRentMateGendersToggleButtons(options: associatedRentMateGenderOptions),
-            textComponentSpacing: 10,
-          ),
-          buildFormField(
-            topSpacing: 20,
-            title: "How many rent mates?",
-            helpNote: "select multiple options",
-            component: buildRentMateCountToggleButtons(options: associatedRentMateCountOptions),
-            textComponentSpacing: 10,
-          ),
-          buildFormField(
-            topSpacing: 20,
-            title: "What about bedrooms?",
-            helpNote: "select one option",
-            component: buildBedroomToggleButtons(options: associatedBedroomOptions),
-            textComponentSpacing: 10,
-          ),
-          buildFormField(
-            topSpacing: 20,
-            title: "How many bathrooms?",
-            helpNote: "select multiple options",
-            component: buildBathroomCountToggleButtons(options: associatedBathroomCountOptions),
-            textComponentSpacing: 10,
-            bottomSpacing: 15,
-          ),
           if (errors.isNotEmpty) SizedBox(height: SizeConfiguration.screenHeight * 0.02),
           FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(30)),
+          SizedBox(height: getProportionateScreenHeight(35)),
           DefaultButton(
             text: widget.isCreate ? "Create" : "Update",
             press: () => handleFormSubmission(connectedUserProvider: connectedUserProvider),
@@ -232,7 +244,10 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         onMapCreated: (GoogleMapController controller) => _controller.complete(controller),
         compassEnabled: true,
         tiltGesturesEnabled: false,
-        onLongPress: (latitudeLongitude) => _addMarkerLongPressed(latitudeLongitude),
+        onLongPress: (latitudeLongitude) {
+          removeError(error: kRentLocationNotSelected);
+          _addMarkerLongPressed(latitudeLongitude);
+        },
         markers: Set<Marker>.of(markers.values),
       ),
     );
@@ -255,6 +270,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         constraints: const BoxConstraints(minHeight: 36),
         isSelected: isRentMateGenderOptionSelected,
         onPressed: (index) {
+          removeError(error: kRentMateGenderNotSelected);
           setState(() {
             for (int buttonIndex = 0; buttonIndex < isRentMateGenderOptionSelected.length; buttonIndex++) {
               if (buttonIndex == index) {
@@ -287,6 +303,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         constraints: const BoxConstraints(minHeight: 36),
         isSelected: isRentMateCountOptionSelected,
         onPressed: (index) {
+          removeError(error: kRentMateCountNotSelected);
           setState(() {
             isRentMateCountOptionSelected[index] = !isRentMateCountOptionSelected[index];
           });
@@ -313,6 +330,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         constraints: BoxConstraints(minHeight: 36, minWidth: getProportionateScreenWidth(70)),
         isSelected: isBedroomOptionSelected,
         onPressed: (index) {
+          removeError(error: kBedroomOptionNotSelected);
           setState(() {
             for (int buttonIndex = 0; buttonIndex < isBedroomOptionSelected.length; buttonIndex++) {
               if (buttonIndex == index) {
@@ -345,6 +363,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         constraints: const BoxConstraints(minHeight: 36),
         isSelected: isBathroomCountOptionSelected,
         onPressed: (index) {
+          removeError(error: kBathroomCountNotSelected);
           setState(() {
             isBathroomCountOptionSelected[index] = !isBathroomCountOptionSelected[index];
           });

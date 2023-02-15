@@ -21,6 +21,10 @@ const String kResendConfirmationCodeFailure = "Confirmation code could not be re
 const String kConfirmAccountSuccess = "Your account is confirmed";
 const String kConfirmAccountFailure = "Confirmation code is invalid";
 const String kRentLocationNotSelected = "Please pick the desired rent location";
+const String kRentMateCountNotSelected = "Please select the desired number of rent mates";
+const String kRentMateGenderNotSelected = "Please select the desired gender of rent mates";
+const String kBedroomOptionNotSelected = "Please select the desired bedroom type";
+const String kBathroomCountNotSelected = "Please select the desired number of bathrooms";
 Color kSuccessColor = Colors.green.shade500;
 Color kFailureColor = Colors.red.shade500;
 
