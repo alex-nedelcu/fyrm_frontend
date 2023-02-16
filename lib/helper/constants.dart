@@ -25,6 +25,7 @@ const String kRentMateCountNotSelected = "Please select the desired number of re
 const String kRentMateGenderNotSelected = "Please select the desired gender of rent mates";
 const String kBedroomOptionNotSelected = "Please select the desired bedroom type";
 const String kBathroomCountNotSelected = "Please select the desired number of bathrooms";
+const String kSearchProfileCreateSuccess = "Search profile successfully created";
 Color kSuccessColor = Colors.green.shade500;
 Color kFailureColor = Colors.red.shade500;
 

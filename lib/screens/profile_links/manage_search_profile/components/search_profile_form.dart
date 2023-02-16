@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fyrm_frontend/api/location/LocationService.dart';
+import 'package:fyrm_frontend/api/location/location_service.dart';
+import 'package:fyrm_frontend/api/search_profile/search_profile_service.dart';
+import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
@@ -11,6 +13,7 @@ import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/helper/toast.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/screens/profile_links/manage_search_profile/components/form_enums.dart';
+import 'package:fyrm_frontend/screens/profile_links/search_profiles/search_profiles_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +30,7 @@ class SearchProfileForm extends StatefulWidget {
 }
 
 class _SearchProfileFormState extends State<SearchProfileForm> {
+  final SearchProfileService searchProfileService = SearchProfileService();
   static const String uniqueMarkerId = "UNIQUE";
   static const double rentMaximumPrice = 800.0;
   final _formKey = GlobalKey<FormState>();
@@ -63,21 +67,38 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
   }
 
   void handleFormSubmission({required ConnectedUserProvider connectedUserProvider}) async {
-    handleInvalidInput();
+    catchValidationErrors();
 
     if (_formKey.currentState!.validate() && errors.isEmpty) {
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
-      print(RentMateCountOption.findSelectedOptions(isRentMateCountOptionSelected));
-      print(RentMateGenderOption.findSelectedOptions(isRentMateGenderOptionSelected));
-      print(BedroomOption.findSelectedOptions(isBedroomOptionSelected));
-      print(BathroomCountOption.findSelectedOptions(isBathroomCountOptionSelected));
+      int statusCode = await searchProfileService.createSearchProfile(
+        userId: connectedUserProvider.userId!,
+        tokenType: connectedUserProvider.tokenType!,
+        token: connectedUserProvider.token!,
+        rentPriceLowerBound: rentPriceRange.start as num,
+        rentPriceUpperBound: rentPriceRange.end as num,
+        latitude: desiredRentLocation!.latitude,
+        longitude: desiredRentLocation!.longitude,
+        rentMatesGenderOptions: RentMateGenderOption.findSelectedOptions(isRentMateGenderOptionSelected),
+        rentMateCountOptions: RentMateCountOption.findSelectedOptions(isRentMateCountOptionSelected),
+        bedroomOptions: BedroomOption.findSelectedOptions(isBedroomOptionSelected),
+        bathroomOptions: BathroomCountOption.findSelectedOptions(isBathroomCountOptionSelected),
+      );
+
+      if (ApiHelper.isSuccess(statusCode) && mounted) {
+        Navigator.pushNamed(
+          context,
+          SearchProfilesScreen.routeName,
+        );
+        handleToast(statusCode: statusCode, message: kSearchProfileCreateSuccess);
+      }
     } else {
       handleToast(message: kFormValidationErrorsMessage);
     }
   }
 
-  void handleInvalidInput() {
+  void catchValidationErrors() {
     if (noOptionSelected(isRentMateGenderOptionSelected)) {
       addError(error: kRentMateGenderNotSelected);
     }
