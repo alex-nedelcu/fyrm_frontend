@@ -10,7 +10,6 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
-    print("Home screen token: ${connectedUserProvider.token}");
 
     return SingleChildScrollView(
       child: Column(

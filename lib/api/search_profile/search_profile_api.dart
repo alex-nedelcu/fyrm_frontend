@@ -15,7 +15,8 @@ class SearchProfileApi {
     var headers = ApiConfiguration.writeOperationHeadersWithAuthorization(authorizationHeaderValue);
     var body = jsonEncode(searchProfileDto.toJSON());
 
-    var response = await http.patch(endpoint, headers: headers, body: body);
+    var response = await http.post(endpoint, headers: headers, body: body);
+
     return response;
   }
 }

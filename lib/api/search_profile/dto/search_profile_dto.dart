@@ -27,7 +27,7 @@ class SearchProfileDto {
         rentPriceUpperBoundJsonField: rentPriceUpperBound,
         latitudeJsonField: latitude,
         longitudeJsonField: longitude,
-        rentMateGenderOptionsJsonField: rentMateGenderOptionsJsonField,
+        rentMateGenderOptionsJsonField: rentMatesGenderOptions,
         rentMateCountOptionsJsonField: rentMateCountOptions,
         bedroomOptionsJsonField: bedroomOptions,
         bathroomOptionsJsonField: bathroomOptions
@@ -66,7 +66,7 @@ class SearchProfileDto {
 
   static String get longitudeJsonField => "longitude";
 
-  static String get rentMateGenderOptionsJsonField => "rentMateGenderOptions";
+  static String get rentMateGenderOptionsJsonField => "rentMatesGenderOptions";
 
   static String get rentMateCountOptionsJsonField => "rentMateCountOptions";
 
