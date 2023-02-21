@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/search_profile/dto/search_profile_dto.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
-import 'package:fyrm_frontend/providers/search_profile_provider.dart';
-import 'package:provider/provider.dart';
 
 class SearchProfileCard extends StatelessWidget {
   final SearchProfileDto searchProfile;
@@ -12,12 +10,11 @@ class SearchProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final SearchProfileProvider searchProfileProvider = Provider.of<SearchProfileProvider>(context);
 
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: 20,
-        vertical: 10,
+        vertical: 3,
       ),
       height: 160,
       child: InkWell(

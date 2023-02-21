@@ -25,4 +25,35 @@ class SearchProfileProvider with ChangeNotifier {
     loading = false;
     notifyListeners();
   }
+
+  Future<int> create({
+    required int userId,
+    required String tokenType,
+    required String token,
+    required num rentPriceLowerBound,
+    required num rentPriceUpperBound,
+    required double latitude,
+    required double longitude,
+    required List<String> rentMatesGenderOptions,
+    required List<String> rentMateCountOptions,
+    required List<String> bedroomOptions,
+    required List<String> bathroomOptions,
+  }) async {
+    int statusCode = await searchProfileService.create(
+      userId: userId,
+      tokenType: tokenType,
+      token: token,
+      rentPriceLowerBound: rentPriceLowerBound,
+      rentPriceUpperBound: rentPriceUpperBound,
+      latitude: latitude,
+      longitude: longitude,
+      rentMatesGenderOptions: rentMatesGenderOptions,
+      rentMateCountOptions: rentMateCountOptions,
+      bedroomOptions: bedroomOptions,
+      bathroomOptions: bathroomOptions,
+    );
+
+    fetchSearchProfiles(tokenType: tokenType, token: token, userId: userId);
+    return statusCode;
+  }
 }

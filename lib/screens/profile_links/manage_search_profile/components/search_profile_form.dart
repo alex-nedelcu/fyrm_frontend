@@ -12,6 +12,7 @@ import 'package:fyrm_frontend/helper/keyboard.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/helper/toast.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
+import 'package:fyrm_frontend/providers/search_profile_provider.dart';
 import 'package:fyrm_frontend/screens/profile_links/manage_search_profile/components/form_enums.dart';
 import 'package:fyrm_frontend/screens/profile_links/search_profiles/search_profiles_screen.dart';
 import 'package:geolocator/geolocator.dart';
@@ -66,13 +67,16 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     }
   }
 
-  void handleFormSubmission({required ConnectedUserProvider connectedUserProvider}) async {
+  void handleFormSubmission() async {
     catchValidationErrors();
 
     if (_formKey.currentState!.validate() && errors.isEmpty) {
+      ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context, listen: false);
+      SearchProfileProvider searchProfileProvider = Provider.of<SearchProfileProvider>(context, listen: false);
+
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
-      int statusCode = await searchProfileService.create(
+      int statusCode = await searchProfileProvider.create(
         userId: connectedUserProvider.userId!,
         tokenType: connectedUserProvider.tokenType!,
         token: connectedUserProvider.token!,
@@ -162,8 +166,6 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
 
   @override
   Widget build(BuildContext context) {
-    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
-
     return Form(
       key: _formKey,
       child: Column(
@@ -221,7 +223,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
           SizedBox(height: getProportionateScreenHeight(35)),
           DefaultButton(
             text: widget.isCreate ? "Create" : "Update",
-            press: () => handleFormSubmission(connectedUserProvider: connectedUserProvider),
+            press: () => handleFormSubmission(),
           ),
           SizedBox(height: getProportionateScreenHeight(30)),
         ],
