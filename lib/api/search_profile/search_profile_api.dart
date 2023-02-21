@@ -20,7 +20,7 @@ class SearchProfileApi {
   }
 
   Future<http.Response> findAllByUserId({required Authorization authorization, required int userId}) async {
-    var endpoint = Uri.parse("${ApiConfiguration.baseUrl}/user/$userId/search-profiles");
+    var endpoint = Uri.parse("${ApiConfiguration.baseUrl}/users/$userId/search-profiles");
     var authorizationHeader = "${authorization.tokenType} ${authorization.token}";
     var headers = ApiConfiguration.headersWithAuthorization(authorizationHeader);
 

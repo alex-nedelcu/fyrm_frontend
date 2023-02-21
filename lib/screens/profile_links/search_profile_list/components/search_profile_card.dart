@@ -82,7 +82,7 @@ class SearchProfileCard extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        "This",
+                        "(${searchProfile.latitude.toStringAsFixed(2)}, ${searchProfile.longitude.toStringAsFixed(2)})",
                         style: Theme.of(context).textTheme.button,
                       ),
                     ),
@@ -100,28 +100,11 @@ class SearchProfileCard extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        "That",
+                        "${searchProfile.rentPriceLowerBound.toStringAsFixed(0)}\$ - ${searchProfile.rentPriceUpperBound.toStringAsFixed(0)}\$",
                         style: Theme.of(context).textTheme.button,
                       ),
                     ),
                     const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                        vertical: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade400,
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(22),
-                          topRight: Radius.circular(22),
-                        ),
-                      ),
-                      child: Text(
-                        "Those",
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                    ),
                   ],
                 ),
               ),

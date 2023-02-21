@@ -57,8 +57,7 @@ class SearchProfileService {
     );
 
     http.Response response = await searchProfileApi.findAllByUserId(authorization: authorization, userId: userId);
-    final searchProfileDtos = jsonDecode(response.body) as Iterable<Map<String, Object>>;
-
+    final searchProfileDtos = jsonDecode(response.body)['searchProfiles'] as List<dynamic>;
     return List<SearchProfileDto>.from(searchProfileDtos.map((json) => SearchProfileDto.fromJSON(json)));
   }
 }

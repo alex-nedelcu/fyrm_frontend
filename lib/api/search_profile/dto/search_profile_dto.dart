@@ -1,3 +1,5 @@
+import 'package:fyrm_frontend/api/util/dto_convert_helper.dart';
+
 class SearchProfileDto {
   late int userId;
   late num rentPriceLowerBound;
@@ -56,16 +58,16 @@ class SearchProfileDto {
         bathroomOptions: bathroomOptions ?? this.bathroomOptions,
       );
 
-  static SearchProfileDto fromJSON(Map<String, Object> json) => SearchProfileDto(
+  static SearchProfileDto fromJSON(dynamic json) => SearchProfileDto(
         userId: json[userIdJsonField] as int,
         rentPriceLowerBound: json[rentPriceLowerBoundJsonField] as num,
         rentPriceUpperBound: json[rentPriceUpperBoundJsonField] as num,
         latitude: json[latitudeJsonField] as double,
         longitude: json[longitudeJsonField] as double,
-        rentMatesGenderOptions: json[rentMateGenderOptionsJsonField] as List<String>,
-        rentMateCountOptions: json[rentMateCountOptionsJsonField] as List<String>,
-        bathroomOptions: json[bathroomOptionsJsonField] as List<String>,
-        bedroomOptions: json[bedroomOptionsJsonField] as List<String>,
+        rentMatesGenderOptions: DtoConvertHelper.toStringList(json[rentMateGenderOptionsJsonField]),
+        rentMateCountOptions: DtoConvertHelper.toStringList(json[rentMateCountOptionsJsonField]),
+        bathroomOptions: DtoConvertHelper.toStringList(json[bathroomOptionsJsonField]),
+        bedroomOptions: DtoConvertHelper.toStringList(json[bedroomOptionsJsonField]),
       );
 
   static String get userIdJsonField => "userId";
