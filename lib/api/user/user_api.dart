@@ -13,7 +13,7 @@ class UserApi {
   }) async {
     var endpoint = Uri.parse("${ApiConfiguration.baseUrl}/users/${updateUserDto.userId}");
     var authorizationHeaderValue = "${authorization.tokenType} ${authorization.token}";
-    var headers = ApiConfiguration.writeOperationHeadersWithAuthorization(authorizationHeaderValue);
+    var headers = ApiConfiguration.headersWithAuthorization(authorizationHeaderValue);
     var body = jsonEncode(updateUserDto.toJSON());
 
     var response = await http.patch(endpoint, headers: headers, body: body);

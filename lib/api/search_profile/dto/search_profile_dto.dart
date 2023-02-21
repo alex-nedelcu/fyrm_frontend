@@ -56,6 +56,18 @@ class SearchProfileDto {
         bathroomOptions: bathroomOptions ?? this.bathroomOptions,
       );
 
+  static SearchProfileDto fromJSON(Map<String, Object> json) => SearchProfileDto(
+        userId: json[userIdJsonField] as int,
+        rentPriceLowerBound: json[rentPriceLowerBoundJsonField] as num,
+        rentPriceUpperBound: json[rentPriceUpperBoundJsonField] as num,
+        latitude: json[latitudeJsonField] as double,
+        longitude: json[longitudeJsonField] as double,
+        rentMatesGenderOptions: json[rentMateGenderOptionsJsonField] as List<String>,
+        rentMateCountOptions: json[rentMateCountOptionsJsonField] as List<String>,
+        bathroomOptions: json[bathroomOptionsJsonField] as List<String>,
+        bedroomOptions: json[bedroomOptionsJsonField] as List<String>,
+      );
+
   static String get userIdJsonField => "userId";
 
   static String get rentPriceLowerBoundJsonField => "rentPriceLowerBound";

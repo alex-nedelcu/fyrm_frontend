@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fyrm_frontend/providers/connected_user_provider.dart';
-import 'package:provider/provider.dart';
 
 import 'home_header.dart';
 
@@ -9,8 +7,6 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

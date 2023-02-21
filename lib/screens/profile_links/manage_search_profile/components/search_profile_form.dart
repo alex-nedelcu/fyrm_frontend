@@ -72,7 +72,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     if (_formKey.currentState!.validate() && errors.isEmpty) {
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
-      int statusCode = await searchProfileService.createSearchProfile(
+      int statusCode = await searchProfileService.create(
         userId: connectedUserProvider.userId!,
         tokenType: connectedUserProvider.tokenType!,
         token: connectedUserProvider.token!,

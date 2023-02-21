@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/helper/routes.dart';
 import 'package:fyrm_frontend/helper/theme.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
+import 'package:fyrm_frontend/providers/search_profile_provider.dart';
 import 'package:fyrm_frontend/screens/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ConnectedUserProvider()),
+        ChangeNotifierProvider(create: (context) => SearchProfileProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/screens/profile_links/manage_search_profile/manage_search_profile_screen.dart';
 import 'package:fyrm_frontend/screens/profile_links/profile_menu/components/profile_menu.dart';
+import 'package:fyrm_frontend/screens/profile_links/search_profile_list/search_profile_list_screen.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -30,7 +31,10 @@ class Body extends StatelessWidget {
                 ProfileMenu(
                   text: "View existing profiles",
                   icon: "assets/icons/gift.svg",
-                  press: () {},
+                  press: () => Navigator.pushNamed(
+                    context,
+                    SearchProfileListScreen.routeName,
+                  ),
                 ),
                 ProfileMenu(
                   text: "Create new profile",
