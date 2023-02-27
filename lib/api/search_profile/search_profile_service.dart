@@ -60,4 +60,18 @@ class SearchProfileService {
     final searchProfileDtos = jsonDecode(response.body)['searchProfiles'] as List<dynamic>;
     return List<SearchProfileDto>.from(searchProfileDtos.map((json) => SearchProfileDto.fromJSON(json)));
   }
+
+  Future<int> delete({
+    required String tokenType,
+    required String token,
+    required int id,
+  }) async {
+    Authorization authorization = Authorization(
+      tokenType: tokenType,
+      token: token,
+    );
+
+    http.Response response = await searchProfileApi.delete(authorization: authorization, id: id);
+    return response.statusCode;
+  }
 }

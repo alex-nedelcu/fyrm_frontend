@@ -56,4 +56,20 @@ class SearchProfileProvider with ChangeNotifier {
     fetchSearchProfiles(tokenType: tokenType, token: token, userId: userId);
     return statusCode;
   }
+
+  Future<int> delete({
+    required int id,
+    required int userId,
+    required String tokenType,
+    required String token,
+  }) async {
+    int statusCode = await searchProfileService.delete(
+      id: id,
+      tokenType: tokenType,
+      token: token,
+    );
+
+    fetchSearchProfiles(tokenType: tokenType, token: token, userId: userId);
+    return statusCode;
+  }
 }

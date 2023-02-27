@@ -6,7 +6,7 @@ enum RentMateCountOption {
   one(0, "1"),
   two(1, "2"),
   three(2, "3"),
-  moreThanThree(3, "+ 3");
+  moreThanThree(3, ">3");
 
   final int id;
   final String option;
@@ -113,7 +113,7 @@ enum BedroomOption {
 enum BathroomCountOption {
   one(0, "1"),
   two(1, "2"),
-  moreThanTwo(2, "> 2");
+  moreThanTwo(2, ">2");
 
   final int id;
   final String option;

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fyrm_frontend/api/location/location_service.dart';
-import 'package:fyrm_frontend/api/search_profile/search_profile_service.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
@@ -31,7 +30,6 @@ class SearchProfileForm extends StatefulWidget {
 }
 
 class _SearchProfileFormState extends State<SearchProfileForm> {
-  final SearchProfileService searchProfileService = SearchProfileService();
   static const String uniqueMarkerId = "UNIQUE";
   static const double rentMaximumPrice = 800.0;
   final _formKey = GlobalKey<FormState>();

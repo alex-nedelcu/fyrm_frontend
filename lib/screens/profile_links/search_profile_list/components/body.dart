@@ -46,6 +46,7 @@ class Body extends StatelessWidget {
                   itemCount: searchProfileProvider.searchProfiles.length,
                   itemBuilder: (context, index) => SearchProfileCard(
                     searchProfile: searchProfileProvider.searchProfiles[index],
+                    index: index + 1,
                   ),
                 )
               ],

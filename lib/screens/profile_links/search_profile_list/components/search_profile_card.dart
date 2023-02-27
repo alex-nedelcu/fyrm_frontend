@@ -1,14 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/search_profile/dto/search_profile_dto.dart';
+import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
+import 'package:fyrm_frontend/helper/toast.dart';
+import 'package:fyrm_frontend/providers/connected_user_provider.dart';
+import 'package:fyrm_frontend/providers/search_profile_provider.dart';
+import 'package:provider/provider.dart';
 
-class SearchProfileCard extends StatelessWidget {
+class SearchProfileCard extends StatefulWidget {
   final SearchProfileDto searchProfile;
+  final int index;
 
-  const SearchProfileCard({Key? key, required this.searchProfile}) : super(key: key);
+  const SearchProfileCard({Key? key, required this.searchProfile, required this.index}) : super(key: key);
+
+  @override
+  State<SearchProfileCard> createState() => _SearchProfileCardState();
+}
+
+class _SearchProfileCardState extends State<SearchProfileCard> {
+  bool isToastShown = false;
+
+  String listToCommaSeparatedValues({required List<String> list}) {
+    return list.reduce((value, element) => "$value, $element");
+  }
+
+  void handleToast({Color? color, int? statusCode, String? message}) {
+    if (isToastShown) {
+      return;
+    }
+
+    isToastShown = true;
+
+    showToastWrapper(
+      context: context,
+      statusCode: statusCode,
+      optionalMessage: message,
+      color: color,
+    );
+
+    isToastShown = false;
+  }
 
   @override
   Widget build(BuildContext context) {
+    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+    SearchProfileProvider searchProfileProvider = Provider.of<SearchProfileProvider>(context);
     final Size size = MediaQuery.of(context).size;
 
     return Container(
@@ -16,13 +52,13 @@ class SearchProfileCard extends StatelessWidget {
         horizontal: 20,
         vertical: 3,
       ),
-      height: 160,
+      height: 175,
       child: InkWell(
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
             Container(
-              height: 136,
+              height: 160,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(22),
                 color: kPrimaryColor,
@@ -37,71 +73,150 @@ class SearchProfileCard extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.only(right: 10),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
+                  color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(22),
                 ),
               ),
             ),
             Positioned(
-              top: 0,
-              right: 0,
-              child: Hero(
-                tag: '${searchProfile.hashCode}',
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  height: 160,
-                  width: 200,
-                  child: null,
+              bottom: 21,
+              right: 10,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: GestureDetector(
+                  onTap: () {
+                    handleToast(message: "Long press delete icon to delete", color: kInfoColour);
+                  },
+                  onLongPress: () async {
+                    int statusCode = await searchProfileProvider.delete(
+                      tokenType: connectedUserProvider.tokenType!,
+                      token: connectedUserProvider.token!,
+                      id: widget.searchProfile.id!,
+                      userId: connectedUserProvider.userId!,
+                    );
+
+                    if (ApiHelper.isSuccess(statusCode) && mounted) {
+                      handleToast(statusCode: statusCode, message: kSearchProfileDeleteSuccess);
+                    }
+                  },
+                  child: const Icon(
+                    Icons.delete_outline,
+                    color: kPrimaryColor,
+                    size: 36,
+                  ),
                 ),
               ),
             ),
-            // Product title and price
             Positioned(
               bottom: 0,
               left: 0,
               child: SizedBox(
                 height: 136,
-                width: size.width - 200,
+                width: size.width - 80,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                        vertical: 5,
-                      ),
-                      decoration: const BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(22),
-                          topRight: Radius.circular(22),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 5,
+                          ),
+                          decoration: const BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(22),
+                              topRight: Radius.circular(22),
+                            ),
+                          ),
+                          child: Text(
+                            "#${widget.index}",
+                            style: Theme.of(context).textTheme.button,
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        "(${searchProfile.latitude.toStringAsFixed(2)}, ${searchProfile.longitude.toStringAsFixed(2)})",
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                    ),
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                        vertical: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade400,
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(22),
-                          topRight: Radius.circular(22),
+                        const SizedBox(width: 7),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade400,
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(22),
+                              topRight: Radius.circular(22),
+                            ),
+                          ),
+                          child: Text(
+                            "${widget.searchProfile.rentPriceLowerBound.toStringAsFixed(0)}-${widget.searchProfile.rentPriceUpperBound.toStringAsFixed(0)}\$",
+                            style: Theme.of(context).textTheme.button,
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        "${searchProfile.rentPriceLowerBound.toStringAsFixed(0)}\$ - ${searchProfile.rentPriceUpperBound.toStringAsFixed(0)}\$",
-                        style: Theme.of(context).textTheme.button,
-                      ),
+                        const SizedBox(width: 7),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade400,
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(22),
+                              topRight: Radius.circular(22),
+                            ),
+                          ),
+                          child: Text(
+                            "bedroom: ${listToCommaSeparatedValues(list: widget.searchProfile.bedroomOptions)}",
+                            style: Theme.of(context).textTheme.button,
+                          ),
+                        ),
+                      ],
                     ),
-                    const Spacer(),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade400,
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(22),
+                              topRight: Radius.circular(22),
+                            ),
+                          ),
+                          child: Text(
+                            "bathrooms: ${listToCommaSeparatedValues(list: widget.searchProfile.bathroomOptions)}",
+                            style: Theme.of(context).textTheme.button,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade400,
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(22),
+                              topRight: Radius.circular(22),
+                            ),
+                          ),
+                          child: Text(
+                            "rent mate count: ${listToCommaSeparatedValues(list: widget.searchProfile.rentMateCountOptions)}",
+                            style: Theme.of(context).textTheme.button,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

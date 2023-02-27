@@ -27,4 +27,13 @@ class SearchProfileApi {
     var response = await http.get(endpoint, headers: headers);
     return response;
   }
+
+  Future<http.Response> delete({required Authorization authorization, required int id}) async {
+    var endpoint = Uri.parse("${ApiConfiguration.baseUrl}/search-profiles/$id");
+    var authorizationHeader = "${authorization.tokenType} ${authorization.token}";
+    var headers = ApiConfiguration.headersWithAuthorization(authorizationHeader);
+
+    var response = await http.delete(endpoint, headers: headers);
+    return response;
+  }
 }

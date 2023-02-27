@@ -8,11 +8,12 @@ void showToastWrapper({
   required BuildContext context,
   int? statusCode,
   String? optionalMessage,
+  Color? color,
 }) {
   _showCustomToast(
     text: optionalMessage ?? _getSpecificErrorMessageIfAnyElseGeneric(statusCode),
     context: context,
-    backgroundColor: ApiHelper.isSuccess(statusCode) ? kSuccessColor : kFailureColor,
+    backgroundColor: color ?? (ApiHelper.isSuccess(statusCode) ? kSuccessColor : kFailureColor),
   );
 }
 
