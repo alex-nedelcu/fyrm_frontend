@@ -85,7 +85,7 @@ class _SearchProfileCardState extends State<SearchProfileCard> {
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: GestureDetector(
                   onTap: () {
-                    handleToast(message: "Long press delete icon to delete", color: kInfoColour);
+                    handleToast(message: "Long press to delete", color: kInfoColour);
                   },
                   onLongPress: () async {
                     int statusCode = await searchProfileProvider.delete(
