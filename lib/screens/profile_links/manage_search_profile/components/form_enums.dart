@@ -58,6 +58,8 @@ enum RentMateGenderOption {
 
   static List<Widget> get icons => RentMateGenderOption.values.map((value) => value.icon).toList();
 
+  static List<String> get options => RentMateGenderOption.values.map((value) => value.option).toList();
+
   static String findOptionById(int id) {
     return RentMateGenderOption.values.firstWhere((element) => element.id == id).option;
   }

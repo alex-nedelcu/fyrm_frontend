@@ -46,6 +46,44 @@ class SearchProfileService {
     return response.statusCode;
   }
 
+  Future<int> update({
+    required int id,
+    required String tokenType,
+    required String token,
+    required num rentPriceLowerBound,
+    required num rentPriceUpperBound,
+    required double latitude,
+    required double longitude,
+    required List<String> rentMatesGenderOptions,
+    required List<String> rentMateCountOptions,
+    required List<String> bedroomOptions,
+    required List<String> bathroomOptions,
+  }) async {
+    Authorization authorization = Authorization(
+      tokenType: tokenType,
+      token: token,
+    );
+
+    SearchProfileDto searchProfileDto = SearchProfileDto(
+      id: id,
+      rentPriceLowerBound: rentPriceLowerBound,
+      rentPriceUpperBound: rentPriceUpperBound,
+      latitude: latitude,
+      longitude: longitude,
+      rentMatesGenderOptions: rentMatesGenderOptions,
+      rentMateCountOptions: rentMateCountOptions,
+      bedroomOptions: bedroomOptions,
+      bathroomOptions: bathroomOptions,
+    );
+
+    http.Response response = await searchProfileApi.update(
+      searchProfileDto: searchProfileDto,
+      authorization: authorization,
+    );
+
+    return response.statusCode;
+  }
+
   Future<List<SearchProfileDto>> findAllByUserId({
     required String tokenType,
     required String token,

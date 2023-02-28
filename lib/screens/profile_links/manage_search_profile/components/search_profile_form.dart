@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fyrm_frontend/api/location/location_service.dart';
+import 'package:fyrm_frontend/api/search_profile/dto/search_profile_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
@@ -22,8 +23,9 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class SearchProfileForm extends StatefulWidget {
   final bool isCreate;
+  final SearchProfileDto? searchProfile;
 
-  const SearchProfileForm({super.key, required this.isCreate});
+  const SearchProfileForm({super.key, required this.isCreate, this.searchProfile});
 
   @override
   _SearchProfileFormState createState() => _SearchProfileFormState();
@@ -36,18 +38,109 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
   final List<String?> errors = [];
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
   final LocationService locationService = LocationService();
-  final List<bool> isRentMateCountOptionSelected = [false, false, false, false];
-  final List<String> associatedRentMateCountOptions = RentMateCountOption.options;
-  final List<bool> isRentMateGenderOptionSelected = [false, false, false];
-  final List<Widget> associatedRentMateGenderOptions = RentMateGenderOption.icons;
-  final List<bool> isBedroomOptionSelected = [false, false, false];
-  final List<String> associatedBedroomOptions = BedroomOption.options;
-  final List<bool> isBathroomCountOptionSelected = [false, false, false];
-  final List<String> associatedBathroomCountOptions = BathroomCountOption.options;
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  LatLng? desiredRentLocation;
+  late List<bool> isRentMateCountOptionSelected;
+  late List<String> associatedRentMateCountOptions;
+  late List<bool> isRentMateGenderOptionSelected;
+  late List<Widget> associatedRentMateGenderOptions;
+  late List<bool> isBedroomOptionSelected;
+  late List<String> associatedBedroomOptions;
+  late List<bool> isBathroomCountOptionSelected;
+  late List<String> associatedBathroomCountOptions;
+  late Map<MarkerId, Marker> markers;
+  late LatLng? desiredRentLocation;
+  late SfRangeValues rentPriceRange;
   bool isToastShown = false;
-  SfRangeValues rentPriceRange = const SfRangeValues(0.0, rentMaximumPrice);
+
+  @override
+  void initState() {
+    super.initState();
+
+    associatedRentMateCountOptions = RentMateCountOption.options;
+    associatedRentMateGenderOptions = RentMateGenderOption.icons;
+    associatedBedroomOptions = BedroomOption.options;
+    associatedBathroomCountOptions = BathroomCountOption.options;
+
+    isRentMateCountOptionSelected = initializeOptions(
+      allOptions: RentMateCountOption.options,
+      selectedOptions: widget.searchProfile?.rentMateCountOptions,
+    );
+    isRentMateGenderOptionSelected = initializeOptions(
+      allOptions: RentMateGenderOption.options,
+      selectedOptions: widget.searchProfile?.rentMatesGenderOptions,
+    );
+    isBedroomOptionSelected = initializeOptions(
+      allOptions: BedroomOption.options,
+      selectedOptions: widget.searchProfile?.bedroomOptions,
+    );
+    isBathroomCountOptionSelected = initializeOptions(
+      allOptions: BathroomCountOption.options,
+      selectedOptions: widget.searchProfile?.bathroomOptions,
+    );
+
+    markers = initializeMarkersAndRentLocation(
+      latitude: widget.searchProfile?.latitude,
+      longitude: widget.searchProfile?.longitude,
+    );
+    rentPriceRange = initializeRentPriceRange(
+      lowerBound: widget.searchProfile?.rentPriceLowerBound,
+      upperBound: widget.searchProfile?.rentPriceUpperBound,
+    );
+  }
+
+  List<bool> initializeOptions({
+    required List<String> allOptions,
+    List<String>? selectedOptions,
+  }) {
+    bool defaultValue = false;
+    List<bool> options = List.filled(allOptions.length, defaultValue, growable: false);
+
+    if (selectedOptions == null) {
+      return options;
+    }
+
+    for (int index = 0; index < selectedOptions.length; index += 1) {
+      String selected = selectedOptions[index];
+      int globalIndex = allOptions.indexOf(selected);
+      options[globalIndex] = true;
+    }
+
+    return options;
+  }
+
+  Map<MarkerId, Marker> initializeMarkersAndRentLocation({double? latitude, double? longitude}) {
+    Map<MarkerId, Marker> initialMarkers = {};
+
+    if (latitude == null || longitude == null) {
+      return initialMarkers;
+    }
+
+    const MarkerId markerId = MarkerId(uniqueMarkerId);
+    LatLng markerLatitudeLongitude = LatLng(latitude, longitude);
+
+    Marker marker = Marker(
+      markerId: markerId,
+      draggable: true,
+      position: markerLatitudeLongitude,
+      infoWindow: const InfoWindow(title: "Desired rent location"),
+      icon: BitmapDescriptor.defaultMarker,
+    );
+
+    initialMarkers[markerId] = marker;
+    desiredRentLocation = marker.position;
+
+    _controller.future.then((controller) {
+      controller.animateCamera(CameraUpdate.newLatLngZoom(markerLatitudeLongitude, 17.0));
+    });
+
+    return initialMarkers;
+  }
+
+  SfRangeValues initializeRentPriceRange({
+    required num? lowerBound,
+    required num? upperBound,
+  }) {
+    return SfRangeValues(lowerBound ?? 0.0, upperBound ?? rentMaximumPrice);
+  }
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -74,26 +167,44 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
 
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
-      int statusCode = await searchProfileProvider.create(
-        userId: connectedUserProvider.userId!,
-        tokenType: connectedUserProvider.tokenType!,
-        token: connectedUserProvider.token!,
-        rentPriceLowerBound: rentPriceRange.start as num,
-        rentPriceUpperBound: rentPriceRange.end as num,
-        latitude: desiredRentLocation!.latitude,
-        longitude: desiredRentLocation!.longitude,
-        rentMatesGenderOptions: RentMateGenderOption.findSelectedOptions(isRentMateGenderOptionSelected),
-        rentMateCountOptions: RentMateCountOption.findSelectedOptions(isRentMateCountOptionSelected),
-        bedroomOptions: BedroomOption.findSelectedOptions(isBedroomOptionSelected),
-        bathroomOptions: BathroomCountOption.findSelectedOptions(isBathroomCountOptionSelected),
-      );
+      int statusCode = widget.isCreate
+          ? await searchProfileProvider.create(
+              userId: connectedUserProvider.userId!,
+              tokenType: connectedUserProvider.tokenType!,
+              token: connectedUserProvider.token!,
+              rentPriceLowerBound: rentPriceRange.start as num,
+              rentPriceUpperBound: rentPriceRange.end as num,
+              latitude: desiredRentLocation!.latitude,
+              longitude: desiredRentLocation!.longitude,
+              rentMatesGenderOptions: RentMateGenderOption.findSelectedOptions(isRentMateGenderOptionSelected),
+              rentMateCountOptions: RentMateCountOption.findSelectedOptions(isRentMateCountOptionSelected),
+              bedroomOptions: BedroomOption.findSelectedOptions(isBedroomOptionSelected),
+              bathroomOptions: BathroomCountOption.findSelectedOptions(isBathroomCountOptionSelected),
+            )
+          : await searchProfileProvider.update(
+              id: widget.searchProfile!.id!,
+              userId: connectedUserProvider.userId!,
+              tokenType: connectedUserProvider.tokenType!,
+              token: connectedUserProvider.token!,
+              rentPriceLowerBound: rentPriceRange.start as num,
+              rentPriceUpperBound: rentPriceRange.end as num,
+              latitude: desiredRentLocation!.latitude,
+              longitude: desiredRentLocation!.longitude,
+              rentMatesGenderOptions: RentMateGenderOption.findSelectedOptions(isRentMateGenderOptionSelected),
+              rentMateCountOptions: RentMateCountOption.findSelectedOptions(isRentMateCountOptionSelected),
+              bedroomOptions: BedroomOption.findSelectedOptions(isBedroomOptionSelected),
+              bathroomOptions: BathroomCountOption.findSelectedOptions(isBathroomCountOptionSelected),
+            );
 
       if (ApiHelper.isSuccess(statusCode) && mounted) {
         Navigator.pushNamed(
           context,
           SearchProfilesScreen.routeName,
         );
-        handleToast(statusCode: statusCode, message: kSearchProfileCreateSuccess);
+        handleToast(
+          statusCode: statusCode,
+          message: widget.isCreate ? kSearchProfileCreateSuccess : kSearchProfileUpdateSuccess,
+        );
       }
     } else {
       handleToast(message: kFormValidationErrorsMessage);

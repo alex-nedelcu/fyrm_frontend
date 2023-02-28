@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyrm_frontend/api/search_profile/dto/search_profile_dto.dart';
 
 import 'components/body.dart';
 
@@ -19,7 +20,7 @@ class ManageSearchProfileScreen extends StatelessWidget {
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
-        child: Body(isCreate: arguments.isCreate),
+        child: Body(isCreate: arguments.isCreate, searchProfile: arguments.searchProfile),
       ),
     );
   }
@@ -27,6 +28,7 @@ class ManageSearchProfileScreen extends StatelessWidget {
 
 class ManageSearchProfileScreenArguments {
   final bool isCreate;
+  final SearchProfileDto? searchProfile;
 
-  ManageSearchProfileScreenArguments({required this.isCreate});
+  ManageSearchProfileScreenArguments({required this.isCreate, this.searchProfile});
 }

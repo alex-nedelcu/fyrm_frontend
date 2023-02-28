@@ -19,6 +19,19 @@ class SearchProfileApi {
     return response;
   }
 
+  Future<http.Response> update({
+    required SearchProfileDto searchProfileDto,
+    required Authorization authorization,
+  }) async {
+    var endpoint = Uri.parse("${ApiConfiguration.baseUrl}/search-profiles/${searchProfileDto.id}");
+    var authorizationHeader = "${authorization.tokenType} ${authorization.token}";
+    var headers = ApiConfiguration.headersWithAuthorization(authorizationHeader);
+    var body = jsonEncode(searchProfileDto.toJSON());
+
+    var response = await http.patch(endpoint, headers: headers, body: body);
+    return response;
+  }
+
   Future<http.Response> findAllByUserId({required Authorization authorization, required int userId}) async {
     var endpoint = Uri.parse("${ApiConfiguration.baseUrl}/users/$userId/search-profiles");
     var authorizationHeader = "${authorization.tokenType} ${authorization.token}";

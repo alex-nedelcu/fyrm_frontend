@@ -2,7 +2,7 @@ import 'package:fyrm_frontend/api/util/dto_convert_helper.dart';
 
 class SearchProfileDto {
   late int? id;
-  late int userId;
+  late int? userId;
   late num rentPriceLowerBound;
   late num rentPriceUpperBound;
   late double latitude;
@@ -14,7 +14,7 @@ class SearchProfileDto {
 
   SearchProfileDto({
     this.id,
-    required this.userId,
+    this.userId,
     required this.rentPriceLowerBound,
     required this.rentPriceUpperBound,
     required this.latitude,
