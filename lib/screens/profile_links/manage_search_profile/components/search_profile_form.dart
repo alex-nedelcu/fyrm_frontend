@@ -81,6 +81,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
       latitude: widget.searchProfile?.latitude,
       longitude: widget.searchProfile?.longitude,
     );
+
     rentPriceRange = initializeRentPriceRange(
       lowerBound: widget.searchProfile?.rentPriceLowerBound,
       upperBound: widget.searchProfile?.rentPriceUpperBound,
@@ -111,6 +112,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     Map<MarkerId, Marker> initialMarkers = {};
 
     if (latitude == null || longitude == null) {
+      desiredRentLocation = null;
       return initialMarkers;
     }
 
@@ -197,7 +199,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
             );
 
       if (ApiHelper.isSuccess(statusCode) && mounted) {
-        Navigator.pushNamed(
+        Navigator.pushReplacementNamed(
           context,
           SearchProfilesScreen.routeName,
         );
