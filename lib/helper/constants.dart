@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 
+// Keys
+const String mapsAndroidApiKey = "AIzaSyBCWtwbMosk9t9gDR2AMP1TPEAvSIPq9vA";
+const String mapsiOSApiKey = "AIzaSyDrd4X3PAtzzfUcM8szVXyyUf1fWBmr4eo";
+
 // Regular expressions validators
 final RegExp usernameValidatorRegExp = RegExp(r"^(?=[a-zA-Z0-9._]{3,32}$)(?!.*[_.]{2})[^_.].*[^_.]$");
 final RegExp emailValidatorRegExp = RegExp(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -15,7 +19,15 @@ const String kBadCredentials = "Invalid username or password";
 const String kResendConfirmationCodeSuccess = "Confirmation code was resent";
 const String kResendConfirmationCodeFailure = "Confirmation code could not be resent";
 const String kConfirmAccountSuccess = "Your account is confirmed";
-const String kConfirmAccountFailure = "Confirmation code is invalid. Try resending";
+const String kConfirmAccountFailure = "Confirmation code is invalid";
+const String kRentLocationNotSelected = "Please pick the desired rent location";
+const String kRentMateCountNotSelected = "Please select the desired number of rent mates";
+const String kRentMateGenderNotSelected = "Please select the desired gender of rent mates";
+const String kBedroomOptionNotSelected = "Please select the desired bedroom type";
+const String kBathroomCountNotSelected = "Please select the desired number of bathrooms";
+const String kSearchProfileCreateSuccess = "Search profile successfully created";
+const String kSearchProfileUpdateSuccess = "Search profile successfully updated";
+const String kSearchProfileDeleteSuccess = "Search profile successfully deleted";
 Color kSuccessColor = Colors.green.shade500;
 Color kFailureColor = Colors.red.shade500;
 
@@ -39,6 +51,7 @@ final otpInputDecoration = InputDecoration(
 
 const kPrimaryColor = Color(0xFFFF7643);
 const kPrimaryLightColor = Color(0xFFFFECDF);
+const kInfoColour = Colors.blueAccent;
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
