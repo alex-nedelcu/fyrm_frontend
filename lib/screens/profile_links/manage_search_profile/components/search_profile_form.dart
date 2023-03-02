@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fyrm_frontend/api/location/location_service.dart';
@@ -381,6 +383,11 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         onLongPress: (latitudeLongitude) {
           removeError(error: kRentLocationNotSelected);
           _addMarkerLongPressed(latitudeLongitude);
+        },
+        gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+          Factory<OneSequenceGestureRecognizer>(
+            () => EagerGestureRecognizer(),
+          ),
         },
         markers: Set<Marker>.of(markers.values),
       ),
