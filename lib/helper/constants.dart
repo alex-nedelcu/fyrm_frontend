@@ -20,6 +20,7 @@ const String kResendConfirmationCodeSuccess = "Confirmation code was resent";
 const String kResendConfirmationCodeFailure = "Confirmation code could not be resent";
 const String kConfirmAccountSuccess = "Your account is confirmed";
 const String kConfirmAccountFailure = "Confirmation code is invalid";
+const String kFinaliseRentConnectionFailure = "Rent connection could not be finalised. Please retry.";
 const String kRentLocationNotSelected = "Please pick the desired rent location";
 const String kRentMateCountNotSelected = "Please select the desired number of rent mates";
 const String kRentMateGenderNotSelected = "Please select the desired gender of rent mates";

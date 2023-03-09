@@ -19,4 +19,20 @@ class RentConnectionsProvider with ChangeNotifier {
 
     return response;
   }
+
+  Future<int> finaliseRentConnection({
+    required String tokenType,
+    required String token,
+    required int rentConnectionId,
+    required String finalisation,
+  }) async {
+    final response = await rentConnectionsService.finaliseRentConnection(
+      tokenType: tokenType,
+      token: token,
+      rentConnectionId: rentConnectionId,
+      finalisation: finalisation,
+    );
+
+    return response;
+  }
 }
