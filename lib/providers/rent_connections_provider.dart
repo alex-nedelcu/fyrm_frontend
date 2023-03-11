@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fyrm_frontend/api/rent_connections/dto/initiator_status_dto.dart';
 import 'package:fyrm_frontend/api/rent_connections/rent_connections_service.dart';
+import 'package:fyrm_frontend/api/search_profile/dto/search_profile_dto.dart';
 
 class RentConnectionsProvider with ChangeNotifier {
   final RentConnectionsService rentConnectionsService = RentConnectionsService();
@@ -31,6 +32,22 @@ class RentConnectionsProvider with ChangeNotifier {
       token: token,
       rentConnectionId: rentConnectionId,
       finalisation: finalisation,
+    );
+
+    return response;
+  }
+
+  Future<int> getRentConnectionProposal({
+    required String tokenType,
+    required String token,
+    required int initiatorId,
+    required List<SearchProfileDto> selectedSearchProfiles,
+  }) async {
+    final response = await rentConnectionsService.getRentMateProposal(
+      tokenType: tokenType,
+      token: token,
+      initiatorId: initiatorId,
+      selectedSearchProfiles: selectedSearchProfiles,
     );
 
     return response;
