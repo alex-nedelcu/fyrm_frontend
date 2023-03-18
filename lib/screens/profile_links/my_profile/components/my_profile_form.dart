@@ -41,7 +41,11 @@ class _MyProfileFormState extends State<MyProfileForm> {
       if (ApiHelper.isSuccess(statusCode) && mounted) {
         connectedUserProvider.description = description;
         connectedUserProvider.isSearching = isSearching;
-        Navigator.pushReplacementNamed(context, ProfileMenuScreen.routeName);
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        } else {
+          Navigator.pushReplacementNamed(context, ProfileMenuScreen.routeName);
+        }
       }
     }
   }

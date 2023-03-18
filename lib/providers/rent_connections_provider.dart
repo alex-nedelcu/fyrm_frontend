@@ -6,6 +6,8 @@ import 'package:fyrm_frontend/api/search_profile/dto/search_profile_dto.dart';
 class RentConnectionsProvider with ChangeNotifier {
   final RentConnectionsService rentConnectionsService = RentConnectionsService();
   late InitiatorStatusDto latestInitiatorStatus;
+  bool loading = false;
+  int activeRentConnectionCount = 0;
 
   Future<InitiatorStatusDto> getLatestInitiatorStatus({
     required String tokenType,
@@ -51,5 +53,21 @@ class RentConnectionsProvider with ChangeNotifier {
     );
 
     return response;
+  }
+
+  Future<void> fetchActiveRentConnectionCount({
+    required String tokenType,
+    required String token,
+  }) async {
+    loading = true;
+    notifyListeners();
+
+    activeRentConnectionCount = await rentConnectionsService.getActiveRentConnectionCount(
+      tokenType: tokenType,
+      token: token,
+    );
+
+    loading = false;
+    notifyListeners();
   }
 }

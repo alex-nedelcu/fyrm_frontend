@@ -246,17 +246,22 @@ class _CanCreateState extends State<CanCreate> {
               fontSize: 16,
             ),
           ),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 52),
-            child: DefaultButton(
-              text: "Create",
-              press: () {
-                Navigator.pushNamed(
-                  context,
-                  ManageSearchProfileScreen.routeName,
-                  arguments: ManageSearchProfileScreenArguments(isCreate: true),
-                );
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, ManageSearchProfileScreen.routeName,
+                    arguments: ManageSearchProfileScreenArguments(isCreate: true));
               },
+              child: const Text(
+                "Create search profile",
+                style: TextStyle(
+                  color: kPrimaryColor,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 16,
+                ),
+              ),
             ),
           )
         ],

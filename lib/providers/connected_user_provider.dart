@@ -28,9 +28,11 @@ class ConnectedUserProvider with ChangeNotifier {
 
   set description(String? description) {
     _connectedUserDetails?.description = description;
+    notifyListeners();
   }
 
   set isSearching(bool? isSearching) {
     _connectedUserDetails?.isSearching = isSearching;
+    notifyListeners();
   }
 }

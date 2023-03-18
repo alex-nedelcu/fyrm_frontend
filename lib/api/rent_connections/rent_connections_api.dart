@@ -42,4 +42,13 @@ class RentConnectionsApi {
     var response = await http.post(endpoint, headers: headers, body: body);
     return response;
   }
+
+  Future<http.Response> getActiveRentConnectionCount({required Authorization authorization}) async {
+    var endpoint = Uri.parse("${ApiConfiguration.baseUrl}/rent-connections/active/count");
+    var authorizationHeader = "${authorization.tokenType} ${authorization.token}";
+    var headers = ApiConfiguration.headersWithAuthorization(authorizationHeader);
+
+    var response = await http.get(endpoint, headers: headers);
+    return response;
+  }
 }
