@@ -10,6 +10,7 @@ import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/providers/rent_connections_provider.dart';
 import 'package:fyrm_frontend/providers/search_profile_provider.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/rent_connections/rent_connections_screen.dart';
+import 'package:fyrm_frontend/screens/profile_links/manage_search_profile/manage_search_profile_screen.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +47,7 @@ class _CanCreateState extends State<CanCreate> {
     ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
     RentConnectionsProvider rentConnectionsProvider = Provider.of<RentConnectionsProvider>(context);
     SearchProfileProvider searchProfileProvider = Provider.of<SearchProfileProvider>(context);
+    bool hasSearchProfiles = searchProfileProvider.searchProfiles.isNotEmpty;
 
     return SafeArea(
       child: loading
@@ -59,13 +61,15 @@ class _CanCreateState extends State<CanCreate> {
                   SizedBox(height: SizeConfiguration.screenHeight * 0.02),
                   buildInformativeText(),
                   SizedBox(height: SizeConfiguration.screenHeight * 0.1),
-                  buildSearchProfilesMultiSelect(searchProfileProvider.searchProfiles),
-                  SizedBox(height: SizeConfiguration.screenHeight * 0.04),
-                  buildSubmitButton(
-                    rentConnectionsProvider: rentConnectionsProvider,
-                    connectedUserProvider: connectedUserProvider,
-                    searchProfileProvider: searchProfileProvider,
-                  ),
+                  if (!hasSearchProfiles) buildRedirectButtonToCreateSearchProfile(),
+                  if (hasSearchProfiles) buildSearchProfilesMultiSelect(searchProfileProvider.searchProfiles),
+                  if (hasSearchProfiles) SizedBox(height: SizeConfiguration.screenHeight * 0.04),
+                  if (hasSearchProfiles)
+                    buildSubmitButton(
+                      rentConnectionsProvider: rentConnectionsProvider,
+                      connectedUserProvider: connectedUserProvider,
+                      searchProfileProvider: searchProfileProvider,
+                    ),
                 ],
               ),
             ),
@@ -224,6 +228,38 @@ class _CanCreateState extends State<CanCreate> {
         onConfirm: (values) {
           selectedSearchProfileIds = values;
         },
+      ),
+    );
+  }
+
+  Widget buildRedirectButtonToCreateSearchProfile() {
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: Column(
+        children: [
+          const Text(
+            "You don't have any search profiles at the moment...",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: kSecondaryColor,
+              fontWeight: FontWeight.normal,
+              fontSize: 16,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 52),
+            child: DefaultButton(
+              text: "Create",
+              press: () {
+                Navigator.pushNamed(
+                  context,
+                  ManageSearchProfileScreen.routeName,
+                  arguments: ManageSearchProfileScreenArguments(isCreate: true),
+                );
+              },
+            ),
+          )
+        ],
       ),
     );
   }

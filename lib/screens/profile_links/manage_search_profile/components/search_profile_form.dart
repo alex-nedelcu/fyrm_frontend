@@ -201,10 +201,12 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
             );
 
       if (ApiHelper.isSuccess(statusCode) && mounted) {
-        Navigator.pushReplacementNamed(
-          context,
-          SearchProfilesScreen.routeName,
-        );
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        } else {
+          Navigator.pushNamed(context, SearchProfilesScreen.routeName);
+        }
+
         handleToast(
           statusCode: statusCode,
           message: widget.isCreate ? kSearchProfileCreateSuccess : kSearchProfileUpdateSuccess,
