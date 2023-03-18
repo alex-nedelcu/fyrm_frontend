@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:fyrm_frontend/api/rent_connections/dto/active_rent_connection_count_dto.dart';
 import 'package:fyrm_frontend/api/rent_connections/dto/finalise_rent_connection_dto.dart';
 import 'package:fyrm_frontend/api/rent_connections/dto/get_rent_mate_proposal_dto.dart';
 import 'package:fyrm_frontend/api/rent_connections/dto/initiator_status_dto.dart';
@@ -49,6 +50,21 @@ class RentConnectionsService {
         finaliseRentConnectionDto: FinaliseRentConnectionDto(rentConnectionStatus: finalisation));
 
     return response.statusCode;
+  }
+
+  Future<int> getActiveRentConnectionCount({
+    required String tokenType,
+    required String token,
+  }) async {
+    Authorization authorization = Authorization(
+      tokenType: tokenType,
+      token: token,
+    );
+
+    http.Response response = await rentConnectionsApi.getActiveRentConnectionCount(authorization: authorization);
+    final activeRentConnectionCountDto = ActiveRentConnectionCountDto.fromJSON(jsonDecode(response.body));
+
+    return activeRentConnectionCountDto.count;
   }
 
   Future<int> getRentMateProposal({

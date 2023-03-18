@@ -30,7 +30,7 @@ class _MustWaitState extends State<MustWait> {
             buildInformativeText(hoursToWait: rentConnectionsProvider.latestInitiatorStatus.hoursToWait!),
             SizedBox(height: SizeConfiguration.screenHeight * 0.02),
             ProposedRentMatesList(
-              rentMates: rentConnectionsProvider.latestInitiatorStatus.rentMateProposal!.proposedRentMates!,
+              rentMates: rentConnectionsProvider.latestInitiatorStatus.rentMateProposal?.proposedRentMates ?? [],
             ),
             SizedBox(height: SizeConfiguration.screenHeight * 0.04),
           ],
