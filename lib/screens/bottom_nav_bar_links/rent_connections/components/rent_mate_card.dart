@@ -52,6 +52,23 @@ class _RentMateCardState extends State<RentMateCard> {
                 ),
               ),
             ),
+            Transform.translate(
+              offset: const Offset(0, -25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.rentMate.username!,
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18),
+                  ),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    child: const Icon(Icons.chat, color: kSecondaryColor, size: 30),
+                    onTap: () {},
+                  ),
+                ],
+              ),
+            ),
             Container(
               alignment: Alignment.center,
               height: 140,
@@ -67,11 +84,6 @@ class _RentMateCardState extends State<RentMateCard> {
                 ),
               ),
             ),
-            const SizedBox(height: kDefaultPadding * 2),
-            Text(
-              widget.rentMate.username!,
-              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18),
-            )
           ],
         ),
       ),
