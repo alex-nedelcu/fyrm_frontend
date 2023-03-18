@@ -5,6 +5,9 @@ import 'package:fyrm_frontend/helper/size_configuration.dart';
 const String mapsAndroidApiKey = "AIzaSyBCWtwbMosk9t9gDR2AMP1TPEAvSIPq9vA";
 const String mapsiOSApiKey = "AIzaSyDrd4X3PAtzzfUcM8szVXyyUf1fWBmr4eo";
 
+// Numeric constants
+const int kDefaultProposalSize = 2;
+
 // Regular expressions validators
 final RegExp usernameValidatorRegExp = RegExp(r"^(?=[a-zA-Z0-9._]{3,32}$)(?!.*[_.]{2})[^_.].*[^_.]$");
 final RegExp emailValidatorRegExp = RegExp(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -20,6 +23,7 @@ const String kResendConfirmationCodeSuccess = "Confirmation code was resent";
 const String kResendConfirmationCodeFailure = "Confirmation code could not be resent";
 const String kConfirmAccountSuccess = "Your account is confirmed";
 const String kConfirmAccountFailure = "Confirmation code is invalid";
+const String kFinaliseRentConnectionFailure = "Rent connection could not be finalised. Please retry.";
 const String kRentLocationNotSelected = "Please pick the desired rent location";
 const String kRentMateCountNotSelected = "Please select the desired number of rent mates";
 const String kRentMateGenderNotSelected = "Please select the desired gender of rent mates";
