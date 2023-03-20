@@ -10,6 +10,7 @@ import 'package:fyrm_frontend/helper/keyboard.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/helper/toast.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
+import 'package:fyrm_frontend/providers/web_socket_provider.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/home/home_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +46,10 @@ class _SignInFormState extends State<SignInForm> {
     }
   }
 
-  void handleFormSubmission({required ConnectedUserProvider connectedUserProvider}) async {
+  void handleFormSubmission({
+    required ConnectedUserProvider connectedUserProvider,
+    required WebSocketProvider webSocketProvider,
+  }) async {
     if (_formKey.currentState!.validate() && errors.isEmpty) {
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
@@ -63,6 +67,7 @@ class _SignInFormState extends State<SignInForm> {
           HomeScreen.routeName,
         );
         connectedUserProvider.connectedUserDetails = loginResponseDto;
+        webSocketProvider.initializeStompClient(loginResponseDto.tokenType!, loginResponseDto.token!);
       } else {
         handleToast(statusCode: statusCode, message: optionalMessage);
       }
@@ -90,6 +95,7 @@ class _SignInFormState extends State<SignInForm> {
   @override
   Widget build(BuildContext context) {
     ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+    WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
 
     return Form(
       key: _formKey,
@@ -125,7 +131,10 @@ class _SignInFormState extends State<SignInForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Continue",
-            press: () => handleFormSubmission(connectedUserProvider: connectedUserProvider),
+            press: () => handleFormSubmission(
+              connectedUserProvider: connectedUserProvider,
+              webSocketProvider: webSocketProvider,
+            ),
           ),
         ],
       ),
