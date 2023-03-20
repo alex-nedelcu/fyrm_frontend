@@ -42,7 +42,6 @@ class WebSocketProvider with ChangeNotifier {
     var chatMessage = ChatMessageDto.fromJSON(jsonDecode(frame.body!));
     messages.add(chatMessage);
     notifyListeners();
-    print("Received private message: ${chatMessage.toJSON()}");
   }
 
   void send(
