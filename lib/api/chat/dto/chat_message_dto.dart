@@ -5,7 +5,8 @@ class ChatMessageDto {
   String? fromUsername;
   int? toId;
   String? toUsername;
-  String? sentAt;
+  String? sentAtHoursMinutesFormat;
+  String? sentOnDayMonthYearFormat;
 
   ChatMessageDto({
     this.id,
@@ -14,7 +15,8 @@ class ChatMessageDto {
     this.fromUsername,
     this.toId,
     this.toUsername,
-    this.sentAt,
+    this.sentAtHoursMinutesFormat,
+    this.sentOnDayMonthYearFormat,
   });
 
   static ChatMessageDto fromJSON(dynamic json) => ChatMessageDto(
@@ -24,6 +26,8 @@ class ChatMessageDto {
         fromUsername: json[fromUsernameJsonField] as String?,
         toId: json[toIdJsonField] as int?,
         toUsername: json[toUsernameJsonField] as String?,
+        sentAtHoursMinutesFormat: json[sentAtHoursMinutesFormatJsonField] as String?,
+        sentOnDayMonthYearFormat: json[sentOnDayMonthYearFormatJsonField] as String?,
       );
 
   Map<String, Object?> toJSON() => {
@@ -33,6 +37,8 @@ class ChatMessageDto {
         fromUsernameJsonField: fromUsername,
         toIdJsonField: toId,
         toUsernameJsonField: toUsername,
+        sentAtHoursMinutesFormatJsonField: sentAtHoursMinutesFormat,
+        sentOnDayMonthYearFormatJsonField: sentOnDayMonthYearFormat,
       };
 
   static String get idJsonField => "id";
@@ -47,5 +53,7 @@ class ChatMessageDto {
 
   static String get toUsernameJsonField => "toUsername";
 
-  static String get sentAtJsonField => "sentAt";
+  static String get sentAtHoursMinutesFormatJsonField => "sentAtHoursMinutesFormat";
+
+  static String get sentOnDayMonthYearFormatJsonField => "sentOnDayMonthYearFormat";
 }

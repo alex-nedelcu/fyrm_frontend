@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:fyrm_frontend/api/chat/chat_service.dart';
 import 'package:fyrm_frontend/api/chat/dto/chat_message_dto.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 
 class WebSocketProvider with ChangeNotifier {
+  final ChatService chatService = ChatService();
   List<ChatMessageDto> messages = [];
   late StompClient _stompClient;
 
@@ -38,18 +40,21 @@ class WebSocketProvider with ChangeNotifier {
     );
   }
 
+  // Receiver side
   void onReceive(StompFrame frame) {
     var chatMessage = ChatMessageDto.fromJSON(jsonDecode(frame.body!));
     messages.add(chatMessage);
     notifyListeners();
   }
 
-  void send(
-      {required String content,
-      required int fromId,
-      required String fromUsername,
-      required int toId,
-      required String toUsername}) {
+  // Sender side
+  void send({
+    required String content,
+    required int fromId,
+    required String fromUsername,
+    required int toId,
+    required String toUsername,
+  }) {
     var chatMessage = ChatMessageDto(
       content: content,
       fromId: fromId,
@@ -62,5 +67,10 @@ class WebSocketProvider with ChangeNotifier {
       destination: "/fyrm/private-message",
       body: json.encode(chatMessage.toJSON()),
     );
+  }
+
+  void fetchMessages({required String tokenType, required String token, required int userId}) async {
+    messages = await chatService.findAllMessagesByUser(tokenType: tokenType, token: token, userId: userId);
+    notifyListeners();
   }
 }
