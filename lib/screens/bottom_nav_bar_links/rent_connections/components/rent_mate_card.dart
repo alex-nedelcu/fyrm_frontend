@@ -72,7 +72,7 @@ class _RentMateCardState extends State<RentMateCard> {
                     child: const Icon(Icons.chat, color: kSecondaryColor, size: 30),
                     onTap: () {
                       webSocketProvider.send(
-                        content: "[SEND] Let's talk, ${widget.rentMate.username}!",
+                        content: "Hi ${widget.rentMate.username}!",
                         fromId: connectedUserProvider.userId!,
                         fromUsername: connectedUserProvider.username!,
                         toId: widget.rentMate.userId!,

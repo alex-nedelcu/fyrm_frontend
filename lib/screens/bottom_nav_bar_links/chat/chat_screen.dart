@@ -11,9 +11,14 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Body(),
-      bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.chat),
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: const Body(),
+      ),
+      bottomNavigationBar: const CustomBottomNavBar(selectedMenu: MenuState.chat),
     );
   }
 }

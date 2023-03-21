@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/providers/web_socket_provider.dart';
+import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat/components/conversation_card.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../helper/size_configuration.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -17,27 +21,59 @@ class _BodyState extends State<Body> {
     ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
 
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-        child: ListView.builder(
-          itemCount: webSocketProvider.messages.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                webSocketProvider.send(
-                  content: "[REPLY] ${webSocketProvider.messages[index].content!}",
-                  fromId: connectedUserProvider.userId!,
-                  fromUsername: connectedUserProvider.username!,
-                  toId: webSocketProvider.messages[index].fromId!,
-                  toUsername: webSocketProvider.messages[index].fromUsername!,
-                );
-              },
-              child: Text(
-                webSocketProvider.messages[index].toJSON().toString(),
-                textAlign: TextAlign.center,
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+                child: Text(
+                  "Conversations",
+                  style: TextStyle(
+                    fontSize: getProportionateScreenWidth(32),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
               ),
-            );
-          },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+              child: TextField(
+                cursorColor: kSecondaryColor,
+                decoration: InputDecoration(
+                  hintText: "Search...",
+                  hintStyle: const TextStyle(color: kSecondaryColor),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: kSecondaryColor,
+                    size: 20,
+                  ),
+                  filled: true,
+                  fillColor: kSecondaryColor.withOpacity(0.1),
+                  contentPadding: const EdgeInsets.all(8),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(color: kSecondaryColor.withOpacity(0.1)),
+                  ),
+                ),
+              ),
+            ),
+            ListView.builder(
+              itemCount:
+                  webSocketProvider.messagesToConversations(requesterId: connectedUserProvider.userId!).length,
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(top: 16),
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final conversation =
+                    webSocketProvider.messagesToConversations(requesterId: connectedUserProvider.userId!)[index];
+                return ConversationCard(conversation: conversation);
+              },
+            ),
+          ],
         ),
       ),
     );
