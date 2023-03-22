@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
@@ -17,6 +16,19 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  TextEditingController controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.value = TextEditingValue(
+      text: "",
+      selection: TextSelection.fromPosition(
+        const TextPosition(offset: 0),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
@@ -64,30 +76,61 @@ class _BodyState extends State<Body> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
+                      controller: controller,
+                      onChanged: (value) {
+                        controller.value = TextEditingValue(
+                          text: value,
+                          selection: TextSelection.fromPosition(
+                            TextPosition(offset: value.length),
+                          ),
+                        );
+                      },
                       maxLines: 1,
                       autocorrect: false,
                       cursorColor: kSecondaryColor,
+                      textDirection: TextDirection.ltr,
+                      style: const TextStyle(fontSize: 16, color: Colors.black87),
                       decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
                         isDense: true,
                         hintText: "Write message...",
                         hintStyle: const TextStyle(color: Colors.black54),
-                        border: const OutlineInputBorder(),
+                        border: InputBorder.none,
                         prefixIcon: const Icon(
                           Icons.chat_bubble_outline_outlined,
                           color: kSecondaryColor,
-                          size: 20,
+                          size: 22,
                         ),
                         filled: true,
                         fillColor: kSecondaryColor.withOpacity(0.1),
                       ),
-                      textAlignVertical: TextAlignVertical.bottom,
+                      textAlignVertical: TextAlignVertical.center,
                     ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      final content = controller.text.trim();
+
+                      if (content.isNotEmpty) {
+                        webSocketProvider.send(
+                          content: content,
+                          fromId: connectedUserProvider.userId!,
+                          fromUsername: connectedUserProvider.username!,
+                          toId: widget.conversation.correspondentId,
+                          toUsername: widget.conversation.correspondentUsername,
+                        );
+                      }
+
+                      setState(() {
+                        controller.value = TextEditingValue(
+                          text: "",
+                          selection: TextSelection.fromPosition(
+                            const TextPosition(offset: 0),
+                          ),
+                        );
+                      });
+                    },
                     backgroundColor: kPrimaryColor,
                     elevation: 0,
                     child: const Icon(
