@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/models/conversation.dart';
-import 'package:fyrm_frontend/providers/connected_user_provider.dart';
-import 'package:fyrm_frontend/providers/web_socket_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat_detail/chat_detail_screen.dart';
 
 class ConversationCard extends StatefulWidget {
   Conversation conversation;
@@ -20,18 +18,13 @@ class ConversationCard extends StatefulWidget {
 class _ConversationCardState extends State<ConversationCard> {
   @override
   Widget build(BuildContext context) {
-    WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
-    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
-
     return SafeArea(
         child: GestureDetector(
       onTap: () {
-        webSocketProvider.send(
-          content: "From chat",
-          fromId: connectedUserProvider.userId!,
-          fromUsername: connectedUserProvider.username!,
-          toId: widget.conversation.correspondentId,
-          toUsername: widget.conversation.correspondentUsername,
+        Navigator.pushNamed(
+          context,
+          ChatDetailScreen.routeName,
+          arguments: ChatDetailScreenArguments(conversation: widget.conversation),
         );
       },
       child: Container(
