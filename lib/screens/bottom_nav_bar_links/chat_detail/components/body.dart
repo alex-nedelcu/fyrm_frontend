@@ -4,12 +4,10 @@ import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/providers/web_socket_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../models/conversation.dart';
-
 class Body extends StatefulWidget {
-  Conversation conversation;
+  int correspondentId;
 
-  Body({super.key, required this.conversation});
+  Body({super.key, required this.correspondentId});
 
   @override
   _BodyState createState() => _BodyState();
@@ -33,7 +31,9 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
     ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
-    final messages = widget.conversation.messages.reversed;
+    final conversation = webSocketProvider.findConversationByCorrespondentId(
+        correspondentId: widget.correspondentId, requesterId: connectedUserProvider.userId!);
+    final messages = conversation.messages.reversed;
 
     return SafeArea(
       child: Stack(
@@ -117,8 +117,8 @@ class _BodyState extends State<Body> {
                           content: content,
                           fromId: connectedUserProvider.userId!,
                           fromUsername: connectedUserProvider.username!,
-                          toId: widget.conversation.correspondentId,
-                          toUsername: widget.conversation.correspondentUsername,
+                          toId: conversation.correspondentId,
+                          toUsername: conversation.correspondentUsername,
                         );
                       }
 

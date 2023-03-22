@@ -60,7 +60,7 @@ class ChatDetailScreen extends StatelessWidget {
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
-        child: Body(conversation: arguments.conversation),
+        child: Body(correspondentId: arguments.conversation.correspondentId),
       ),
     );
   }
