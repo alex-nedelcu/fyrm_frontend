@@ -69,9 +69,9 @@ class _BodyState extends State<Body> {
               ),
             ),
             ListView(
+              physics: const ClampingScrollPhysics(),
               shrinkWrap: true,
               padding: const EdgeInsets.only(top: 16),
-              physics: const NeverScrollableScrollPhysics(),
               children: webSocketProvider
                   .messagesToConversations(requesterId: connectedUserProvider.userId!, filterUsername: filterText)
                   .map((conversation) => ConversationCard(conversation: conversation))
