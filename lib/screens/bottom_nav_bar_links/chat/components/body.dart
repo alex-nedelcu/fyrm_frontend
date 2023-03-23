@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyrm_frontend/api/chat/dto/chat_message_dto.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
-import 'package:fyrm_frontend/models/conversation.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/providers/web_socket_provider.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat/components/conversation_card.dart';
@@ -17,6 +15,8 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  String filterText = "";
+
   @override
   Widget build(BuildContext context) {
     WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
@@ -44,6 +44,11 @@ class _BodyState extends State<Body> {
             Padding(
               padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
               child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    filterText = value;
+                  });
+                },
                 cursorColor: kSecondaryColor,
                 decoration: InputDecoration(
                   hintText: "Search...",
@@ -64,16 +69,15 @@ class _BodyState extends State<Body> {
               ),
             ),
             ListView.builder(
-              itemCount: toConversations(
-                messages: webSocketProvider.messages,
-                requesterId: connectedUserProvider.userId!,
-              ).length,
+              itemCount: webSocketProvider
+                  .messagesToConversations(requesterId: connectedUserProvider.userId!, filterUsername: filterText)
+                  .length,
               shrinkWrap: true,
               padding: const EdgeInsets.only(top: 16),
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                final conversation = toConversations(
-                    messages: webSocketProvider.messages, requesterId: connectedUserProvider.userId!)[index];
+                final conversation = webSocketProvider.messagesToConversations(
+                    requesterId: connectedUserProvider.userId!, filterUsername: filterText)[index];
                 return ConversationCard(conversation: conversation);
               },
             ),
@@ -81,39 +85,5 @@ class _BodyState extends State<Body> {
         ),
       ),
     );
-  }
-
-  List<Conversation> toConversations({required List<ChatMessageDto> messages, required int requesterId}) {
-    Map<int, List<ChatMessageDto>> correspondentMessagesOrderedDescBySentAt = {};
-
-    for (var message in messages.reversed) {
-      int correspondentId = message.fromId == requesterId ? message.toId! : message.fromId!;
-
-      correspondentMessagesOrderedDescBySentAt.update(
-        correspondentId,
-        (previous) => [...previous, message],
-        ifAbsent: () => [message],
-      );
-    }
-
-    return correspondentMessagesOrderedDescBySentAt.entries.map((entry) {
-      final correspondentId = entry.key;
-      final messages = entry.value;
-      final latestMessage = messages.first;
-      final correspondentUsername =
-          (requesterId == latestMessage.fromId) ? latestMessage.toUsername! : latestMessage.fromUsername!;
-      final preview = "${latestMessage.fromUsername}: ${latestMessage.content!}";
-      final date = latestMessage.sentOnDayMonthYearFormat!;
-      final time = latestMessage.sentAtHoursMinutesFormat!;
-
-      return Conversation(
-        correspondentId: correspondentId,
-        correspondentUsername: correspondentUsername,
-        preview: preview,
-        date: date,
-        time: time,
-        messages: messages,
-      );
-    }).toList();
   }
 }

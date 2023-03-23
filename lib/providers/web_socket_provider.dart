@@ -79,7 +79,7 @@ class WebSocketProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Conversation> messagesToConversations({required int requesterId}) {
+  List<Conversation> messagesToConversations({required int requesterId, String? filterUsername}) {
     Map<int, List<ChatMessageDto>> correspondentMessagesOrderedDescBySentAt = {};
 
     for (var message in messages.reversed) {
@@ -92,25 +92,28 @@ class WebSocketProvider with ChangeNotifier {
       );
     }
 
-    return correspondentMessagesOrderedDescBySentAt.entries.map((entry) {
-      final correspondentId = entry.key;
-      final messages = entry.value;
-      final latestMessage = messages.first;
-      final correspondentUsername =
-          (requesterId == latestMessage.fromId) ? latestMessage.toUsername! : latestMessage.fromUsername!;
-      final preview = "${latestMessage.fromUsername}: ${latestMessage.content!}";
-      final date = latestMessage.sentOnDayMonthYearFormat!;
-      final time = latestMessage.sentAtHoursMinutesFormat!;
+    return correspondentMessagesOrderedDescBySentAt.entries
+        .map((entry) {
+          final correspondentId = entry.key;
+          final messages = entry.value;
+          final latestMessage = messages.first;
+          final correspondentUsername =
+              (requesterId == latestMessage.fromId) ? latestMessage.toUsername! : latestMessage.fromUsername!;
+          final preview = "${latestMessage.fromUsername}: ${latestMessage.content!}";
+          final date = latestMessage.sentOnDayMonthYearFormat!;
+          final time = latestMessage.sentAtHoursMinutesFormat!;
 
-      return Conversation(
-        correspondentId: correspondentId,
-        correspondentUsername: correspondentUsername,
-        preview: preview,
-        date: date,
-        time: time,
-        messages: messages,
-      );
-    }).toList();
+          return Conversation(
+            correspondentId: correspondentId,
+            correspondentUsername: correspondentUsername,
+            preview: preview,
+            date: date,
+            time: time,
+            messages: messages,
+          );
+        })
+        .where((conversation) => conversation.correspondentUsername.contains(filterUsername ?? ""))
+        .toList();
   }
 
   Conversation findConversationByCorrespondentId({
