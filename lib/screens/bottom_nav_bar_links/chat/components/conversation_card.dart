@@ -54,7 +54,7 @@ class _ConversationCardState extends State<ConversationCard> {
                             height: 4,
                           ),
                           Text(
-                            formatPreview(widget.conversation.preview),
+                            formatPreview(widget.conversation.preview!),
                             style: const TextStyle(
                               fontSize: 15,
                               color: kSecondaryColor,
@@ -68,13 +68,13 @@ class _ConversationCardState extends State<ConversationCard> {
                   Column(
                     children: [
                       Text(
-                        formatDate(widget.conversation.date),
+                        formatDate(widget.conversation.date!),
                         style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kSecondaryColor),
                       ),
-                      if (belongsToCurrentYear(widget.conversation.date)) const SizedBox(height: 6),
-                      if (belongsToCurrentYear(widget.conversation.date))
+                      if (belongsToCurrentYear(widget.conversation.date!)) const SizedBox(height: 6),
+                      if (belongsToCurrentYear(widget.conversation.date!))
                         Text(
-                          widget.conversation.time,
+                          widget.conversation.time!,
                           style:
                               const TextStyle(fontSize: 13, fontWeight: FontWeight.w300, color: kSecondaryColor),
                         ),

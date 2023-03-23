@@ -6,8 +6,9 @@ import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
   int correspondentId;
+  String correspondentUsername;
 
-  Body({super.key, required this.correspondentId});
+  Body({super.key, required this.correspondentId, required this.correspondentUsername});
 
   @override
   _BodyState createState() => _BodyState();
@@ -32,7 +33,10 @@ class _BodyState extends State<Body> {
     WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
     ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
     final conversation = webSocketProvider.findConversationByCorrespondentId(
-        correspondentId: widget.correspondentId, requesterId: connectedUserProvider.userId!);
+      correspondentId: widget.correspondentId,
+      requesterId: connectedUserProvider.userId!,
+      correspondentUsername: widget.correspondentUsername,
+    );
     final messages = conversation.messages.reversed;
 
     return SafeArea(

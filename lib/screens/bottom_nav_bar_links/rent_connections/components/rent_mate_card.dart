@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/rent_connections/dto/proposed_rent_mate_dto.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/providers/web_socket_provider.dart';
+import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat_detail/chat_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../helper/constants.dart';
@@ -71,12 +72,15 @@ class _RentMateCardState extends State<RentMateCard> {
                   GestureDetector(
                     child: const Icon(Icons.chat, color: kSecondaryColor, size: 30),
                     onTap: () {
-                      webSocketProvider.send(
-                        content: "Hi ${widget.rentMate.username}!",
-                        fromId: connectedUserProvider.userId!,
-                        fromUsername: connectedUserProvider.username!,
-                        toId: widget.rentMate.userId!,
-                        toUsername: widget.rentMate.username!,
+                      Navigator.pushNamed(
+                        context,
+                        ChatDetailScreen.routeName,
+                        arguments: ChatDetailScreenArguments(
+                          conversation: webSocketProvider.findConversationByCorrespondentId(
+                              correspondentId: widget.rentMate.userId!,
+                              correspondentUsername: widget.rentMate.username!,
+                              requesterId: connectedUserProvider.userId!),
+                        ),
                       );
                     },
                   ),

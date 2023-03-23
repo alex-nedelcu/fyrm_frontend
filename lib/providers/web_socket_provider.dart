@@ -45,6 +45,7 @@ class WebSocketProvider with ChangeNotifier {
   void onReceive(StompFrame frame) {
     var chatMessage = ChatMessageDto.fromJSON(jsonDecode(frame.body!));
     messages.add(chatMessage);
+    print("RECEIVED ${chatMessage.toJSON()}");
     notifyListeners();
   }
 
@@ -68,6 +69,7 @@ class WebSocketProvider with ChangeNotifier {
       destination: "/fyrm/private-message",
       body: json.encode(chatMessage.toJSON()),
     );
+    print("SENT ${chatMessage.toJSON()}");
   }
 
   void fetchMessages({required String tokenType, required String token, required int userId}) async {
@@ -109,8 +111,18 @@ class WebSocketProvider with ChangeNotifier {
     }).toList();
   }
 
-  Conversation findConversationByCorrespondentId({required int correspondentId, required int requesterId}) {
-    return messagesToConversations(requesterId: requesterId)
-        .firstWhere((conversation) => conversation.correspondentId == correspondentId);
+  Conversation findConversationByCorrespondentId({
+    required int correspondentId,
+    required int requesterId,
+    required String correspondentUsername,
+  }) {
+    return messagesToConversations(requesterId: requesterId).firstWhere(
+      (conversation) => conversation.correspondentId == correspondentId,
+      orElse: () => Conversation(
+        correspondentId: correspondentId,
+        correspondentUsername: correspondentUsername,
+        messages: [],
+      ),
+    );
   }
 }
