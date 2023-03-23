@@ -68,18 +68,14 @@ class _BodyState extends State<Body> {
                 ),
               ),
             ),
-            ListView.builder(
-              itemCount: webSocketProvider
-                  .messagesToConversations(requesterId: connectedUserProvider.userId!, filterUsername: filterText)
-                  .length,
+            ListView(
               shrinkWrap: true,
               padding: const EdgeInsets.only(top: 16),
               physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                final conversation = webSocketProvider.messagesToConversations(
-                    requesterId: connectedUserProvider.userId!, filterUsername: filterText)[index];
-                return ConversationCard(conversation: conversation);
-              },
+              children: webSocketProvider
+                  .messagesToConversations(requesterId: connectedUserProvider.userId!, filterUsername: filterText)
+                  .map((conversation) => ConversationCard(conversation: conversation))
+                  .toList(),
             ),
           ],
         ),
