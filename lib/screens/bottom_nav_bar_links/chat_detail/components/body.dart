@@ -43,39 +43,36 @@ class _BodyState extends State<Body> {
     return SafeArea(
       child: Stack(
         children: <Widget>[
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 75),
-              child: ListView(
-                controller: scrollController,
-                physics: const PageScrollPhysics(),
-                shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                children: messages.map(
-                  (message) {
-                    bool received = message.toId == connectedUserProvider.userId;
+          Padding(
+            padding: const EdgeInsets.only(bottom: 75),
+            child: ListView(
+              controller: scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              children: messages.map(
+                (message) {
+                  bool received = message.toId == connectedUserProvider.userId;
 
-                    return Container(
-                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-                      child: Align(
-                        alignment: (received ? Alignment.topLeft : Alignment.topRight),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color:
-                                (received ? kSecondaryColor.withOpacity(0.15) : kPrimaryColor.withOpacity(0.95)),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          child: Text(
-                            message.content!,
-                            style: TextStyle(fontSize: 16, color: received ? Colors.black87 : Colors.white),
-                          ),
+                  return Container(
+                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+                    child: Align(
+                      alignment: (received ? Alignment.topLeft : Alignment.topRight),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: (received ? kSecondaryColor.withOpacity(0.15) : kPrimaryColor.withOpacity(0.95)),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        child: Text(
+                          message.content!,
+                          style: TextStyle(fontSize: 16, color: received ? Colors.black87 : Colors.white),
                         ),
                       ),
-                    );
-                  },
-                ).toList(),
-              ),
+                    ),
+                  );
+                },
+              ).toList(),
             ),
           ),
           Align(
@@ -143,6 +140,10 @@ class _BodyState extends State<Body> {
                           ),
                         );
                       });
+
+                      if (scrollController.hasClients) {
+                        scrollController.jumpTo(scrollController.position.maxScrollExtent + 300);
+                      }
                     },
                     backgroundColor: kPrimaryColor,
                     elevation: 0,
