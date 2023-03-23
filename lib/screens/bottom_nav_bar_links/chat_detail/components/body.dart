@@ -15,12 +15,13 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  TextEditingController controller = TextEditingController();
+  final TextEditingController textEditingController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    controller.value = TextEditingValue(
+    textEditingController.value = TextEditingValue(
       text: "",
       selection: TextSelection.fromPosition(
         const TextPosition(offset: 0),
@@ -42,33 +43,41 @@ class _BodyState extends State<Body> {
     return SafeArea(
       child: Stack(
         children: <Widget>[
-          ListView.builder(
-              itemCount: messages.length,
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                final message = messages.elementAt(index);
-                bool received = message.toId == connectedUserProvider.userId;
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 75),
+              child: ListView(
+                controller: scrollController,
+                physics: const PageScrollPhysics(),
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                children: messages.map(
+                  (message) {
+                    bool received = message.toId == connectedUserProvider.userId;
 
-                return Container(
-                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-                  child: Align(
-                    alignment: (received ? Alignment.topLeft : Alignment.topRight),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: (received ? kSecondaryColor.withOpacity(0.15) : kPrimaryColor.withOpacity(0.95)),
+                    return Container(
+                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+                      child: Align(
+                        alignment: (received ? Alignment.topLeft : Alignment.topRight),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color:
+                                (received ? kSecondaryColor.withOpacity(0.15) : kPrimaryColor.withOpacity(0.95)),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          child: Text(
+                            message.content!,
+                            style: TextStyle(fontSize: 16, color: received ? Colors.black87 : Colors.white),
+                          ),
+                        ),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      child: Text(
-                        message.content!,
-                        style: TextStyle(fontSize: 16, color: received ? Colors.black87 : Colors.white),
-                      ),
-                    ),
-                  ),
-                );
-              }),
+                    );
+                  },
+                ).toList(),
+              ),
+            ),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -80,9 +89,9 @@ class _BodyState extends State<Body> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
-                      controller: controller,
+                      controller: textEditingController,
                       onChanged: (value) {
-                        controller.value = TextEditingValue(
+                        textEditingController.value = TextEditingValue(
                           text: value,
                           selection: TextSelection.fromPosition(
                             TextPosition(offset: value.length),
@@ -114,7 +123,7 @@ class _BodyState extends State<Body> {
                   const SizedBox(width: 10),
                   FloatingActionButton(
                     onPressed: () {
-                      final content = controller.text.trim();
+                      final content = textEditingController.text.trim();
 
                       if (content.isNotEmpty) {
                         webSocketProvider.send(
@@ -127,7 +136,7 @@ class _BodyState extends State<Body> {
                       }
 
                       setState(() {
-                        controller.value = TextEditingValue(
+                        textEditingController.value = TextEditingValue(
                           text: "",
                           selection: TextSelection.fromPosition(
                             const TextPosition(offset: 0),
