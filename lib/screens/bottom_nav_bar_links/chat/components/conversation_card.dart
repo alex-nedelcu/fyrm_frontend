@@ -21,6 +21,7 @@ class _ConversationCardState extends State<ConversationCard> {
     return SafeArea(
         child: GestureDetector(
       onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
         Navigator.pushNamed(
           context,
           ChatDetailScreen.routeName,
