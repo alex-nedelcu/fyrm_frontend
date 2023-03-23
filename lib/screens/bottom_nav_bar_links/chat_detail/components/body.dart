@@ -29,6 +29,16 @@ class _BodyState extends State<Body> {
     );
   }
 
+  void scrollDown({required double extra}) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent + extra,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeIn,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
@@ -39,11 +49,7 @@ class _BodyState extends State<Body> {
       correspondentUsername: widget.correspondentUsername,
     );
     final messages = conversation.messages.reversed;
-    // scrollController.animateTo(
-    //   scrollController.position.maxScrollExtent + 50,
-    //   curve: Curves.easeOut,
-    //   duration: const Duration(milliseconds: 500),
-    // );
+    scrollDown(extra: 500);
 
     return SafeArea(
       child: Stack(
@@ -52,7 +58,7 @@ class _BodyState extends State<Body> {
             padding: const EdgeInsets.only(bottom: 75),
             child: ListView(
               controller: scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
               shrinkWrap: true,
               padding: const EdgeInsets.symmetric(horizontal: 5),
               children: messages.map(
@@ -147,11 +153,7 @@ class _BodyState extends State<Body> {
                       });
 
                       if (scrollController.hasClients) {
-                        scrollController.animateTo(
-                          scrollController.position.maxScrollExtent + 50,
-                          curve: Curves.easeOut,
-                          duration: const Duration(milliseconds: 500),
-                        );
+                        scrollDown(extra: 500);
                       }
                     },
                     backgroundColor: kPrimaryColor,
