@@ -39,6 +39,11 @@ class _BodyState extends State<Body> {
       correspondentUsername: widget.correspondentUsername,
     );
     final messages = conversation.messages.reversed;
+    // scrollController.animateTo(
+    //   scrollController.position.maxScrollExtent + 50,
+    //   curve: Curves.easeOut,
+    //   duration: const Duration(milliseconds: 500),
+    // );
 
     return SafeArea(
       child: Stack(
@@ -55,7 +60,7 @@ class _BodyState extends State<Body> {
                   bool received = message.toId == connectedUserProvider.userId;
 
                   return Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                     child: Align(
                       alignment: (received ? Alignment.topLeft : Alignment.topRight),
                       child: Container(
@@ -63,7 +68,7 @@ class _BodyState extends State<Body> {
                           borderRadius: BorderRadius.circular(30),
                           color: (received ? kSecondaryColor.withOpacity(0.15) : kPrimaryColor.withOpacity(0.95)),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         child: Text(
                           message.content!,
                           style: TextStyle(fontSize: 16, color: received ? Colors.black87 : Colors.white),
@@ -142,7 +147,11 @@ class _BodyState extends State<Body> {
                       });
 
                       if (scrollController.hasClients) {
-                        scrollController.jumpTo(scrollController.position.maxScrollExtent + 300);
+                        scrollController.animateTo(
+                          scrollController.position.maxScrollExtent + 50,
+                          curve: Curves.easeOut,
+                          duration: const Duration(milliseconds: 500),
+                        );
                       }
                     },
                     backgroundColor: kPrimaryColor,
