@@ -34,6 +34,10 @@ class WebSocketProvider with ChangeNotifier {
     _stompClient.deactivate();
   }
 
+  void deactivate() {
+    _stompClient.deactivate();
+  }
+
   void onWebSocketConnect(StompFrame frame) {
     _stompClient.subscribe(
       destination: "/user/queue/private-messages",
@@ -45,7 +49,6 @@ class WebSocketProvider with ChangeNotifier {
   void onReceive(StompFrame frame) {
     var chatMessage = ChatMessageDto.fromJSON(jsonDecode(frame.body!));
     messages.add(chatMessage);
-    print("RECEIVED ${chatMessage.toJSON()}");
     notifyListeners();
   }
 
@@ -69,7 +72,6 @@ class WebSocketProvider with ChangeNotifier {
       destination: "/fyrm/private-message",
       body: json.encode(chatMessage.toJSON()),
     );
-    print("SENT ${chatMessage.toJSON()}");
   }
 
   void fetchMessages({required String tokenType, required String token, required int userId}) async {
