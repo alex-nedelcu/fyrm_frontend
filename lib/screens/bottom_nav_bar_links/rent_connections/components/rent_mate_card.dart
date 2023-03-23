@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/rent_connections/dto/proposed_rent_mate_dto.dart';
+import 'package:fyrm_frontend/providers/connected_user_provider.dart';
+import 'package:fyrm_frontend/providers/web_socket_provider.dart';
+import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat_detail/chat_detail_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../helper/constants.dart';
 
@@ -17,6 +21,9 @@ class _RentMateCardState extends State<RentMateCard> {
 
   @override
   Widget build(BuildContext context) {
+    WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
+    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+
     return InkWell(
       child: AnimatedContainer(
         duration: duration,
@@ -64,7 +71,18 @@ class _RentMateCardState extends State<RentMateCard> {
                   const SizedBox(width: 10),
                   GestureDetector(
                     child: const Icon(Icons.chat, color: kSecondaryColor, size: 30),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        ChatDetailScreen.routeName,
+                        arguments: ChatDetailScreenArguments(
+                          conversation: webSocketProvider.findConversationByCorrespondentId(
+                              correspondentId: widget.rentMate.userId!,
+                              correspondentUsername: widget.rentMate.username!,
+                              requesterId: connectedUserProvider.userId!),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

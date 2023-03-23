@@ -4,6 +4,7 @@ import 'package:fyrm_frontend/screens/authentication/otp/otp_screen.dart';
 import 'package:fyrm_frontend/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:fyrm_frontend/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat/chat_screen.dart';
+import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat_detail/chat_detail_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/finalise_rent_connection_success/finalise_rent_connection_success_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/home/home_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/notifications/notifications_screen.dart';
@@ -31,4 +32,5 @@ final Map<String, WidgetBuilder> routes = {
   FinaliseRentConnectionSuccessScreen.routeName: (context) => const FinaliseRentConnectionSuccessScreen(),
   ChatScreen.routeName: (context) => const ChatScreen(),
   NotificationsScreen.routeName: (context) => const NotificationsScreen(),
+  ChatDetailScreen.routeName: (context) => const ChatDetailScreen(),
 };

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/components/profile_picture.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
+import 'package:fyrm_frontend/providers/web_socket_provider.dart';
 import 'package:fyrm_frontend/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:fyrm_frontend/screens/profile_links/my_profile/my_profile_screen.dart';
 import 'package:fyrm_frontend/screens/profile_links/search_profiles/search_profiles_screen.dart';
@@ -14,6 +15,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+    WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -41,6 +43,7 @@ class Body extends StatelessWidget {
             icon: "assets/icons/log-out.svg",
             press: () {
               connectedUserProvider.connectedUserDetails = null;
+              webSocketProvider.deactivate();
               Navigator.pushNamed(
                 context,
                 SignInScreen.routeName,
