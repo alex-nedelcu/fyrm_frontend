@@ -130,4 +130,8 @@ class WebSocketProvider with ChangeNotifier {
       ),
     );
   }
+
+  int unreadChatCount({required int requesterId}) {
+    return messagesToConversations(requesterId: requesterId).length;
+  }
 }

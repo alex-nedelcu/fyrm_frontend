@@ -17,6 +17,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   final TextEditingController textEditingController = TextEditingController();
   final ScrollController scrollController = ScrollController();
+  bool isLastReceived = false;
 
   @override
   void initState() {
@@ -64,21 +65,39 @@ class _BodyState extends State<Body> {
               children: messages.map(
                 (message) {
                   bool received = message.toId == connectedUserProvider.userId;
+                  bool displaySentAt = received != isLastReceived;
+                  setState(() {
+                    isLastReceived = received;
+                  });
 
-                  return Container(
-                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                    child: Align(
-                      alignment: (received ? Alignment.topLeft : Alignment.topRight),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: (received ? kSecondaryColor.withOpacity(0.15) : kPrimaryColor.withOpacity(0.95)),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Text(
-                          message.content!,
-                          style: TextStyle(fontSize: 16, color: received ? Colors.black87 : Colors.white),
-                        ),
+                  return Align(
+                    alignment: (received ? Alignment.topLeft : Alignment.topRight),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: (displaySentAt) ? 6 : 4),
+                      child: Column(
+                        crossAxisAlignment: received ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                        children: [
+                          if (displaySentAt)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              child: Text(
+                                message.sentAtHoursMinutesFormat!,
+                                style: TextStyle(fontSize: 12, color: kSecondaryColor.withOpacity(0.85)),
+                              ),
+                            ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color:
+                                  (received ? kSecondaryColor.withOpacity(0.15) : kPrimaryColor.withOpacity(0.95)),
+                            ),
+                            child: Text(
+                              message.content!,
+                              style: TextStyle(fontSize: 16, color: received ? Colors.black87 : Colors.white),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   );

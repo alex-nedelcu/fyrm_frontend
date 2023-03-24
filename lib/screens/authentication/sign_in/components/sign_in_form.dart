@@ -148,6 +148,7 @@ class _SignInFormState extends State<SignInForm> {
 
   TextFormField buildUsernameField() {
     return TextFormField(
+      autocorrect: false,
       keyboardType: TextInputType.text,
       onSaved: (value) => username = value,
       onChanged: (value) {
@@ -187,6 +188,7 @@ class _SignInFormState extends State<SignInForm> {
 
   TextFormField buildPasswordField() {
     return TextFormField(
+      autocorrect: false,
       obscureText: true,
       onSaved: (value) => password = value,
       onChanged: (value) {

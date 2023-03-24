@@ -117,6 +117,7 @@ class _MyProfileFormState extends State<MyProfileForm> {
 
   TextFormField buildDescriptionField({required String? currentDescription}) {
     return TextFormField(
+      autocorrect: false,
       keyboardType: TextInputType.text,
       initialValue: currentDescription,
       onSaved: (value) => description = value,

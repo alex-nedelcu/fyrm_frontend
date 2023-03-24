@@ -22,8 +22,6 @@ class ConnectedUserProvider with ChangeNotifier {
 
   bool? get isSearching => _connectedUserDetails?.isSearching;
 
-  int get unreadChatCount => 12;
-
   int get notificationCount => 5;
 
   set description(String? description) {
