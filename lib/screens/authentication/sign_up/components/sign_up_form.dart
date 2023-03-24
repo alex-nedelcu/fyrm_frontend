@@ -116,6 +116,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildUsernameField() {
     return TextFormField(
+      autocorrect: false,
       keyboardType: TextInputType.text,
       onSaved: (value) => username = value,
       onChanged: (value) {
@@ -155,6 +156,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildEmailField() {
     return TextFormField(
+      autocorrect: false,
       keyboardType: TextInputType.emailAddress,
       onSaved: (value) => email = value,
       onChanged: (value) {
@@ -194,6 +196,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordField() {
     return TextFormField(
+      autocorrect: false,
       obscureText: true,
       onSaved: (value) => password = value,
       onChanged: (value) {
@@ -233,6 +236,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordConfirmationField() {
     return TextFormField(
+      autocorrect: false,
       obscureText: true,
       onSaved: (value) => passwordConfirmation = value,
       onChanged: (value) {

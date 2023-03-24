@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fyrm_frontend/components/icon_button_with_counter.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
+import 'package:fyrm_frontend/providers/web_socket_provider.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat/chat_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/home/home_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/notifications/notifications_screen.dart';
@@ -19,6 +20,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+    WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14),
@@ -68,7 +70,7 @@ class CustomBottomNavBar extends StatelessWidget {
               IconButtonWithCounter(
                 svgSrc: "assets/icons/chat.svg",
                 color: MenuState.chat == selectedMenu ? kPrimaryColor : kInactiveIconColor,
-                count: connectedUserProvider.unreadChatCount,
+                count: webSocketProvider.unreadChatCount(requesterId: connectedUserProvider.userId!),
                 press: () {
                   if (selectedMenu != MenuState.chat) {
                     Navigator.pushNamed(context, ChatScreen.routeName);

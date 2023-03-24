@@ -79,6 +79,7 @@ class _OtpFormState extends State<OtpForm> {
                 width: getProportionateScreenWidth(45),
                 height: getProportionateScreenHeight(50),
                 child: TextFormField(
+                  autocorrect: false,
                   style: const TextStyle(fontSize: 18),
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
@@ -93,6 +94,7 @@ class _OtpFormState extends State<OtpForm> {
                 width: getProportionateScreenWidth(45),
                 height: getProportionateScreenHeight(50),
                 child: TextFormField(
+                  autocorrect: false,
                   focusNode: pin2FocusNode,
                   style: const TextStyle(fontSize: 18),
                   keyboardType: TextInputType.number,
@@ -108,6 +110,7 @@ class _OtpFormState extends State<OtpForm> {
                 width: getProportionateScreenWidth(45),
                 height: getProportionateScreenHeight(50),
                 child: TextFormField(
+                  autocorrect: false,
                   focusNode: pin3FocusNode,
                   style: const TextStyle(fontSize: 18),
                   keyboardType: TextInputType.number,
@@ -123,6 +126,7 @@ class _OtpFormState extends State<OtpForm> {
                 width: getProportionateScreenWidth(45),
                 height: getProportionateScreenHeight(50),
                 child: TextFormField(
+                  autocorrect: false,
                   focusNode: pin4FocusNode,
                   style: const TextStyle(fontSize: 18),
                   keyboardType: TextInputType.number,
@@ -138,6 +142,7 @@ class _OtpFormState extends State<OtpForm> {
                 width: getProportionateScreenWidth(45),
                 height: getProportionateScreenHeight(50),
                 child: TextFormField(
+                  autocorrect: false,
                   focusNode: pin5FocusNode,
                   style: const TextStyle(fontSize: 18),
                   keyboardType: TextInputType.number,
@@ -153,6 +158,7 @@ class _OtpFormState extends State<OtpForm> {
                 width: getProportionateScreenWidth(45),
                 height: getProportionateScreenHeight(50),
                 child: TextFormField(
+                  autocorrect: false,
                   focusNode: pin6FocusNode,
                   style: const TextStyle(fontSize: 18),
                   keyboardType: TextInputType.number,
