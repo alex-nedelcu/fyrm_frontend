@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:fyrm_frontend/api/chat/chat_service.dart';
 import 'package:fyrm_frontend/api/chat/dto/chat_message_dto.dart';
+import 'package:fyrm_frontend/api/notification/dto/notification_dto.dart';
 import 'package:fyrm_frontend/models/conversation.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
@@ -11,6 +12,7 @@ import 'package:stomp_dart_client/stomp_frame.dart';
 class WebSocketProvider with ChangeNotifier {
   final ChatService chatService = ChatService();
   List<ChatMessageDto> messages = [];
+  List<NotificationDto> notifications = [];
   late StompClient _stompClient;
 
   void initializeStompClient(String tokenType, String token) {
@@ -41,19 +43,29 @@ class WebSocketProvider with ChangeNotifier {
   void onWebSocketConnect(StompFrame frame) {
     _stompClient.subscribe(
       destination: "/user/queue/private-messages",
-      callback: onReceive,
+      callback: onReceiveChatMessage,
+    );
+
+    _stompClient.subscribe(
+      destination: "/user/queue/notifications",
+      callback: onReceiveNotification,
     );
   }
 
-  // Receiver side
-  void onReceive(StompFrame frame) {
+  void onReceiveChatMessage(StompFrame frame) {
     var chatMessage = ChatMessageDto.fromJSON(jsonDecode(frame.body!));
     messages.add(chatMessage);
     notifyListeners();
   }
 
-  // Sender side
-  void send({
+  void onReceiveNotification(StompFrame frame) {
+    var notification = NotificationDto.fromJSON(jsonDecode(frame.body!));
+    print("Received notification: ${notification.toJSON()}");
+    notifications.add(notification);
+    notifyListeners();
+  }
+
+  void sendChatMessage({
     required String content,
     required int fromId,
     required String fromUsername,

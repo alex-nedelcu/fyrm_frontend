@@ -153,7 +153,7 @@ class _BodyState extends State<Body> {
                       final content = textEditingController.text.trim();
 
                       if (content.isNotEmpty) {
-                        webSocketProvider.send(
+                        webSocketProvider.sendChatMessage(
                           content: content,
                           fromId: connectedUserProvider.userId!,
                           fromUsername: connectedUserProvider.username!,
