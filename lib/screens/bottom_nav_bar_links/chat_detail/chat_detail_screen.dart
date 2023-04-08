@@ -61,8 +61,8 @@ class ChatDetailScreen extends StatelessWidget {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: Body(
-          correspondentId: arguments.conversation.correspondentId,
-          correspondentUsername: arguments.conversation.correspondentUsername,
+          correspondentId: conversation.correspondentId,
+          correspondentUsername: conversation.correspondentUsername,
         ),
       ),
     );

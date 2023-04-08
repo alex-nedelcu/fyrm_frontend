@@ -68,7 +68,12 @@ class _SignInFormState extends State<SignInForm> {
         );
         connectedUserProvider.connectedUserDetails = loginResponseDto;
         webSocketProvider.initializeStompClient(loginResponseDto.tokenType!, loginResponseDto.token!);
-        webSocketProvider.fetchMessages(
+        await webSocketProvider.fetchMessages(
+          userId: connectedUserProvider.userId!,
+          token: connectedUserProvider.token!,
+          tokenType: connectedUserProvider.tokenType!,
+        );
+        await webSocketProvider.fetchNotifications(
           userId: connectedUserProvider.userId!,
           token: connectedUserProvider.token!,
           tokenType: connectedUserProvider.tokenType!,

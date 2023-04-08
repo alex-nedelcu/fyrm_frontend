@@ -26,7 +26,7 @@ class NotificationDto {
         fromUsername: json[fromUsernameJsonField] as String?,
         toId: json[toIdJsonField] as int?,
         toUsername: json[toUsernameJsonField] as String?,
-        isRead: json[isReadJsonField] == 1 ? true : false as bool?,
+        isRead: (json[isReadJsonField] as bool?) ?? (json[readJsonField] as bool?),
         sentOnDayMonthYearFormat: json[sentOnDayMonthYearFormatJsonField] as String?,
       );
 
@@ -54,6 +54,8 @@ class NotificationDto {
   static String get toUsernameJsonField => "toUsername";
 
   static String get isReadJsonField => "isRead";
+
+  static String get readJsonField => "read";
 
   static String get sentOnDayMonthYearFormatJsonField => "sentOnDayMonthYearFormat";
 }
