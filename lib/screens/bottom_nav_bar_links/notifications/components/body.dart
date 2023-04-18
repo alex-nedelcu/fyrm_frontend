@@ -16,8 +16,10 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
-    WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
-    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+    WebSocketProvider webSocketProvider =
+        Provider.of<WebSocketProvider>(context);
+    ConnectedUserProvider connectedUserProvider =
+        Provider.of<ConnectedUserProvider>(context);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -41,23 +43,25 @@ class _BodyState extends State<Body> {
                         color: Colors.black,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        webSocketProvider.markAllNotificationsAsRead(
-                          tokenType: connectedUserProvider.tokenType!,
-                          token: connectedUserProvider.token!,
-                          userId: connectedUserProvider.userId!,
-                        );
-                      },
-                      child: Text(
-                        "Mark all as read",
-                        style: TextStyle(
-                          fontSize: getProportionateScreenWidth(16),
-                          fontWeight: FontWeight.bold,
-                          color: kPrimaryColor,
+                    if (webSocketProvider.notifications
+                        .any((element) => !element.isRead!))
+                      GestureDetector(
+                        onTap: () {
+                          webSocketProvider.markAllNotificationsAsRead(
+                            tokenType: connectedUserProvider.tokenType!,
+                            token: connectedUserProvider.token!,
+                            userId: connectedUserProvider.userId!,
+                          );
+                        },
+                        child: Text(
+                          "Mark all as read",
+                          style: TextStyle(
+                            fontSize: getProportionateScreenWidth(16),
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor,
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -67,7 +71,8 @@ class _BodyState extends State<Body> {
               shrinkWrap: true,
               padding: const EdgeInsets.only(top: 10),
               children: webSocketProvider.notifications.reversed
-                  .map((notification) => NotificationCard(notification: notification))
+                  .map((notification) =>
+                      NotificationCard(notification: notification))
                   .toList(),
             ),
           ],

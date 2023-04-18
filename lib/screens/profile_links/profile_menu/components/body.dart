@@ -5,6 +5,7 @@ import 'package:fyrm_frontend/providers/web_socket_provider.dart';
 import 'package:fyrm_frontend/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:fyrm_frontend/screens/profile_links/my_profile/my_profile_screen.dart';
 import 'package:fyrm_frontend/screens/profile_links/search_profiles/search_profiles_screen.dart';
+import 'package:fyrm_frontend/screens/profile_links/statistics/statistics_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'profile_menu.dart';
@@ -40,7 +41,9 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Statistics",
             icon: "assets/icons/game.svg",
-            press: () {},
+            press: () {
+              Navigator.pushNamed(context, StatisticsScreen.routeName);
+            },
           ),
           ProfileMenu(
             text: "Log Out",

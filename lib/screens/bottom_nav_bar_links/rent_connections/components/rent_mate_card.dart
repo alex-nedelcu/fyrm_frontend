@@ -35,7 +35,7 @@ class _RentMateCardState extends State<RentMateCard> {
         height: 300,
         width: 300,
         decoration: BoxDecoration(
-          color: kSecondaryColor.withOpacity(0.25),
+          color: kSecondaryColor.withOpacity(0.15),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -59,12 +59,12 @@ class _RentMateCardState extends State<RentMateCard> {
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
-                        fontSize: 18),
+                        fontSize: 20),
                   ),
                   const SizedBox(width: 10),
                   GestureDetector(
                     child: const Icon(Icons.chat,
-                        color: kSecondaryColor, size: 30),
+                        color: kSecondaryColor, size: 26),
                     onTap: () {
                       Navigator.pushNamed(
                         context,
