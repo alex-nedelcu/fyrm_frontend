@@ -46,7 +46,7 @@ class _NotificationCardState extends State<NotificationCard> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
+        padding: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 20),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -59,14 +59,14 @@ class _NotificationCardState extends State<NotificationCard> {
                           left: 22, right: 28, top: 15, bottom: 8),
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(40),
-                          bottomLeft: Radius.circular(40),
-                          bottomRight: Radius.circular(5),
-                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(60),
+                          bottomLeft: Radius.circular(60),
+                          bottomRight: Radius.circular(0),
+                          topLeft: Radius.circular(0),
                         ),
                         color: widget.notification.isRead!
-                            ? kSecondaryColor.withOpacity(0.15)
-                            : kPrimaryColor.withOpacity(0.8),
+                            ? kSecondaryColor.withOpacity(0.2)
+                            : kPrimaryColor.withOpacity(0.95),
                       ),
                       child: Column(
                         children: [
@@ -75,9 +75,9 @@ class _NotificationCardState extends State<NotificationCard> {
                             style: TextStyle(
                               fontSize: 18,
                               color: widget.notification.isRead!
-                                  ? Colors.black.withOpacity(0.55)
+                                  ? Colors.black.withOpacity(0.65)
                                   : Colors.black.withOpacity(0.75),
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                           const SizedBox(height: 10),
