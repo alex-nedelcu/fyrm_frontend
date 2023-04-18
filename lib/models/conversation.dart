@@ -3,7 +3,7 @@ import 'package:fyrm_frontend/api/chat/dto/chat_message_dto.dart';
 class Conversation {
   int correspondentId;
   String correspondentUsername;
-  List<ChatMessageDto> messages;
+  List<ChatMessageDto>? messages;
   String? preview;
   String? date;
   String? time;
@@ -12,7 +12,7 @@ class Conversation {
   Conversation({
     required this.correspondentId,
     required this.correspondentUsername,
-    required this.messages,
+    this.messages,
     this.preview,
     this.date,
     this.time,

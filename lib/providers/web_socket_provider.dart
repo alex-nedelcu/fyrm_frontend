@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:fyrm_frontend/api/chat/chat_service.dart';
 import 'package:fyrm_frontend/api/chat/dto/chat_message_dto.dart';
+import 'package:fyrm_frontend/api/notification/dto/notification_dto.dart';
+import 'package:fyrm_frontend/api/notification/notification_service.dart';
 import 'package:fyrm_frontend/models/conversation.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
@@ -10,7 +12,9 @@ import 'package:stomp_dart_client/stomp_frame.dart';
 
 class WebSocketProvider with ChangeNotifier {
   final ChatService chatService = ChatService();
+  final NotificationService notificationService = NotificationService();
   List<ChatMessageDto> messages = [];
+  List<NotificationDto> notifications = [];
   late StompClient _stompClient;
 
   void initializeStompClient(String tokenType, String token) {
@@ -41,19 +45,28 @@ class WebSocketProvider with ChangeNotifier {
   void onWebSocketConnect(StompFrame frame) {
     _stompClient.subscribe(
       destination: "/user/queue/private-messages",
-      callback: onReceive,
+      callback: onReceiveChatMessage,
+    );
+
+    _stompClient.subscribe(
+      destination: "/user/queue/notifications",
+      callback: onReceiveNotification,
     );
   }
 
-  // Receiver side
-  void onReceive(StompFrame frame) {
+  void onReceiveChatMessage(StompFrame frame) {
     var chatMessage = ChatMessageDto.fromJSON(jsonDecode(frame.body!));
     messages.add(chatMessage);
     notifyListeners();
   }
 
-  // Sender side
-  void send({
+  void onReceiveNotification(StompFrame frame) {
+    var notification = NotificationDto.fromJSON(jsonDecode(frame.body!));
+    notifications.add(notification);
+    notifyListeners();
+  }
+
+  void sendChatMessage({
     required String content,
     required int fromId,
     required String fromUsername,
@@ -74,9 +87,31 @@ class WebSocketProvider with ChangeNotifier {
     );
   }
 
-  void fetchMessages({required String tokenType, required String token, required int userId}) async {
+  Future<void> fetchMessages({required String tokenType, required String token, required int userId}) async {
     messages = await chatService.findAllMessagesByUser(tokenType: tokenType, token: token, userId: userId);
     notifyListeners();
+  }
+
+  Future<void> fetchNotifications({required String tokenType, required String token, required int userId}) async {
+    notifications = await notificationService.findAllNotificationsReceivedByUser(
+        tokenType: tokenType, token: token, userId: userId);
+    notifyListeners();
+  }
+
+  Future<void> markNotificationAsRead({
+    required String tokenType,
+    required String token,
+    required int userId,
+    required int notificationId,
+  }) async {
+    await notificationService.markAsRead(tokenType: tokenType, token: token, notificationId: notificationId);
+    await fetchNotifications(tokenType: tokenType, token: token, userId: userId);
+  }
+
+  Future<void> markAllNotificationsAsRead(
+      {required String tokenType, required String token, required int userId}) async {
+    await notificationService.markAllAsRead(tokenType: tokenType, token: token, userId: userId);
+    await fetchNotifications(tokenType: tokenType, token: token, userId: userId);
   }
 
   List<Conversation> messagesToConversations({required int requesterId, String? filterUsername}) {
@@ -133,5 +168,12 @@ class WebSocketProvider with ChangeNotifier {
 
   int unreadChatCount({required int requesterId}) {
     return messagesToConversations(requesterId: requesterId).length;
+  }
+
+  int unreadNotificationCount({required int requesterId}) {
+    return notifications
+        .where((notification) => (notification.toId == requesterId) && !notification.isRead!)
+        .toList()
+        .length;
   }
 }

@@ -80,7 +80,7 @@ class CustomBottomNavBar extends StatelessWidget {
               IconButtonWithCounter(
                 svgSrc: "assets/icons/notifications.svg",
                 color: MenuState.notifications == selectedMenu ? kPrimaryColor : kInactiveIconColor,
-                count: connectedUserProvider.notificationCount,
+                count: webSocketProvider.unreadNotificationCount(requesterId: connectedUserProvider.userId!),
                 press: () {
                   if (selectedMenu != MenuState.notifications) {
                     Navigator.pushNamed(context, NotificationsScreen.routeName);

@@ -49,7 +49,7 @@ class _BodyState extends State<Body> {
       requesterId: connectedUserProvider.userId!,
       correspondentUsername: widget.correspondentUsername,
     );
-    final messages = conversation.messages.reversed;
+    final messages = conversation.messages!.reversed;
     scrollDown(extra: 500);
 
     return SafeArea(
@@ -153,7 +153,7 @@ class _BodyState extends State<Body> {
                       final content = textEditingController.text.trim();
 
                       if (content.isNotEmpty) {
-                        webSocketProvider.send(
+                        webSocketProvider.sendChatMessage(
                           content: content,
                           fromId: connectedUserProvider.userId!,
                           fromUsername: connectedUserProvider.username!,
