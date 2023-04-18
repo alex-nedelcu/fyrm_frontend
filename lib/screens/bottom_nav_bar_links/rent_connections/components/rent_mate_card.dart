@@ -4,6 +4,7 @@ import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/providers/web_socket_provider.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat_detail/chat_detail_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:random_avatar/random_avatar.dart';
 
 import '../../../../helper/constants.dart';
 
@@ -21,8 +22,10 @@ class _RentMateCardState extends State<RentMateCard> {
 
   @override
   Widget build(BuildContext context) {
-    WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
-    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+    WebSocketProvider webSocketProvider =
+        Provider.of<WebSocketProvider>(context);
+    ConnectedUserProvider connectedUserProvider =
+        Provider.of<ConnectedUserProvider>(context);
 
     return InkWell(
       child: AnimatedContainer(
@@ -39,23 +42,10 @@ class _RentMateCardState extends State<RentMateCard> {
           children: [
             Transform.translate(
               offset: const Offset(0, -40),
-              child: AnimatedContainer(
-                duration: duration,
-                height: 70,
-                width: 70,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 5),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: const Offset(0, 15),
-                      blurRadius: 50,
-                      color: Colors.black.withOpacity(0.5),
-                    )
-                  ],
-                  image: const DecorationImage(
-                    image: AssetImage("assets/images/profile-image.png"),
-                  ),
+              child: CircleAvatar(
+                maxRadius: 35,
+                child: randomAvatar(
+                  widget.rentMate.userId.hashCode.toString(),
                 ),
               ),
             ),
@@ -66,20 +56,26 @@ class _RentMateCardState extends State<RentMateCard> {
                 children: [
                   Text(
                     widget.rentMate.username!,
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 18),
                   ),
                   const SizedBox(width: 10),
                   GestureDetector(
-                    child: const Icon(Icons.chat, color: kSecondaryColor, size: 30),
+                    child: const Icon(Icons.chat,
+                        color: kSecondaryColor, size: 30),
                     onTap: () {
                       Navigator.pushNamed(
                         context,
                         ChatDetailScreen.routeName,
                         arguments: ChatDetailScreenArguments(
-                          conversation: webSocketProvider.findConversationByCorrespondentId(
-                              correspondentId: widget.rentMate.userId!,
-                              correspondentUsername: widget.rentMate.username!,
-                              requesterId: connectedUserProvider.userId!),
+                          conversation: webSocketProvider
+                              .findConversationByCorrespondentId(
+                                  correspondentId: widget.rentMate.userId!,
+                                  correspondentUsername:
+                                      widget.rentMate.username!,
+                                  requesterId: connectedUserProvider.userId!),
                         ),
                       );
                     },
