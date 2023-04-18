@@ -67,7 +67,8 @@ class _SignInFormState extends State<SignInForm> {
           HomeScreen.routeName,
         );
         connectedUserProvider.connectedUserDetails = loginResponseDto;
-        webSocketProvider.initializeStompClient(loginResponseDto.tokenType!, loginResponseDto.token!);
+        webSocketProvider.initializeStompClient(
+            loginResponseDto.tokenType!, loginResponseDto.token!);
         await webSocketProvider.fetchMessages(
           userId: connectedUserProvider.userId!,
           token: connectedUserProvider.token!,
@@ -104,8 +105,10 @@ class _SignInFormState extends State<SignInForm> {
 
   @override
   Widget build(BuildContext context) {
-    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
-    WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
+    ConnectedUserProvider connectedUserProvider =
+        Provider.of<ConnectedUserProvider>(context);
+    WebSocketProvider webSocketProvider =
+        Provider.of<WebSocketProvider>(context);
 
     return Form(
       key: _formKey,
@@ -114,27 +117,22 @@ class _SignInFormState extends State<SignInForm> {
           buildUsernameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordField(),
-          if (errors.isNotEmpty) SizedBox(height: SizeConfiguration.screenHeight * 0.02),
+          if (errors.isNotEmpty)
+            SizedBox(height: SizeConfiguration.screenHeight * 0.02),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(15)),
           Row(
             children: [
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    remember = value;
-                  });
-                },
-              ),
-              const Text("Remember me"),
               const Spacer(),
               GestureDetector(
                 onTap: () => {
                   // TODO: handle change password
                 },
-                child: const Text("Reset password", style: TextStyle(decoration: TextDecoration.underline)),
+                child: const Text(
+                  "Reset password",
+                  style: TextStyle(
+                      fontSize: 15, decoration: TextDecoration.underline),
+                ),
               )
             ],
           ),
