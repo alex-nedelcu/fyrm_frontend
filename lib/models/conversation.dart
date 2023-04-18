@@ -7,7 +7,6 @@ class Conversation {
   String? preview;
   String? date;
   String? time;
-  String image;
 
   Conversation({
     required this.correspondentId,
@@ -16,6 +15,5 @@ class Conversation {
     this.preview,
     this.date,
     this.time,
-    this.image = "assets/images/profile-image.png",
   });
 }

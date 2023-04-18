@@ -14,24 +14,28 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
-    WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
+    ConnectedUserProvider connectedUserProvider =
+        Provider.of<ConnectedUserProvider>(context);
+    WebSocketProvider webSocketProvider =
+        Provider.of<WebSocketProvider>(context);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
-          const ProfilePicture(isUpdatable: true),
+          const ProfilePicture(),
           const SizedBox(height: 30),
           ProfileMenu(
             text: "My Profile",
             icon: "assets/icons/user-white.svg",
-            press: () => Navigator.pushNamed(context, MyProfileScreen.routeName),
+            press: () =>
+                Navigator.pushNamed(context, MyProfileScreen.routeName),
           ),
           ProfileMenu(
             text: "Manage Search Profiles",
             icon: "assets/icons/notifications.svg",
-            press: () => Navigator.pushNamed(context, SearchProfilesScreen.routeName),
+            press: () =>
+                Navigator.pushNamed(context, SearchProfilesScreen.routeName),
           ),
           ProfileMenu(
             text: "Statistics",

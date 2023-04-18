@@ -52,7 +52,6 @@ class HomeHeader extends StatelessWidget {
                   ProfilePicture(
                     height: 64,
                     width: 64,
-                    isUpdatable: false,
                     onProfilePicturePress: () {
                       Navigator.pushNamed(context, ProfileMenuScreen.routeName);
                     },

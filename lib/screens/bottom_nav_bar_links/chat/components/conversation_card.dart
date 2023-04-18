@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/models/conversation.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat_detail/chat_detail_screen.dart';
+import 'package:random_avatar/random_avatar.dart';
 
 class ConversationCard extends StatefulWidget {
   Conversation conversation;
@@ -25,11 +26,13 @@ class _ConversationCardState extends State<ConversationCard> {
         Navigator.pushNamed(
           context,
           ChatDetailScreen.routeName,
-          arguments: ChatDetailScreenArguments(conversation: widget.conversation),
+          arguments:
+              ChatDetailScreenArguments(conversation: widget.conversation),
         );
       },
       child: Container(
-        padding: const EdgeInsets.only(left: 16, right: 10, top: 10, bottom: 10),
+        padding:
+            const EdgeInsets.only(left: 16, right: 10, top: 10, bottom: 10),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -37,8 +40,10 @@ class _ConversationCardState extends State<ConversationCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   CircleAvatar(
-                    backgroundImage: AssetImage(widget.conversation.image),
                     maxRadius: 30,
+                    child: randomAvatar(
+                      widget.conversation.correspondentId.hashCode.toString(),
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -49,7 +54,8 @@ class _ConversationCardState extends State<ConversationCard> {
                         children: <Widget>[
                           Text(
                             widget.conversation.correspondentUsername,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             height: 4,
@@ -70,14 +76,20 @@ class _ConversationCardState extends State<ConversationCard> {
                     children: [
                       Text(
                         formatDate(widget.conversation.date!),
-                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kSecondaryColor),
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: kSecondaryColor),
                       ),
-                      if (belongsToCurrentYear(widget.conversation.date!)) const SizedBox(height: 6),
+                      if (belongsToCurrentYear(widget.conversation.date!))
+                        const SizedBox(height: 6),
                       if (belongsToCurrentYear(widget.conversation.date!))
                         Text(
                           widget.conversation.time!,
-                          style:
-                              const TextStyle(fontSize: 13, fontWeight: FontWeight.w300, color: kSecondaryColor),
+                          style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                              color: kSecondaryColor),
                         ),
                     ],
                   ),
