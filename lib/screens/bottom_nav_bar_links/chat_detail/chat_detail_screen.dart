@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:random_avatar/random_avatar.dart';
 
 import '../../../models/conversation.dart';
 import 'components/body.dart';
@@ -10,7 +11,8 @@ class ChatDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final arguments = ModalRoute.of(context)!.settings.arguments as ChatDetailScreenArguments;
+    final arguments =
+        ModalRoute.of(context)!.settings.arguments as ChatDetailScreenArguments;
     final conversation = arguments.conversation;
 
     return Scaffold(
@@ -34,8 +36,10 @@ class ChatDetailScreen extends StatelessWidget {
                 width: 2,
               ),
               CircleAvatar(
-                backgroundImage: AssetImage(conversation.image),
                 maxRadius: 25,
+                child: randomAvatar(
+                  conversation.correspondentId.hashCode.toString(),
+                ),
               ),
               const SizedBox(
                 width: 12,
@@ -47,7 +51,8 @@ class ChatDetailScreen extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       conversation.correspondentUsername,
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

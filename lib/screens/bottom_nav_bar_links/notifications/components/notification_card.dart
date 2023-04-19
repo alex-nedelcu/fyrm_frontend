@@ -6,6 +6,7 @@ import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/providers/web_socket_provider.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat_detail/chat_detail_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:random_avatar/random_avatar.dart';
 
 class NotificationCard extends StatefulWidget {
   NotificationDto notification;
@@ -19,8 +20,10 @@ class NotificationCard extends StatefulWidget {
 class _NotificationCardState extends State<NotificationCard> {
   @override
   Widget build(BuildContext context) {
-    WebSocketProvider webSocketProvider = Provider.of<WebSocketProvider>(context);
-    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+    WebSocketProvider webSocketProvider =
+        Provider.of<WebSocketProvider>(context);
+    ConnectedUserProvider connectedUserProvider =
+        Provider.of<ConnectedUserProvider>(context);
 
     return SafeArea(
         child: GestureDetector(
@@ -43,7 +46,7 @@ class _NotificationCardState extends State<NotificationCard> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
+        padding: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 20),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -52,17 +55,18 @@ class _NotificationCardState extends State<NotificationCard> {
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.only(left: 22, right: 28, top: 15, bottom: 8),
+                      padding: const EdgeInsets.only(
+                          left: 22, right: 28, top: 15, bottom: 8),
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(40),
-                          bottomLeft: Radius.circular(40),
-                          bottomRight: Radius.circular(5),
-                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(60),
+                          bottomLeft: Radius.circular(60),
+                          bottomRight: Radius.circular(0),
+                          topLeft: Radius.circular(0),
                         ),
                         color: widget.notification.isRead!
-                            ? kSecondaryColor.withOpacity(0.15)
-                            : kPrimaryColor.withOpacity(0.8),
+                            ? kSecondaryColor.withOpacity(0.2)
+                            : kPrimaryColor.withOpacity(0.95),
                       ),
                       child: Column(
                         children: [
@@ -71,23 +75,33 @@ class _NotificationCardState extends State<NotificationCard> {
                             style: TextStyle(
                               fontSize: 18,
                               color: widget.notification.isRead!
-                                  ? Colors.black.withOpacity(0.55)
+                                  ? Colors.black.withOpacity(0.65)
                                   : Colors.black.withOpacity(0.75),
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const SizedBox(height: 7),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              widget.notification.sentOnDayMonthYearFormat!,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: widget.notification.isRead!
-                                      ? kSecondaryColor
-                                      : Colors.black.withOpacity(0.45)),
-                            ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                widget.notification.sentOnDayMonthYearFormat!,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: widget.notification.isRead!
+                                        ? kSecondaryColor
+                                        : Colors.black.withOpacity(0.45)),
+                              ),
+                              const SizedBox(width: 5),
+                              CircleAvatar(
+                                maxRadius: 18,
+                                child: randomAvatar(
+                                  widget.notification.fromId.hashCode
+                                      .toString(),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

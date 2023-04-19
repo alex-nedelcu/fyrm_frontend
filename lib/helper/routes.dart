@@ -14,6 +14,7 @@ import 'package:fyrm_frontend/screens/profile_links/my_profile/my_profile_screen
 import 'package:fyrm_frontend/screens/profile_links/profile_menu/profile_menu_screen.dart';
 import 'package:fyrm_frontend/screens/profile_links/search_profile_list/search_profile_list_screen.dart';
 import 'package:fyrm_frontend/screens/profile_links/search_profiles/search_profiles_screen.dart';
+import 'package:fyrm_frontend/screens/profile_links/statistics/statistics_screen.dart';
 import 'package:fyrm_frontend/screens/splash/splash_screen.dart';
 
 final Map<String, WidgetBuilder> routes = {
@@ -21,16 +22,21 @@ final Map<String, WidgetBuilder> routes = {
   SignInScreen.routeName: (context) => const SignInScreen(),
   SignUpScreen.routeName: (context) => const SignUpScreen(),
   OtpScreen.routeName: (context) => const OtpScreen(),
-  AccountConfirmationSuccessScreen.routeName: (context) => const AccountConfirmationSuccessScreen(),
+  AccountConfirmationSuccessScreen.routeName: (context) =>
+      const AccountConfirmationSuccessScreen(),
   ProfileMenuScreen.routeName: (context) => const ProfileMenuScreen(),
   MyProfileScreen.routeName: (context) => const MyProfileScreen(),
   SearchProfilesScreen.routeName: (context) => const SearchProfilesScreen(),
-  ManageSearchProfileScreen.routeName: (context) => const ManageSearchProfileScreen(),
-  SearchProfileListScreen.routeName: (context) => const SearchProfileListScreen(),
+  ManageSearchProfileScreen.routeName: (context) =>
+      const ManageSearchProfileScreen(),
+  SearchProfileListScreen.routeName: (context) =>
+      const SearchProfileListScreen(),
   HomeScreen.routeName: (context) => const HomeScreen(),
   RentConnectionsScreen.routeName: (context) => const RentConnectionsScreen(),
-  FinaliseRentConnectionSuccessScreen.routeName: (context) => const FinaliseRentConnectionSuccessScreen(),
+  FinaliseRentConnectionSuccessScreen.routeName: (context) =>
+      const FinaliseRentConnectionSuccessScreen(),
   ChatScreen.routeName: (context) => const ChatScreen(),
   NotificationsScreen.routeName: (context) => const NotificationsScreen(),
   ChatDetailScreen.routeName: (context) => const ChatDetailScreen(),
+  StatisticsScreen.routeName: (context) => const StatisticsScreen(),
 };

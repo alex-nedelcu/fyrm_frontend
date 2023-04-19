@@ -26,6 +26,8 @@ dependencies:
   syncfusion_flutter_sliders: ^20.4.43
   multi_select_flutter: ^4.1.3
   stomp_dart_client: ^0.4.4
+  random_avatar: ^0.0.7
+  animated_digit: ^3.2.1
 
 dev_dependencies:
   flutter_test:
