@@ -4,6 +4,7 @@ import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/providers/rent_connections_provider.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/rent_connections/components/proposed_rent_mates_list.dart';
+import 'package:fyrm_frontend/screens/bottom_nav_bar_links/rent_connections/rent_connections_screen.dart';
 import 'package:provider/provider.dart';
 
 class MustWait extends StatefulWidget {
@@ -82,15 +83,48 @@ class _MustWaitState extends State<MustWait> {
     return TweenAnimationBuilder(
       tween: Tween(begin: minutesToWait.toDouble(), end: 0.0),
       duration: Duration(minutes: minutesToWait.toInt()),
-      builder: (_, dynamic value, child) => Text(
-        "You can find below your latest rent connection details. You need to wait ${value.toInt()} more minutes until you can initiate a new one",
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: getProportionateScreenWidth(17),
-          fontWeight: FontWeight.bold,
-        ),
-        textAlign: TextAlign.center,
-      ),
+      builder: (_, dynamic value, child) {
+        if (value as double <= 0) {
+          return Column(
+            children: [
+              Text(
+                "The time limit for creating a new rent connection has expired. Please refresh the page to progress further.",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: getProportionateScreenWidth(17),
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, RentConnectionsScreen.routeName);
+                },
+                child: const Text(
+                  "Refresh",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+
+        return Text(
+          "You can find below your latest rent connection details. Please wait ${value.toInt() + 1} minute${(value.toInt() + 1) == 1 ? "" : "s"} until you can initiate a new one.",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: getProportionateScreenWidth(17),
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        );
+      },
     );
   }
 }
