@@ -30,7 +30,7 @@ class _MustWaitState extends State<MustWait> {
             buildGreeting(username: connectedUserProvider.username!),
             SizedBox(height: SizeConfiguration.screenHeight * 0.02),
             buildInformativeText(
-                hoursToWait: rentConnectionsProvider
+                minutesToWait: rentConnectionsProvider
                     .latestInitiatorStatus.minutesToWait!),
             SizedBox(height: SizeConfiguration.screenHeight * 0.02),
             ProposedRentMatesList(
@@ -78,15 +78,18 @@ class _MustWaitState extends State<MustWait> {
     );
   }
 
-  Widget buildInformativeText({required num hoursToWait}) {
-    return Text(
-      "You can find below your latest rent connection details. "
-      "Please wait $hoursToWait more hours until you can initiate a new one.",
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: getProportionateScreenWidth(17),
-        fontWeight: FontWeight.bold,
+  Widget buildInformativeText({required num minutesToWait}) {
+    return TweenAnimationBuilder(
+      tween: Tween(begin: minutesToWait.toDouble(), end: 0.0),
+      duration: Duration(minutes: minutesToWait.toInt()),
+      builder: (_, dynamic value, child) => Text(
+        "You can find below your latest rent connection details. You need to wait ${value.toInt()} more minutes until you can initiate a new one",
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: getProportionateScreenWidth(17),
+          fontWeight: FontWeight.bold,
+        ),
+        textAlign: TextAlign.center,
       ),
     );
   }
