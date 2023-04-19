@@ -4,52 +4,48 @@ import 'package:fyrm_frontend/api/rent_connections/dto/rent_mate_proposal_dto.da
 
 class InitiatorStatusDto {
   late InitiatorStatusEnum? status;
-  late num? hoursToWait;
+  late num? minutesToWait;
   late ActiveRentConnectionDto? activeRentConnection;
   late RentMateProposalDto? rentMateProposal;
 
   InitiatorStatusDto(
       {required this.status,
-      required this.hoursToWait,
+      required this.minutesToWait,
       required this.activeRentConnection,
       required this.rentMateProposal});
 
   Map<String, Object?> toJSON() => {
         statusJsonField: status?.id,
-        hoursToWaitJsonField: hoursToWait,
+        minutesToWaitJsonField: minutesToWait,
         activeRentConnectionJsonField: activeRentConnection?.toJSON(),
         rentMateProposalJsonField: rentMateProposal?.toJSON(),
       };
 
-  InitiatorStatusDto copy({
-    InitiatorStatusEnum? status,
-    num? hoursToWait,
-    ActiveRentConnectionDto? activeRentConnection,
-    RentMateProposalDto? rentMateProposal,
-  }) =>
-      InitiatorStatusDto(
-        status: status ?? this.status,
-        hoursToWait: hoursToWait ?? this.hoursToWait,
-        activeRentConnection: activeRentConnection ?? this.activeRentConnection,
-        rentMateProposal: rentMateProposal ?? this.rentMateProposal,
-      );
-
   static InitiatorStatusDto fromJSON(dynamic json) => InitiatorStatusDto(
-        status: InitiatorStatusEnum.findByValue(json[statusJsonField] as String),
-        hoursToWait: json[hoursToWaitJsonField] as num?,
-        activeRentConnection: toActiveRentConnectionDtoOrElseNull(json[activeRentConnectionJsonField]),
-        rentMateProposal: toRentMateProposalDtoOrElseNull(json[rentMateProposalJsonField]),
+        status:
+            InitiatorStatusEnum.findByValue(json[statusJsonField] as String),
+        minutesToWait: json[minutesToWaitJsonField] as num?,
+        activeRentConnection: toActiveRentConnectionDtoOrElseNull(
+            json[activeRentConnectionJsonField]),
+        rentMateProposal:
+            toRentMateProposalDtoOrElseNull(json[rentMateProposalJsonField]),
       );
 
-  static ActiveRentConnectionDto? toActiveRentConnectionDtoOrElseNull(dynamic valueFromJson) =>
-      valueFromJson == null ? null : ActiveRentConnectionDto.fromJSON(valueFromJson);
+  static ActiveRentConnectionDto? toActiveRentConnectionDtoOrElseNull(
+          dynamic valueFromJson) =>
+      valueFromJson == null
+          ? null
+          : ActiveRentConnectionDto.fromJSON(valueFromJson);
 
-  static RentMateProposalDto? toRentMateProposalDtoOrElseNull(dynamic valueFromJson) =>
-      valueFromJson == null ? null : RentMateProposalDto.fromJSON(valueFromJson);
+  static RentMateProposalDto? toRentMateProposalDtoOrElseNull(
+          dynamic valueFromJson) =>
+      valueFromJson == null
+          ? null
+          : RentMateProposalDto.fromJSON(valueFromJson);
 
   static String get statusJsonField => "initiatorStatus";
 
-  static String get hoursToWaitJsonField => "hoursToWait";
+  static String get minutesToWaitJsonField => "minutesToWait";
 
   static String get activeRentConnectionJsonField => "activeRentConnection";
 

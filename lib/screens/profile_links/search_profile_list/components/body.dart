@@ -14,7 +14,8 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SearchProfileProvider searchProfileProvider = Provider.of<SearchProfileProvider>(context);
+    SearchProfileProvider searchProfileProvider =
+        Provider.of<SearchProfileProvider>(context);
 
     return SafeArea(
       child: searchProfileProvider.loading
@@ -23,15 +24,14 @@ class Body extends StatelessWidget {
     );
   }
 
-  Widget buildSearchProfileList(SearchProfileProvider searchProfileProvider, BuildContext context) {
+  Widget buildSearchProfileList(
+      SearchProfileProvider searchProfileProvider, BuildContext context) {
     return searchProfileProvider.searchProfiles.isNotEmpty
         ? SizedBox(
             height: SizeConfiguration.screenHeight,
             child: Column(
               children: <Widget>[
-                SizedBox(
-                  height: getProportionateScreenHeight(20),
-                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
                 Expanded(
                   child: Stack(
                     children: <Widget>[
@@ -48,7 +48,8 @@ class Body extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         itemCount: searchProfileProvider.searchProfiles.length,
                         itemBuilder: (context, index) => SearchProfileCard(
-                          searchProfile: searchProfileProvider.searchProfiles[index],
+                          searchProfile:
+                              searchProfileProvider.searchProfiles[index],
                           index: index + 1,
                         ),
                       )
@@ -79,7 +80,8 @@ class Body extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         ManageSearchProfileScreen.routeName,
-                        arguments: ManageSearchProfileScreenArguments(isCreate: true),
+                        arguments:
+                            ManageSearchProfileScreenArguments(isCreate: true),
                       );
                     },
                   ),

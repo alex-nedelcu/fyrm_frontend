@@ -44,37 +44,39 @@ class _BodyState extends State<Body> {
   Widget buildStatisticsBars(UserStatisticsDto statistics) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 35),
-      child: SizedBox(
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Text(
-              "Summary of your activity so far",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
+      child: SingleChildScrollView(
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Text(
+                "Summary of your activity so far",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            const SizedBox(height: 60),
-            StatisticsBar(
-              text: "How many users you have chatted with",
-              icon: Icons.mark_unread_chat_alt_outlined,
-              value: statistics.chattedWithUsers!.length,
-            ),
-            StatisticsBar(
-              text: "How many rent mates were suggested to you",
-              icon: Icons.people_alt,
-              value: statistics.suggestedUsers!.length,
-            ),
-            StatisticsBar(
-              text: "How many times you were suggested to others",
-              icon: Icons.autorenew_outlined,
-              value: statistics.suggestedToUsers!.length,
-            ),
-          ],
+              const SizedBox(height: 50),
+              StatisticsBar(
+                text: "How many users you have chatted with",
+                icon: Icons.mark_unread_chat_alt_outlined,
+                value: statistics.chattedWithUsers!.length,
+              ),
+              StatisticsBar(
+                text: "How many rent mates were suggested to you",
+                icon: Icons.people_alt,
+                value: statistics.suggestedUsers!.length,
+              ),
+              StatisticsBar(
+                text: "How many times you were suggested to others",
+                icon: Icons.autorenew_outlined,
+                value: statistics.suggestedToUsers!.length,
+              ),
+            ],
+          ),
         ),
       ),
     );
