@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/authentication/authentication_service.dart';
 import 'package:fyrm_frontend/api/authentication/dto/login_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
-import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
+import 'package:fyrm_frontend/components/custom_suffix_icon_as_image.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
 import 'package:fyrm_frontend/helper/constants.dart';

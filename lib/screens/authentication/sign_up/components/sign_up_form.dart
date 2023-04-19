@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/authentication/authentication_service.dart';
 import 'package:fyrm_frontend/api/authentication/dto/signup_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
-import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
+import 'package:fyrm_frontend/components/custom_suffix_icon_as_image.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
@@ -24,7 +24,11 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   bool isToastShown = false;
   String? username;
+  String? firstName;
+  String? lastName;
   String? email;
+  int? birthYear;
+  String? gender;
   String? password;
   String? passwordConfirmation;
   String? role = "ROLE_USER";
@@ -55,6 +59,10 @@ class _SignUpFormState extends State<SignUpForm> {
         email: email!,
         password: password!,
         role: role!,
+        birthYear: birthYear!,
+        firstName: firstName!,
+        lastName: lastName!,
+        gender: gender!,
       );
       int statusCode = signupResponseDto.statusCode;
       String? optionalMessage = signupResponseDto.message;
@@ -97,12 +105,21 @@ class _SignUpFormState extends State<SignUpForm> {
         children: [
           buildUsernameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
+          buildFirstNameField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildLastNameField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildBirthDateField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildUserGenderField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
           buildEmailField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordConfirmationField(),
-          if (errors.isNotEmpty) SizedBox(height: SizeConfiguration.screenHeight * 0.02),
+          if (errors.isNotEmpty)
+            SizedBox(height: SizeConfiguration.screenHeight * 0.02),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
@@ -111,6 +128,170 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
         ],
       ),
+    );
+  }
+
+  TextFormField buildFirstNameField() {
+    return TextFormField(
+      autocorrect: false,
+      keyboardType: TextInputType.text,
+      onSaved: (value) => firstName = value,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kMissingFirstNameError);
+        } else {
+          addError(error: kMissingFirstNameError);
+        }
+
+        if (firstNameValidatorRegExp.hasMatch(value)) {
+          removeError(error: kInvalidFirstNameError);
+        } else {
+          addError(error: kInvalidFirstNameError);
+        }
+
+        firstName = value;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kMissingFirstNameError);
+        }
+
+        if (!firstNameValidatorRegExp.hasMatch(value)) {
+          addError(error: kInvalidFirstNameError);
+        }
+
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: "First name",
+        hintText: "Enter your first name",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/user-grey.svg"),
+      ),
+    );
+  }
+
+  TextFormField buildLastNameField() {
+    return TextFormField(
+      autocorrect: false,
+      keyboardType: TextInputType.text,
+      onSaved: (value) => lastName = value,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kMissingLastNameError);
+        } else {
+          addError(error: kMissingLastNameError);
+        }
+
+        if (lastNameValidatorRegExp.hasMatch(value)) {
+          removeError(error: kInvalidLastNameError);
+        } else {
+          addError(error: kInvalidLastNameError);
+        }
+
+        lastName = value;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kMissingLastNameError);
+        }
+
+        if (!lastNameValidatorRegExp.hasMatch(value)) {
+          addError(error: kInvalidLastNameError);
+        }
+
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: "Last name",
+        hintText: "Enter your last name",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/user-grey.svg"),
+      ),
+    );
+  }
+
+  DropdownButtonFormField<String> buildUserGenderField() {
+    return DropdownButtonFormField(
+      value: gender,
+      validator: (value) {
+        if (value == null) {
+          addError(error: kMissingGenderError);
+        }
+
+        return null;
+      },
+      menuMaxHeight: 150,
+      decoration: const InputDecoration(
+        labelText: "Gender",
+        hintText: "Select your gender",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSuffixIcon(
+          svgIcon: "assets/icons/lightning.svg",
+          color: kSecondaryColor,
+        ),
+      ),
+      items: const [
+        DropdownMenuItem(value: "male", child: Text("male")),
+        DropdownMenuItem(value: "female", child: Text("female"))
+      ],
+      onSaved: (value) => gender = value,
+      onChanged: (value) {
+        if (value != null) {
+          removeError(error: kMissingGenderError);
+        } else {
+          addError(error: kMissingGenderError);
+        }
+
+        gender = value;
+      },
+    );
+  }
+
+  DropdownButtonFormField<int> buildBirthDateField() {
+    return DropdownButtonFormField(
+      value: birthYear,
+      validator: (value) {
+        if (value == null) {
+          addError(error: kMissingBirthYearError);
+        }
+
+        return null;
+      },
+      menuMaxHeight: 300,
+      decoration: const InputDecoration(
+        labelText: "Birth year",
+        hintText: "Select your birth year",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSuffixIcon(
+          svgIcon: "assets/icons/gift.svg",
+          color: kSecondaryColor,
+        ),
+      ),
+      items: List.generate(
+        DateTime.now().year - 1900 + 1,
+        (index) {
+          var year = DateTime.now().year - index;
+
+          return DropdownMenuItem(
+            alignment: Alignment.center,
+            value: year,
+            child: Text(
+              year.toString(),
+            ),
+          );
+        },
+      ),
+      onSaved: (value) => birthYear = value,
+      onChanged: (value) {
+        if (value != null) {
+          removeError(error: kMissingBirthYearError);
+        } else {
+          addError(error: kMissingBirthYearError);
+        }
+
+        birthYear = value;
+      },
     );
   }
 

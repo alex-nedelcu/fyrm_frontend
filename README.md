@@ -14,3 +14,11 @@ Follow [this tutorial](https://medium.com/front-end-weekly/how-to-test-your-flut
     ```shell
     ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -1
     ```
+
+#### TODO
+- provide a link to supported domains page
+- add to sign up form:
+  - date picker for `birthdate`
+  - `gender` picker
+  - `first name` text input
+  - `last name` text input

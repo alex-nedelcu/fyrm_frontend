@@ -16,16 +16,33 @@ class AuthenticationService {
     required String email,
     required String password,
     required String role,
+    required int birthYear,
+    required String firstName,
+    required String lastName,
+    required String gender,
   }) async {
-    SignupRequestDto signupRequestDto =
-        SignupRequestDto(username: username, email: email, password: password, role: role);
+    SignupRequestDto signupRequestDto = SignupRequestDto(
+      username: username,
+      email: email,
+      password: password,
+      role: role,
+      birthYear: birthYear,
+      firstName: firstName,
+      lastName: lastName,
+      gender: gender,
+    );
 
-    http.Response response = await authenticationApi.signup(signupRequestDto: signupRequestDto);
+    http.Response response = await authenticationApi.signup(
+      signupRequestDto: signupRequestDto,
+    );
     final decodedResponse = jsonDecode(response.body);
     return _buildSignupResponse(response.statusCode, decodedResponse);
   }
 
-  SignupResponseDto _buildSignupResponse(int statusCode, dynamic decodedResponse) {
+  SignupResponseDto _buildSignupResponse(
+    int statusCode,
+    dynamic decodedResponse,
+  ) {
     SignupResponseDto signupResponseDto;
 
     if (ApiHelper.isSuccess(statusCode)) {
@@ -36,16 +53,20 @@ class AuthenticationService {
         statusCode: statusCode,
       );
     } else {
-      List<dynamic>? errors = decodedResponse[SignupResponseDto.errorMessagesJsonField] as List<dynamic>?;
+      List<dynamic>? errors =
+          decodedResponse[SignupResponseDto.errorMessagesJsonField]
+              as List<dynamic>?;
       String? displayedError = errors?.first as String?;
 
-      signupResponseDto = SignupResponseDto(statusCode: statusCode, message: displayedError);
+      signupResponseDto =
+          SignupResponseDto(statusCode: statusCode, message: displayedError);
     }
 
     return signupResponseDto;
   }
 
-  Future<int> confirmAccount({required int userId, required String confirmationCode}) async {
+  Future<int> confirmAccount(
+      {required int userId, required String confirmationCode}) async {
     http.Response response = await authenticationApi.confirmAccount(
       userId: userId,
       confirmationCode: confirmationCode,
@@ -54,39 +75,54 @@ class AuthenticationService {
   }
 
   Future<int> resendConfirmationCode({required int userId}) async {
-    http.Response response = await authenticationApi.resendConfirmationCode(userId: userId);
+    http.Response response =
+        await authenticationApi.resendConfirmationCode(userId: userId);
     return response.statusCode;
   }
 
-  Future<LoginResponseDto> login({required String username, required String password}) async {
-    LoginRequestDto loginRequestDto = LoginRequestDto(username: username, password: password);
+  Future<LoginResponseDto> login(
+      {required String username, required String password}) async {
+    LoginRequestDto loginRequestDto =
+        LoginRequestDto(username: username, password: password);
 
-    http.Response response = await authenticationApi.login(loginRequestDto: loginRequestDto);
+    http.Response response =
+        await authenticationApi.login(loginRequestDto: loginRequestDto);
     final decodedResponse = jsonDecode(response.body);
     return _buildLoginResponse(response.statusCode, decodedResponse);
   }
 
-  LoginResponseDto _buildLoginResponse(int statusCode, dynamic decodedResponse) {
+  LoginResponseDto _buildLoginResponse(
+      int statusCode, dynamic decodedResponse) {
     LoginResponseDto loginResponseDto;
 
     if (ApiHelper.isSuccess(statusCode)) {
       loginResponseDto = LoginResponseDto(
         userId: decodedResponse[LoginResponseDto.userIdJsonField] as int,
         token: decodedResponse[LoginResponseDto.tokenJsonField] as String,
-        tokenType: decodedResponse[LoginResponseDto.tokenTypeJsonField] as String,
+        tokenType:
+            decodedResponse[LoginResponseDto.tokenTypeJsonField] as String,
         email: decodedResponse[LoginResponseDto.emailJsonField] as String,
+        firstName:
+            decodedResponse[LoginResponseDto.firstNameJsonField] as String,
+        lastName: decodedResponse[LoginResponseDto.lastNameJsonField] as String,
+        gender: decodedResponse[LoginResponseDto.genderJsonField] as String,
         username: decodedResponse[LoginResponseDto.usernameJsonField] as String,
         role: decodedResponse[LoginResponseDto.roleJsonField] as String,
-        description: decodedResponse[LoginResponseDto.descriptionJsonField] as String?,
-        isSearching: decodedResponse[LoginResponseDto.isSearchingJsonField] as bool,
-        birthDate: decodedResponse[LoginResponseDto.birthDateJsonField] as String,
+        description:
+            decodedResponse[LoginResponseDto.descriptionJsonField] as String?,
+        isSearching:
+            decodedResponse[LoginResponseDto.isSearchingJsonField] as bool,
+        birthYear: decodedResponse[LoginResponseDto.birthYearJsonField] as int,
         statusCode: statusCode,
       );
     } else {
-      List<dynamic>? errors = decodedResponse[LoginResponseDto.errorMessagesJsonField] as List<dynamic>?;
+      List<dynamic>? errors =
+          decodedResponse[LoginResponseDto.errorMessagesJsonField]
+              as List<dynamic>?;
       String? displayedError = errors?.first as String?;
 
-      loginResponseDto = LoginResponseDto(statusCode: statusCode, message: displayedError);
+      loginResponseDto =
+          LoginResponseDto(statusCode: statusCode, message: displayedError);
     }
 
     return loginResponseDto;

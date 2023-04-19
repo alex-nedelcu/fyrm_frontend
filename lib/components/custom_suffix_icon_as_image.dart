@@ -6,9 +6,11 @@ class CustomSuffixIcon extends StatelessWidget {
   const CustomSuffixIcon({
     Key? key,
     required this.svgIcon,
+    this.color,
   }) : super(key: key);
 
   final String svgIcon;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class CustomSuffixIcon extends StatelessWidget {
       child: SvgPicture.asset(
         svgIcon,
         height: getProportionateScreenWidth(18),
+        color: color,
       ),
     );
   }

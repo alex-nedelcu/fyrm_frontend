@@ -13,18 +13,19 @@ class Body extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: SizeConfiguration.screenHeight * 0.04),
+                SizedBox(height: SizeConfiguration.screenHeight * 0.02),
                 Text("Register account", style: headingStyle),
                 Text(
                   "Use your official student email address",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                SizedBox(height: SizeConfiguration.screenHeight * 0.08),
+                SizedBox(height: SizeConfiguration.screenHeight * 0.06),
                 const SignUpForm(),
                 SizedBox(height: SizeConfiguration.screenHeight * 0.04),
                 Text(
