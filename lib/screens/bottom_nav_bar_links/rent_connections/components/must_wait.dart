@@ -16,8 +16,10 @@ class MustWait extends StatefulWidget {
 class _MustWaitState extends State<MustWait> {
   @override
   Widget build(BuildContext context) {
-    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
-    RentConnectionsProvider rentConnectionsProvider = Provider.of<RentConnectionsProvider>(context);
+    ConnectedUserProvider connectedUserProvider =
+        Provider.of<ConnectedUserProvider>(context);
+    RentConnectionsProvider rentConnectionsProvider =
+        Provider.of<RentConnectionsProvider>(context);
 
     return SafeArea(
       child: Padding(
@@ -27,10 +29,14 @@ class _MustWaitState extends State<MustWait> {
             SizedBox(height: SizeConfiguration.screenHeight * 0.04),
             buildGreeting(username: connectedUserProvider.username!),
             SizedBox(height: SizeConfiguration.screenHeight * 0.02),
-            buildInformativeText(hoursToWait: rentConnectionsProvider.latestInitiatorStatus.hoursToWait!),
+            buildInformativeText(
+                hoursToWait: rentConnectionsProvider
+                    .latestInitiatorStatus.minutesToWait!),
             SizedBox(height: SizeConfiguration.screenHeight * 0.02),
             ProposedRentMatesList(
-              rentMates: rentConnectionsProvider.latestInitiatorStatus.rentMateProposal?.proposedRentMates ?? [],
+              rentMates: rentConnectionsProvider.latestInitiatorStatus
+                      .rentMateProposal?.proposedRentMates ??
+                  [],
             ),
             SizedBox(height: SizeConfiguration.screenHeight * 0.04),
           ],
