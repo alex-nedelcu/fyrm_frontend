@@ -15,7 +15,8 @@ final RegExp firstNameValidatorRegExp = RegExp(r"^[a-zA-Z]{1,128}$");
 final RegExp lastNameValidatorRegExp = RegExp(r"^[a-zA-Z]{1,128}$");
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-final RegExp passwordValidatorRegExp =
+final RegExp weakPasswordValidatorRegExp = RegExp(r"^[a-zA-Z]{3,128}$");
+final RegExp strongPasswordValidatorRegExp =
     RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
 
 // API error handling
@@ -53,12 +54,16 @@ Color kFailureColor = Colors.red.shade500;
 
 // Form error messages
 const String kMissingBirthYearError = "Please fill in your birth year!";
+const String kMissingUsernameError = "Please fill in your username!";
+const String kMissingPasswordError = "Please fill in your password!";
 const String kMissingGenderError = "Please fill in your gender!";
 const String kInvalidUsernameError = "Username format is invalid!";
 const String kInvalidFirstNameError = "First name is invalid!";
 const String kInvalidLastNameError = "Last name is invalid!";
 const String kInvalidEmailError = "Email format is invalid!";
 const String kInvalidPasswordError = "Password format is invalid!";
+const String kMissingPasswordConfirmationError =
+    "Please fill in your password confirmation";
 const String kNotMatchingPasswords = "Password and confirmation are different!";
 
 // Design

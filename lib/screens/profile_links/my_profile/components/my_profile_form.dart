@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fyrm_frontend/api/user/user_service.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/components/custom_suffix_icon_as_image.dart';
@@ -89,12 +88,14 @@ class _MyProfileFormState extends State<MyProfileForm> {
             content: connectedUserProvider.birthYear!.toString(),
             label: "Birth year",
             svgIcon: "assets/icons/gift.svg",
+            color: kSecondaryColor,
           ),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildReadOnlyField(
             content: connectedUserProvider.gender!,
             label: "Gender",
             svgIcon: "assets/icons/lightning.svg",
+            color: kSecondaryColor,
           ),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildReadOnlyField(
@@ -123,6 +124,7 @@ class _MyProfileFormState extends State<MyProfileForm> {
     required String content,
     required String label,
     required String svgIcon,
+    Color? color,
   }) {
     return TextFormField(
       keyboardType: TextInputType.text,
@@ -130,9 +132,13 @@ class _MyProfileFormState extends State<MyProfileForm> {
       readOnly: true,
       enabled: false,
       decoration: InputDecoration(
+        floatingLabelStyle: const TextStyle(color: kPrimaryColor),
         labelText: label,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSuffixIcon(svgIcon: svgIcon),
+        suffixIcon: CustomSuffixIcon(
+          svgIcon: svgIcon,
+          color: color,
+        ),
       ),
     );
   }
@@ -149,6 +155,7 @@ class _MyProfileFormState extends State<MyProfileForm> {
       maxLength: 180,
       maxLines: 5,
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Description",
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),

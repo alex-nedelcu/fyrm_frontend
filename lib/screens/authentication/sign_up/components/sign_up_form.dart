@@ -138,9 +138,9 @@ class _SignUpFormState extends State<SignUpForm> {
       onSaved: (value) => firstName = value,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kMissingFirstNameError);
+          removeError(error: kInvalidFirstNameError);
         } else {
-          addError(error: kMissingFirstNameError);
+          addError(error: kInvalidFirstNameError);
         }
 
         if (firstNameValidatorRegExp.hasMatch(value)) {
@@ -153,7 +153,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kMissingFirstNameError);
+          addError(error: kInvalidFirstNameError);
         }
 
         if (!firstNameValidatorRegExp.hasMatch(value)) {
@@ -163,6 +163,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "First name",
         hintText: "Enter your first name",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -178,9 +179,9 @@ class _SignUpFormState extends State<SignUpForm> {
       onSaved: (value) => lastName = value,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kMissingLastNameError);
+          removeError(error: kInvalidLastNameError);
         } else {
-          addError(error: kMissingLastNameError);
+          addError(error: kInvalidLastNameError);
         }
 
         if (lastNameValidatorRegExp.hasMatch(value)) {
@@ -193,7 +194,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kMissingLastNameError);
+          addError(error: kInvalidLastNameError);
         }
 
         if (!lastNameValidatorRegExp.hasMatch(value)) {
@@ -203,6 +204,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Last name",
         hintText: "Enter your last name",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -213,6 +215,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
   DropdownButtonFormField<String> buildUserGenderField() {
     return DropdownButtonFormField(
+      isExpanded: false,
+      iconSize: 0,
       value: gender,
       validator: (value) {
         if (value == null) {
@@ -223,6 +227,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       menuMaxHeight: 150,
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Gender",
         hintText: "Select your gender",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -250,6 +255,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   DropdownButtonFormField<int> buildBirthDateField() {
     return DropdownButtonFormField(
+      iconSize: 0,
       value: birthYear,
       validator: (value) {
         if (value == null) {
@@ -260,6 +266,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       menuMaxHeight: 300,
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Birth year",
         hintText: "Select your birth year",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -302,9 +309,9 @@ class _SignUpFormState extends State<SignUpForm> {
       onSaved: (value) => username = value,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kMissingUsernameError);
+          removeError(error: kInvalidUsernameError);
         } else {
-          addError(error: kMissingUsernameError);
+          addError(error: kInvalidUsernameError);
         }
 
         if (usernameValidatorRegExp.hasMatch(value)) {
@@ -317,7 +324,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kMissingUsernameError);
+          addError(error: kInvalidUsernameError);
         }
 
         if (!usernameValidatorRegExp.hasMatch(value)) {
@@ -327,6 +334,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Username",
         hintText: "Enter your username",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -342,9 +350,9 @@ class _SignUpFormState extends State<SignUpForm> {
       onSaved: (value) => email = value,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kMissingEmailError);
+          removeError(error: kInvalidEmailError);
         } else {
-          addError(error: kMissingEmailError);
+          addError(error: kInvalidEmailError);
         }
 
         if (emailValidatorRegExp.hasMatch(value)) {
@@ -357,7 +365,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kMissingEmailError);
+          addError(error: kInvalidEmailError);
         }
 
         if (!emailValidatorRegExp.hasMatch(value)) {
@@ -367,6 +375,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Email",
         hintText: "Enter your email",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -382,12 +391,12 @@ class _SignUpFormState extends State<SignUpForm> {
       onSaved: (value) => password = value,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kMissingPasswordError);
+          removeError(error: kInvalidPasswordError);
         } else {
-          addError(error: kMissingPasswordError);
+          addError(error: kInvalidPasswordError);
         }
 
-        if (passwordValidatorRegExp.hasMatch(value)) {
+        if (weakPasswordValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidPasswordError);
         } else {
           addError(error: kInvalidPasswordError);
@@ -397,16 +406,17 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kMissingPasswordError);
+          addError(error: kInvalidPasswordError);
         }
 
-        if (!passwordValidatorRegExp.hasMatch(value)) {
+        if (!weakPasswordValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidPasswordError);
         }
 
         return null;
       },
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Password",
         hintText: "Enter your password",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -447,6 +457,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Password Confirmation",
         hintText: "Re-enter your password",
         floatingLabelBehavior: FloatingLabelBehavior.always,
