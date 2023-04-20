@@ -135,7 +135,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       autocorrect: false,
       keyboardType: TextInputType.text,
-      onSaved: (value) => firstName = value,
+      onSaved: (value) => firstName = value?.trim(),
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kInvalidFirstNameError);
@@ -149,7 +149,7 @@ class _SignUpFormState extends State<SignUpForm> {
           addError(error: kInvalidFirstNameError);
         }
 
-        firstName = value;
+        firstName = value.trim();
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -176,7 +176,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       autocorrect: false,
       keyboardType: TextInputType.text,
-      onSaved: (value) => lastName = value,
+      onSaved: (value) => lastName = value?.trim(),
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kInvalidLastNameError);
@@ -190,7 +190,7 @@ class _SignUpFormState extends State<SignUpForm> {
           addError(error: kInvalidLastNameError);
         }
 
-        lastName = value;
+        lastName = value.trim();
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -306,7 +306,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       autocorrect: false,
       keyboardType: TextInputType.text,
-      onSaved: (value) => username = value,
+      onSaved: (value) => username = value?.trim(),
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kInvalidUsernameError);
@@ -320,7 +320,7 @@ class _SignUpFormState extends State<SignUpForm> {
           addError(error: kInvalidUsernameError);
         }
 
-        username = value;
+        username = value.trim();
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -347,7 +347,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       autocorrect: false,
       keyboardType: TextInputType.emailAddress,
-      onSaved: (value) => email = value,
+      onSaved: (value) => email = value?.trim(),
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kInvalidEmailError);
@@ -361,7 +361,7 @@ class _SignUpFormState extends State<SignUpForm> {
           addError(error: kInvalidEmailError);
         }
 
-        email = value;
+        email = value.trim();
       },
       validator: (value) {
         if (value!.isEmpty) {

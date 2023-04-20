@@ -11,8 +11,8 @@ const int kDefaultProposalSize = 2;
 // Regular expressions validators
 final RegExp usernameValidatorRegExp =
     RegExp(r"^(?=[a-zA-Z0-9._]{3,32}$)(?!.*[_.]{2})[^_.].*[^_.]$");
-final RegExp firstNameValidatorRegExp = RegExp(r"^[a-zA-Z]{1,128}$");
-final RegExp lastNameValidatorRegExp = RegExp(r"^[a-zA-Z]{1,128}$");
+final RegExp firstNameValidatorRegExp = RegExp(r"^[a-zA-Z\s-]{1,128}$");
+final RegExp lastNameValidatorRegExp = RegExp(r"^[a-zA-Z\s-]{1,128}$");
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 final RegExp weakPasswordValidatorRegExp = RegExp(r"^[a-zA-Z]{3,128}$");

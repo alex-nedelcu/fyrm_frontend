@@ -137,6 +137,7 @@ class _MyProfileFormState extends State<MyProfileForm> {
       initialValue: content,
       readOnly: true,
       enabled: false,
+      maxLines: null,
       decoration: InputDecoration(
         floatingLabelStyle: const TextStyle(color: kPrimaryColor),
         labelText: label,
@@ -159,7 +160,7 @@ class _MyProfileFormState extends State<MyProfileForm> {
         description = value;
       },
       maxLength: 180,
-      maxLines: 5,
+      maxLines: null,
       decoration: const InputDecoration(
         floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Description",

@@ -7,9 +7,13 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var universities = {
-      "@stud.ubbcluj.ro": "Babes-Bolyai University",
+      "@stud.ubbcluj.ro": "Babes-Bolyai University of Cluj Napoca",
+      "@stud.ubbbm.ro": "Babes-Bolyai University of Baia Mare",
+      "@stud.ubboradea.ro": "Babes-Bolyai University of Oradea",
       "@s.unibuc.ro": "University of Bucharest",
       "@elearn.umf.ro": "Iuliu Hatieganu University of Medicine and Pharmacy",
+      "@stud.umfcd.ro":
+          "Carol Davila University of Medicine and Pharmacy Bucharest",
       "@stud.trans.ro": "Politehnica University of Bucharest - Transportations",
       "@stud.fiir.ro":
           "Politehnica University of Bucharest - Industrial Engineering and Robotics",
@@ -27,26 +31,36 @@ class Body extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: universities.entries.map(
                 (entry) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Row(
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Text(
-                            "${entry.value} : ",
-                            style: const TextStyle(
-                                color: kSecondaryColor, fontSize: 15),
+                        Text(
+                          entry.value,
+                          style: const TextStyle(
+                            color: kSecondaryColor,
+                            fontSize: 15,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                         Text(
                           entry.key,
                           style: const TextStyle(
-                              color: kPrimaryColor,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600),
-                        )
+                            color: kPrimaryColor,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 30),
+                          child: Divider(
+                            color: Colors.black,
+                            thickness: 0.5,
+                            height: 50,
+                          ),
+                        ),
                       ],
                     ),
                   );
