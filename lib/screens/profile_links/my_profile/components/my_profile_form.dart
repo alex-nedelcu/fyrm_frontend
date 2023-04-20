@@ -104,6 +104,12 @@ class _MyProfileFormState extends State<MyProfileForm> {
             svgIcon: "assets/icons/envelope.svg",
           ),
           SizedBox(height: getProportionateScreenHeight(30)),
+          buildReadOnlyField(
+              content: connectedUserProvider.university!,
+              label: "University",
+              svgIcon: "assets/icons/star.svg",
+              color: kSecondaryColor),
+          SizedBox(height: getProportionateScreenHeight(30)),
           buildDescriptionField(
               currentDescription: connectedUserProvider.description),
           SizedBox(height: getProportionateScreenHeight(20)),

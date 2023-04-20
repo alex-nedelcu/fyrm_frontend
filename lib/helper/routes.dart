@@ -3,6 +3,7 @@ import 'package:fyrm_frontend/screens/authentication/account_confirmation_succes
 import 'package:fyrm_frontend/screens/authentication/otp/otp_screen.dart';
 import 'package:fyrm_frontend/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:fyrm_frontend/screens/authentication/sign_up/sign_up_screen.dart';
+import 'package:fyrm_frontend/screens/authentication/supported_universities/supported_universities_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat/chat_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat_detail/chat_detail_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/finalise_rent_connection_success/finalise_rent_connection_success_screen.dart';
@@ -39,4 +40,6 @@ final Map<String, WidgetBuilder> routes = {
   NotificationsScreen.routeName: (context) => const NotificationsScreen(),
   ChatDetailScreen.routeName: (context) => const ChatDetailScreen(),
   StatisticsScreen.routeName: (context) => const StatisticsScreen(),
+  SupportedUniversitiesScreen.routeName: (context) =>
+      const SupportedUniversitiesScreen(),
 };

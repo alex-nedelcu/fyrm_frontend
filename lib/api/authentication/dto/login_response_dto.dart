@@ -7,6 +7,7 @@ class LoginResponseDto {
   String? firstName;
   String? lastName;
   String? gender;
+  String? university;
   String? role;
   String? description;
   bool? isSearching;
@@ -23,6 +24,7 @@ class LoginResponseDto {
     this.firstName,
     this.lastName,
     this.gender,
+    this.university,
     this.role,
     this.description,
     this.isSearching,
@@ -46,6 +48,8 @@ class LoginResponseDto {
   static String get lastNameJsonField => "lastName";
 
   static String get genderJsonField => "gender";
+
+  static String get universityJsonField => "university";
 
   static String get roleJsonField => "role";
 

@@ -108,6 +108,8 @@ class AuthenticationService {
         gender: decodedResponse[LoginResponseDto.genderJsonField] as String,
         username: decodedResponse[LoginResponseDto.usernameJsonField] as String,
         role: decodedResponse[LoginResponseDto.roleJsonField] as String,
+        university:
+            decodedResponse[LoginResponseDto.universityJsonField] as String,
         description:
             decodedResponse[LoginResponseDto.descriptionJsonField] as String?,
         isSearching:

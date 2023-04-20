@@ -23,6 +23,8 @@ class ConnectedUserProvider with ChangeNotifier {
 
   String? get gender => _connectedUserDetails?.gender;
 
+  String? get university => _connectedUserDetails?.university;
+
   String? get description => _connectedUserDetails?.description;
 
   int? get birthYear => _connectedUserDetails?.birthYear;
