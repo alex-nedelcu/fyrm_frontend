@@ -37,6 +37,7 @@ const String kFinaliseRentConnectionFailure =
 const String kRentLocationNotSelected = "Please pick the desired rent location";
 const String kRentMateCountNotSelected =
     "Please select the desired number of rent mates";
+const String kHobbyNotSelected = "Please select at least one hobby";
 const String kRentMateGenderNotSelected =
     "Please select the desired gender of rent mates";
 const String kBedroomOptionNotSelected =
@@ -59,6 +60,8 @@ const String kMissingPasswordError = "Please fill in your password!";
 const String kMissingGenderError = "Please fill in your gender!";
 const String kInvalidUsernameError = "Username format is invalid!";
 const String kInvalidFirstNameError = "First name is invalid!";
+const String kInvalidMaximumAgeGap =
+    "Maximum age gap must be a positive value!";
 const String kInvalidLastNameError = "Last name is invalid!";
 const String kInvalidEmailError = "Email format is invalid!";
 const String kInvalidPasswordError = "Password format is invalid!";

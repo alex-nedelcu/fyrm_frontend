@@ -27,7 +27,8 @@ class SearchProfileForm extends StatefulWidget {
   final bool isCreate;
   final SearchProfileDto? searchProfile;
 
-  const SearchProfileForm({super.key, required this.isCreate, this.searchProfile});
+  const SearchProfileForm(
+      {super.key, required this.isCreate, this.searchProfile});
 
   @override
   _SearchProfileFormState createState() => _SearchProfileFormState();
@@ -38,10 +39,14 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
   static const double rentMaximumPrice = 800.0;
   final _formKey = GlobalKey<FormState>();
   final List<String?> errors = [];
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
   final LocationService locationService = LocationService();
+  late int? maximumAgeGapInYears;
   late List<bool> isRentMateCountOptionSelected;
   late List<String> associatedRentMateCountOptions;
+  late List<bool> isHobbyOptionSelected;
+  late List<String> associatedHobbyOption;
   late List<bool> isRentMateGenderOptionSelected;
   late List<Widget> associatedRentMateGenderOptions;
   late List<bool> isBedroomOptionSelected;
@@ -57,7 +62,9 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
   void initState() {
     super.initState();
 
+    maximumAgeGapInYears = widget.searchProfile?.maximumAgeGapInYears;
     associatedRentMateCountOptions = RentMateCountOption.options;
+    associatedHobbyOption = HobbyOption.options;
     associatedRentMateGenderOptions = RentMateGenderOption.icons;
     associatedBedroomOptions = BedroomOption.options;
     associatedBathroomCountOptions = BathroomCountOption.options;
@@ -65,6 +72,10 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     isRentMateCountOptionSelected = initializeOptions(
       allOptions: RentMateCountOption.options,
       selectedOptions: widget.searchProfile?.rentMateCountOptions,
+    );
+    isHobbyOptionSelected = initializeOptions(
+      allOptions: HobbyOption.options,
+      selectedOptions: widget.searchProfile?.hobbyOptions,
     );
     isRentMateGenderOptionSelected = initializeOptions(
       allOptions: RentMateGenderOption.options,
@@ -95,7 +106,8 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     List<String>? selectedOptions,
   }) {
     bool defaultValue = false;
-    List<bool> options = List.filled(allOptions.length, defaultValue, growable: false);
+    List<bool> options =
+        List.filled(allOptions.length, defaultValue, growable: false);
 
     if (selectedOptions == null) {
       return options;
@@ -110,7 +122,8 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     return options;
   }
 
-  Map<MarkerId, Marker> initializeMarkersAndRentLocation({double? latitude, double? longitude}) {
+  Map<MarkerId, Marker> initializeMarkersAndRentLocation(
+      {double? latitude, double? longitude}) {
     Map<MarkerId, Marker> initialMarkers = {};
 
     if (latitude == null || longitude == null) {
@@ -133,7 +146,8 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     desiredRentLocation = marker.position;
 
     _controller.future.then((controller) {
-      controller.animateCamera(CameraUpdate.newLatLngZoom(markerLatitudeLongitude, 17.0));
+      controller.animateCamera(
+          CameraUpdate.newLatLngZoom(markerLatitudeLongitude, 17.0));
     });
 
     return initialMarkers;
@@ -166,11 +180,14 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     catchValidationErrors();
 
     if (_formKey.currentState!.validate() && errors.isEmpty) {
-      ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context, listen: false);
-      SearchProfileProvider searchProfileProvider = Provider.of<SearchProfileProvider>(context, listen: false);
+      ConnectedUserProvider connectedUserProvider =
+          Provider.of<ConnectedUserProvider>(context, listen: false);
+      SearchProfileProvider searchProfileProvider =
+          Provider.of<SearchProfileProvider>(context, listen: false);
 
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
+
       int statusCode = widget.isCreate
           ? await searchProfileProvider.create(
               userId: connectedUserProvider.userId!,
@@ -180,10 +197,17 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
               rentPriceUpperBound: rentPriceRange.end as num,
               latitude: desiredRentLocation!.latitude,
               longitude: desiredRentLocation!.longitude,
-              rentMatesGenderOptions: RentMateGenderOption.findSelectedOptions(isRentMateGenderOptionSelected),
-              rentMateCountOptions: RentMateCountOption.findSelectedOptions(isRentMateCountOptionSelected),
-              bedroomOptions: BedroomOption.findSelectedOptions(isBedroomOptionSelected),
-              bathroomOptions: BathroomCountOption.findSelectedOptions(isBathroomCountOptionSelected),
+              maximumAgeGapInYears: maximumAgeGapInYears!,
+              rentMatesGenderOptions: RentMateGenderOption.findSelectedOptions(
+                  isRentMateGenderOptionSelected),
+              hobbyOptions:
+                  HobbyOption.findSelectedOptions(isHobbyOptionSelected),
+              rentMateCountOptions: RentMateCountOption.findSelectedOptions(
+                  isRentMateCountOptionSelected),
+              bedroomOptions:
+                  BedroomOption.findSelectedOptions(isBedroomOptionSelected),
+              bathroomOptions: BathroomCountOption.findSelectedOptions(
+                  isBathroomCountOptionSelected),
             )
           : await searchProfileProvider.update(
               id: widget.searchProfile!.id!,
@@ -194,10 +218,17 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
               rentPriceUpperBound: rentPriceRange.end as num,
               latitude: desiredRentLocation!.latitude,
               longitude: desiredRentLocation!.longitude,
-              rentMatesGenderOptions: RentMateGenderOption.findSelectedOptions(isRentMateGenderOptionSelected),
-              rentMateCountOptions: RentMateCountOption.findSelectedOptions(isRentMateCountOptionSelected),
-              bedroomOptions: BedroomOption.findSelectedOptions(isBedroomOptionSelected),
-              bathroomOptions: BathroomCountOption.findSelectedOptions(isBathroomCountOptionSelected),
+              maximumAgeGapInYears: maximumAgeGapInYears!,
+              rentMatesGenderOptions: RentMateGenderOption.findSelectedOptions(
+                  isRentMateGenderOptionSelected),
+              rentMateCountOptions: RentMateCountOption.findSelectedOptions(
+                  isRentMateCountOptionSelected),
+              hobbyOptions:
+                  HobbyOption.findSelectedOptions(isHobbyOptionSelected),
+              bedroomOptions:
+                  BedroomOption.findSelectedOptions(isBedroomOptionSelected),
+              bathroomOptions: BathroomCountOption.findSelectedOptions(
+                  isBathroomCountOptionSelected),
             );
 
       if (ApiHelper.isSuccess(statusCode) && mounted) {
@@ -209,7 +240,9 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
 
         handleToast(
           statusCode: statusCode,
-          message: widget.isCreate ? kSearchProfileCreateSuccess : kSearchProfileUpdateSuccess,
+          message: widget.isCreate
+              ? kSearchProfileCreateSuccess
+              : kSearchProfileUpdateSuccess,
         );
       }
     } else {
@@ -220,6 +253,10 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
   void catchValidationErrors() {
     if (noOptionSelected(isRentMateGenderOptionSelected)) {
       addError(error: kRentMateGenderNotSelected);
+    }
+
+    if (noOptionSelected(isHobbyOptionSelected)) {
+      addError(error: kHobbyNotSelected);
     }
 
     if (noOptionSelected(isRentMateCountOptionSelected)) {
@@ -276,7 +313,8 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     });
 
     GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newLatLngZoom(markerLatitudeLongitude, 17.0));
+    controller.animateCamera(
+        CameraUpdate.newLatLngZoom(markerLatitudeLongitude, 17.0));
   }
 
   @override
@@ -296,28 +334,47 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
             topSpacing: 40,
             title: "Who do you want to stay with?",
             helpNote: "select one option",
-            component: buildRentMateGendersToggleButtons(options: associatedRentMateGenderOptions),
+            component: buildRentMateGendersToggleButtons(
+                options: associatedRentMateGenderOptions),
             textComponentSpacing: 10,
           ),
           buildFormField(
             topSpacing: 25,
             title: "How many rent mates?",
             helpNote: "select multiple options",
-            component: buildRentMateCountToggleButtons(options: associatedRentMateCountOptions),
+            component: buildRentMateCountToggleButtons(
+                options: associatedRentMateCountOptions),
+            textComponentSpacing: 10,
+          ),
+          buildFormField(
+            topSpacing: 25,
+            title: "Maximum age gap to other rent mates",
+            helpNote: "type a positive number",
+            component: buildMaximumAgeGapField(),
             textComponentSpacing: 10,
           ),
           buildFormField(
             topSpacing: 25,
             title: "What about bedrooms?",
             helpNote: "select one option",
-            component: buildBedroomToggleButtons(options: associatedBedroomOptions),
+            component:
+                buildBedroomToggleButtons(options: associatedBedroomOptions),
             textComponentSpacing: 10,
           ),
           buildFormField(
             topSpacing: 25,
             title: "How many bathrooms?",
             helpNote: "select multiple options",
-            component: buildBathroomCountToggleButtons(options: associatedBathroomCountOptions),
+            component: buildBathroomCountToggleButtons(
+                options: associatedBathroomCountOptions),
+            textComponentSpacing: 10,
+          ),
+          buildFormField(
+            topSpacing: 25,
+            title: "Choose some hobbies or interests",
+            helpNote: "select multiple options",
+            component:
+                buildHobbiesToggleButtons(options: associatedHobbyOption),
             textComponentSpacing: 10,
             bottomSpacing: 15,
           ),
@@ -333,7 +390,8 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
             ),
             textComponentSpacing: 15,
           ),
-          if (errors.isNotEmpty) SizedBox(height: SizeConfiguration.screenHeight * 0.02),
+          if (errors.isNotEmpty)
+            SizedBox(height: SizeConfiguration.screenHeight * 0.02),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(35)),
           DefaultButton(
@@ -358,7 +416,8 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
       children: [
         SizedBox(height: getProportionateScreenHeight(topSpacing)),
         buildAlignedText(text: title, alignment: Alignment.centerLeft),
-        if (helpNote != null) buildHelpNote(text: helpNote, alignment: Alignment.centerLeft),
+        if (helpNote != null)
+          buildHelpNote(text: helpNote, alignment: Alignment.centerLeft),
         SizedBox(height: getProportionateScreenHeight(textComponentSpacing)),
         component,
         SizedBox(height: getProportionateScreenHeight(bottomSpacing ?? 0)),
@@ -379,7 +438,8 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         zoomControlsEnabled: true,
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
-        onMapCreated: (GoogleMapController controller) => _controller.complete(controller),
+        onMapCreated: (GoogleMapController controller) =>
+            _controller.complete(controller),
         compassEnabled: true,
         tiltGesturesEnabled: false,
         onLongPress: (latitudeLongitude) {
@@ -415,7 +475,9 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         onPressed: (index) {
           removeError(error: kRentMateGenderNotSelected);
           setState(() {
-            for (int buttonIndex = 0; buttonIndex < isRentMateGenderOptionSelected.length; buttonIndex++) {
+            for (int buttonIndex = 0;
+                buttonIndex < isRentMateGenderOptionSelected.length;
+                buttonIndex++) {
               if (buttonIndex == index) {
                 isRentMateGenderOptionSelected[buttonIndex] = true;
               } else {
@@ -429,8 +491,48 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     );
   }
 
+  Widget buildMaximumAgeGapField() {
+    return TextFormField(
+      initialValue: maximumAgeGapInYears?.toString(),
+      autocorrect: false,
+      maxLines: null,
+      style: const TextStyle(fontSize: 18),
+      onChanged: (value) {
+        if (int.tryParse(value) == null ||
+            (int.tryParse(value) != null && int.parse(value) < 0)) {
+          addError(error: kInvalidMaximumAgeGap);
+        } else {
+          removeError(error: kInvalidMaximumAgeGap);
+        }
+
+        maximumAgeGapInYears = int.tryParse(value);
+      },
+      validator: (value) {
+        if (value == null ||
+            int.tryParse(value) == null ||
+            (int.tryParse(value) != null && int.parse(value) < 0)) {
+          addError(error: kInvalidMaximumAgeGap);
+        }
+
+        return null;
+      },
+      keyboardType: TextInputType.number,
+      textAlign: TextAlign.left,
+      cursorColor: kSecondaryColor,
+      decoration: const InputDecoration(
+        hintText: "Maximum age gap in years...",
+        hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w200),
+        contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 2),
+        floatingLabelStyle: TextStyle(color: kSecondaryColor),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+      ),
+      onSaved: (value) => maximumAgeGapInYears = int.tryParse(value!),
+    );
+  }
+
   Align buildRentMateCountToggleButtons({required List<String> options}) {
-    List<Widget> styledOptions = withPadding(widgets: toTextWidgets(values: options, size: 14.0), padding: 14.0);
+    List<Widget> styledOptions = withPadding(
+        widgets: toTextWidgets(values: options, size: 14.0), padding: 14.0);
 
     return Align(
       alignment: Alignment.centerLeft,
@@ -448,7 +550,8 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         onPressed: (index) {
           removeError(error: kRentMateCountNotSelected);
           setState(() {
-            isRentMateCountOptionSelected[index] = !isRentMateCountOptionSelected[index];
+            isRentMateCountOptionSelected[index] =
+                !isRentMateCountOptionSelected[index];
           });
         },
         children: styledOptions,
@@ -456,8 +559,9 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     );
   }
 
-  Align buildBedroomToggleButtons({required List<String> options}) {
-    List<Widget> styledOptions = withPadding(widgets: toTextWidgets(values: options, size: 14.0), padding: 14.0);
+  Align buildHobbiesToggleButtons({required List<String> options}) {
+    List<Widget> styledOptions = withPadding(
+        widgets: toTextWidgets(values: options, size: 14.0), padding: 14.0);
 
     return Align(
       alignment: Alignment.centerLeft,
@@ -470,12 +574,43 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         splashColor: kPrimaryColor.withOpacity(0.08),
         hoverColor: kPrimaryColor.withOpacity(0.08),
         borderRadius: BorderRadius.circular(6),
-        constraints: BoxConstraints(minHeight: 36, minWidth: getProportionateScreenWidth(70)),
+        constraints: const BoxConstraints(minHeight: 36),
+        isSelected: isHobbyOptionSelected,
+        onPressed: (index) {
+          removeError(error: kHobbyNotSelected);
+          setState(() {
+            isHobbyOptionSelected[index] = !isHobbyOptionSelected[index];
+          });
+        },
+        children: styledOptions,
+      ),
+    );
+  }
+
+  Align buildBedroomToggleButtons({required List<String> options}) {
+    List<Widget> styledOptions = withPadding(
+        widgets: toTextWidgets(values: options, size: 14.0), padding: 14.0);
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ToggleButtons(
+        borderWidth: 1.5,
+        color: Colors.black.withOpacity(0.60),
+        selectedColor: kPrimaryColor,
+        selectedBorderColor: kPrimaryColor,
+        fillColor: kPrimaryColor.withOpacity(0.02),
+        splashColor: kPrimaryColor.withOpacity(0.08),
+        hoverColor: kPrimaryColor.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(6),
+        constraints: BoxConstraints(
+            minHeight: 36, minWidth: getProportionateScreenWidth(70)),
         isSelected: isBedroomOptionSelected,
         onPressed: (index) {
           removeError(error: kBedroomOptionNotSelected);
           setState(() {
-            for (int buttonIndex = 0; buttonIndex < isBedroomOptionSelected.length; buttonIndex++) {
+            for (int buttonIndex = 0;
+                buttonIndex < isBedroomOptionSelected.length;
+                buttonIndex++) {
               if (buttonIndex == index) {
                 isBedroomOptionSelected[buttonIndex] = true;
               } else {
@@ -490,7 +625,8 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
   }
 
   Align buildBathroomCountToggleButtons({required List<String> options}) {
-    List<Widget> styledOptions = withPadding(widgets: toTextWidgets(values: options, size: 14.0), padding: 14.0);
+    List<Widget> styledOptions = withPadding(
+        widgets: toTextWidgets(values: options, size: 14.0), padding: 14.0);
 
     return Align(
       alignment: Alignment.centerLeft,
@@ -508,7 +644,8 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
         onPressed: (index) {
           removeError(error: kBathroomCountNotSelected);
           setState(() {
-            isBathroomCountOptionSelected[index] = !isBathroomCountOptionSelected[index];
+            isBathroomCountOptionSelected[index] =
+                !isBathroomCountOptionSelected[index];
           });
         },
         children: styledOptions,
@@ -577,13 +714,18 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
     );
   }
 
-  List<Widget> toTextWidgets({required List<String> values, required double size}) {
-    return values.map((value) => buildStyledText(text: value, size: size)).toList();
+  List<Widget> toTextWidgets(
+      {required List<String> values, required double size}) {
+    return values
+        .map((value) => buildStyledText(text: value, size: size))
+        .toList();
   }
 
-  List<Widget> withPadding({required List<Widget> widgets, required double padding}) {
+  List<Widget> withPadding(
+      {required List<Widget> widgets, required double padding}) {
     return widgets
-        .map((widget) => Padding(padding: EdgeInsets.symmetric(horizontal: padding), child: widget))
+        .map((widget) => Padding(
+            padding: EdgeInsets.symmetric(horizontal: padding), child: widget))
         .toList();
   }
 

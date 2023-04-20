@@ -34,8 +34,10 @@ class SearchProfileProvider with ChangeNotifier {
     required num rentPriceUpperBound,
     required double latitude,
     required double longitude,
+    required int maximumAgeGapInYears,
     required List<String> rentMatesGenderOptions,
     required List<String> rentMateCountOptions,
+    required List<String> hobbyOptions,
     required List<String> bedroomOptions,
     required List<String> bathroomOptions,
   }) async {
@@ -47,8 +49,10 @@ class SearchProfileProvider with ChangeNotifier {
       rentPriceUpperBound: rentPriceUpperBound,
       latitude: latitude,
       longitude: longitude,
+      maximumAgeGapInYears: maximumAgeGapInYears,
       rentMatesGenderOptions: rentMatesGenderOptions,
       rentMateCountOptions: rentMateCountOptions,
+      hobbyOptions: hobbyOptions,
       bedroomOptions: bedroomOptions,
       bathroomOptions: bathroomOptions,
     );
@@ -66,8 +70,10 @@ class SearchProfileProvider with ChangeNotifier {
     required num rentPriceUpperBound,
     required double latitude,
     required double longitude,
+    required int maximumAgeGapInYears,
     required List<String> rentMatesGenderOptions,
     required List<String> rentMateCountOptions,
+    required List<String> hobbyOptions,
     required List<String> bedroomOptions,
     required List<String> bathroomOptions,
   }) async {
@@ -79,8 +85,10 @@ class SearchProfileProvider with ChangeNotifier {
       rentPriceUpperBound: rentPriceUpperBound,
       latitude: latitude,
       longitude: longitude,
+      maximumAgeGapInYears: maximumAgeGapInYears,
       rentMatesGenderOptions: rentMatesGenderOptions,
       rentMateCountOptions: rentMateCountOptions,
+      hobbyOptions: hobbyOptions,
       bedroomOptions: bedroomOptions,
       bathroomOptions: bathroomOptions,
     );

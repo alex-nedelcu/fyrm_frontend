@@ -7,8 +7,10 @@ class SearchProfileDto {
   late num rentPriceUpperBound;
   late double latitude;
   late double longitude;
+  late int maximumAgeGapInYears;
   late List<String> rentMatesGenderOptions;
   late List<String> rentMateCountOptions;
+  late List<String> hobbyOptions;
   late List<String> bedroomOptions;
   late List<String> bathroomOptions;
 
@@ -19,8 +21,10 @@ class SearchProfileDto {
     required this.rentPriceUpperBound,
     required this.latitude,
     required this.longitude,
+    required this.maximumAgeGapInYears,
     required this.rentMatesGenderOptions,
     required this.rentMateCountOptions,
+    required this.hobbyOptions,
     required this.bedroomOptions,
     required this.bathroomOptions,
   });
@@ -32,36 +36,13 @@ class SearchProfileDto {
         rentPriceUpperBoundJsonField: rentPriceUpperBound,
         latitudeJsonField: latitude,
         longitudeJsonField: longitude,
+        maximumAgeGapInYearsJsonField: maximumAgeGapInYears,
         rentMateGenderOptionsJsonField: rentMatesGenderOptions,
         rentMateCountOptionsJsonField: rentMateCountOptions,
+        hobbyOptionsJsonField: hobbyOptions,
         bedroomOptionsJsonField: bedroomOptions,
         bathroomOptionsJsonField: bathroomOptions
       };
-
-  SearchProfileDto copy({
-    int? id,
-    int? userId,
-    num? rentPriceLowerBound,
-    num? rentPriceUpperBound,
-    double? latitude,
-    double? longitude,
-    List<String>? rentMatesGenderOptions,
-    List<String>? rentMateCountOptions,
-    List<String>? bedroomOptions,
-    List<String>? bathroomOptions,
-  }) =>
-      SearchProfileDto(
-        id: id ?? this.id,
-        userId: userId ?? this.userId,
-        rentPriceLowerBound: rentPriceLowerBound ?? this.rentPriceLowerBound,
-        rentPriceUpperBound: rentPriceUpperBound ?? this.rentPriceUpperBound,
-        latitude: latitude ?? this.latitude,
-        longitude: longitude ?? this.longitude,
-        rentMatesGenderOptions: rentMatesGenderOptions ?? this.rentMatesGenderOptions,
-        rentMateCountOptions: rentMateCountOptions ?? this.rentMateCountOptions,
-        bedroomOptions: bedroomOptions ?? this.bedroomOptions,
-        bathroomOptions: bathroomOptions ?? this.bathroomOptions,
-      );
 
   static SearchProfileDto fromJSON(dynamic json) => SearchProfileDto(
         id: json[idJsonField] as int,
@@ -70,10 +51,17 @@ class SearchProfileDto {
         rentPriceUpperBound: json[rentPriceUpperBoundJsonField] as num,
         latitude: json[latitudeJsonField] as double,
         longitude: json[longitudeJsonField] as double,
-        rentMatesGenderOptions: DtoConvertHelper.toStringList(json[rentMateGenderOptionsJsonField]),
-        rentMateCountOptions: DtoConvertHelper.toStringList(json[rentMateCountOptionsJsonField]),
-        bathroomOptions: DtoConvertHelper.toStringList(json[bathroomOptionsJsonField]),
-        bedroomOptions: DtoConvertHelper.toStringList(json[bedroomOptionsJsonField]),
+        maximumAgeGapInYears: json[maximumAgeGapInYearsJsonField] as int,
+        rentMatesGenderOptions:
+            DtoConvertHelper.toStringList(json[rentMateGenderOptionsJsonField]),
+        rentMateCountOptions:
+            DtoConvertHelper.toStringList(json[rentMateCountOptionsJsonField]),
+        hobbyOptions:
+            DtoConvertHelper.toStringList(json[hobbyOptionsJsonField]),
+        bathroomOptions:
+            DtoConvertHelper.toStringList(json[bathroomOptionsJsonField]),
+        bedroomOptions:
+            DtoConvertHelper.toStringList(json[bedroomOptionsJsonField]),
       );
 
   static String get idJsonField => "id";
@@ -88,9 +76,13 @@ class SearchProfileDto {
 
   static String get longitudeJsonField => "longitude";
 
+  static String get maximumAgeGapInYearsJsonField => "maximumAgeGapInYears";
+
   static String get rentMateGenderOptionsJsonField => "rentMatesGenderOptions";
 
   static String get rentMateCountOptionsJsonField => "rentMateCountOptions";
+
+  static String get hobbyOptionsJsonField => "hobbyOptions";
 
   static String get bedroomOptionsJsonField => "bedroomOptions";
 

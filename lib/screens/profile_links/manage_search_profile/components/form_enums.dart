@@ -13,10 +13,13 @@ enum RentMateCountOption {
 
   const RentMateCountOption(this.id, this.option);
 
-  static List<String> get options => RentMateCountOption.values.map((value) => value.option).toList();
+  static List<String> get options =>
+      RentMateCountOption.values.map((value) => value.option).toList();
 
   static String findOptionById(int id) {
-    return RentMateCountOption.values.firstWhere((element) => element.id == id).option;
+    return RentMateCountOption.values
+        .firstWhere((element) => element.id == id)
+        .option;
   }
 
   static List<String> findSelectedOptions(List<bool> selection) {
@@ -27,6 +30,40 @@ enum RentMateCountOption {
     for (int index = 0; index < selection.length; index += 1) {
       if (selection[index] == true) {
         String option = RentMateCountOption.findOptionById(index);
+        result.add(option);
+      }
+    }
+
+    return result;
+  }
+}
+
+enum HobbyOption {
+  sport(0, "sport"),
+  reading(1, "reading"),
+  travel(2, "travel"),
+  movies(3, "movies");
+
+  final int id;
+  final String option;
+
+  const HobbyOption(this.id, this.option);
+
+  static List<String> get options =>
+      HobbyOption.values.map((value) => value.option).toList();
+
+  static String findOptionById(int id) {
+    return HobbyOption.values.firstWhere((element) => element.id == id).option;
+  }
+
+  static List<String> findSelectedOptions(List<bool> selection) {
+    assert(selection.length == HobbyOption.values.length);
+
+    List<String> result = <String>[];
+
+    for (int index = 0; index < selection.length; index += 1) {
+      if (selection[index] == true) {
+        String option = HobbyOption.findOptionById(index);
         result.add(option);
       }
     }
@@ -56,12 +93,16 @@ enum RentMateGenderOption {
 
   const RentMateGenderOption(this.id, this.icon, this.option);
 
-  static List<Widget> get icons => RentMateGenderOption.values.map((value) => value.icon).toList();
+  static List<Widget> get icons =>
+      RentMateGenderOption.values.map((value) => value.icon).toList();
 
-  static List<String> get options => RentMateGenderOption.values.map((value) => value.option).toList();
+  static List<String> get options =>
+      RentMateGenderOption.values.map((value) => value.option).toList();
 
   static String findOptionById(int id) {
-    return RentMateGenderOption.values.firstWhere((element) => element.id == id).option;
+    return RentMateGenderOption.values
+        .firstWhere((element) => element.id == id)
+        .option;
   }
 
   static List<String> findSelectedOptions(List<bool> selection) {
@@ -90,10 +131,13 @@ enum BedroomOption {
 
   const BedroomOption(this.id, this.option);
 
-  static List<String> get options => BedroomOption.values.map((value) => value.option).toList();
+  static List<String> get options =>
+      BedroomOption.values.map((value) => value.option).toList();
 
   static String findOptionById(int id) {
-    return BedroomOption.values.firstWhere((element) => element.id == id).option;
+    return BedroomOption.values
+        .firstWhere((element) => element.id == id)
+        .option;
   }
 
   static List<String> findSelectedOptions(List<bool> selection) {
@@ -122,10 +166,13 @@ enum BathroomCountOption {
 
   const BathroomCountOption(this.id, this.option);
 
-  static List<String> get options => BathroomCountOption.values.map((value) => value.option).toList();
+  static List<String> get options =>
+      BathroomCountOption.values.map((value) => value.option).toList();
 
   static String findOptionById(int id) {
-    return BathroomCountOption.values.firstWhere((element) => element.id == id).option;
+    return BathroomCountOption.values
+        .firstWhere((element) => element.id == id)
+        .option;
   }
 
   static List<String> findSelectedOptions(List<bool> selection) {
