@@ -43,10 +43,13 @@ class Body extends StatelessWidget {
                           SupportedUniversitiesScreen.routeName,
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         "here",
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize: 14,
+                        ),
                       ),
                     )
                   ],

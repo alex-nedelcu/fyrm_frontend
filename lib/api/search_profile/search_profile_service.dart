@@ -16,8 +16,10 @@ class SearchProfileService {
     required num rentPriceUpperBound,
     required double latitude,
     required double longitude,
+    required int maximumAgeGapInYears,
     required List<String> rentMatesGenderOptions,
     required List<String> rentMateCountOptions,
+    required List<String> hobbyOptions,
     required List<String> bedroomOptions,
     required List<String> bathroomOptions,
   }) async {
@@ -32,8 +34,10 @@ class SearchProfileService {
       rentPriceUpperBound: rentPriceUpperBound,
       latitude: latitude,
       longitude: longitude,
+      maximumAgeGapInYears: maximumAgeGapInYears,
       rentMatesGenderOptions: rentMatesGenderOptions,
       rentMateCountOptions: rentMateCountOptions,
+      hobbyOptions: hobbyOptions,
       bedroomOptions: bedroomOptions,
       bathroomOptions: bathroomOptions,
     );
@@ -54,8 +58,10 @@ class SearchProfileService {
     required num rentPriceUpperBound,
     required double latitude,
     required double longitude,
+    required int maximumAgeGapInYears,
     required List<String> rentMatesGenderOptions,
     required List<String> rentMateCountOptions,
+    required List<String> hobbyOptions,
     required List<String> bedroomOptions,
     required List<String> bathroomOptions,
   }) async {
@@ -70,8 +76,10 @@ class SearchProfileService {
       rentPriceUpperBound: rentPriceUpperBound,
       latitude: latitude,
       longitude: longitude,
+      maximumAgeGapInYears: maximumAgeGapInYears,
       rentMatesGenderOptions: rentMatesGenderOptions,
       rentMateCountOptions: rentMateCountOptions,
+      hobbyOptions: hobbyOptions,
       bedroomOptions: bedroomOptions,
       bathroomOptions: bathroomOptions,
     );
@@ -94,9 +102,12 @@ class SearchProfileService {
       token: token,
     );
 
-    http.Response response = await searchProfileApi.findAllByUserId(authorization: authorization, userId: userId);
-    final searchProfileDtos = jsonDecode(response.body)['searchProfiles'] as List<dynamic>;
-    return List<SearchProfileDto>.from(searchProfileDtos.map((json) => SearchProfileDto.fromJSON(json)));
+    http.Response response = await searchProfileApi.findAllByUserId(
+        authorization: authorization, userId: userId);
+    final searchProfileDtos =
+        jsonDecode(response.body)['searchProfiles'] as List<dynamic>;
+    return List<SearchProfileDto>.from(
+        searchProfileDtos.map((json) => SearchProfileDto.fromJSON(json)));
   }
 
   Future<int> delete({
@@ -109,7 +120,8 @@ class SearchProfileService {
       token: token,
     );
 
-    http.Response response = await searchProfileApi.delete(authorization: authorization, id: id);
+    http.Response response =
+        await searchProfileApi.delete(authorization: authorization, id: id);
     return response.statusCode;
   }
 }
