@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fyrm_frontend/api/user/user_service.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
-import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
+import 'package:fyrm_frontend/components/custom_suffix_icon_as_image.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/keyboard.dart';
@@ -25,7 +24,8 @@ class _MyProfileFormState extends State<MyProfileForm> {
   bool switchedIsSearching = false;
   String? description;
 
-  void handleFormSubmission({required ConnectedUserProvider connectedUserProvider}) async {
+  void handleFormSubmission(
+      {required ConnectedUserProvider connectedUserProvider}) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       KeyboardUtil.hideKeyboard(context);
@@ -56,7 +56,8 @@ class _MyProfileFormState extends State<MyProfileForm> {
 
   @override
   Widget build(BuildContext context) {
-    ConnectedUserProvider connectedUserProvider = Provider.of<ConnectedUserProvider>(context);
+    ConnectedUserProvider connectedUserProvider =
+        Provider.of<ConnectedUserProvider>(context);
     if (!switchedIsSearching) {
       initializeIsSearching(connectedUserProvider.isSearching!);
     }
@@ -72,24 +73,52 @@ class _MyProfileFormState extends State<MyProfileForm> {
           ),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildReadOnlyField(
+            content: connectedUserProvider.firstName!,
+            label: "First name",
+            svgIcon: "assets/icons/user-grey.svg",
+          ),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildReadOnlyField(
+            content: connectedUserProvider.lastName!,
+            label: "Last name",
+            svgIcon: "assets/icons/user-grey.svg",
+          ),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildReadOnlyField(
+            content: connectedUserProvider.birthYear!.toString(),
+            label: "Birth year",
+            svgIcon: "assets/icons/gift.svg",
+            color: kSecondaryColor,
+          ),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildReadOnlyField(
+            content: connectedUserProvider.gender!,
+            label: "Gender",
+            svgIcon: "assets/icons/lightning.svg",
+            color: kSecondaryColor,
+          ),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildReadOnlyField(
             content: connectedUserProvider.email!,
             label: "Email",
             svgIcon: "assets/icons/envelope.svg",
           ),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildReadOnlyField(
-            content: connectedUserProvider.birthDate!,
-            label: "Birth date",
-            svgIcon: "assets/icons/heart-empty.svg",
-          ),
+              content: connectedUserProvider.university!,
+              label: "University",
+              svgIcon: "assets/icons/star.svg",
+              color: kSecondaryColor),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildDescriptionField(currentDescription: connectedUserProvider.description),
+          buildDescriptionField(
+              currentDescription: connectedUserProvider.description),
           SizedBox(height: getProportionateScreenHeight(20)),
           buildIsSearchingSwitch(),
           SizedBox(height: getProportionateScreenHeight(30)),
           DefaultButton(
             text: "Update",
-            press: () => handleFormSubmission(connectedUserProvider: connectedUserProvider),
+            press: () => handleFormSubmission(
+                connectedUserProvider: connectedUserProvider),
           ),
           SizedBox(height: getProportionateScreenHeight(30)),
         ],
@@ -101,16 +130,22 @@ class _MyProfileFormState extends State<MyProfileForm> {
     required String content,
     required String label,
     required String svgIcon,
+    Color? color,
   }) {
     return TextFormField(
       keyboardType: TextInputType.text,
       initialValue: content,
       readOnly: true,
       enabled: false,
+      maxLines: null,
       decoration: InputDecoration(
+        floatingLabelStyle: const TextStyle(color: kPrimaryColor),
         labelText: label,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSuffixIcon(svgIcon: svgIcon),
+        suffixIcon: CustomSuffixIcon(
+          svgIcon: svgIcon,
+          color: color,
+        ),
       ),
     );
   }
@@ -125,8 +160,9 @@ class _MyProfileFormState extends State<MyProfileForm> {
         description = value;
       },
       maxLength: 180,
-      maxLines: 5,
+      maxLines: null,
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Description",
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),

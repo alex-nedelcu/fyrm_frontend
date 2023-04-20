@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/authentication/authentication_service.dart';
 import 'package:fyrm_frontend/api/authentication/dto/login_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
-import 'package:fyrm_frontend/components/custom_suffix_icon.dart';
+import 'package:fyrm_frontend/components/custom_suffix_icon_as_image.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
@@ -181,6 +181,7 @@ class _SignInFormState extends State<SignInForm> {
         return null;
       },
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Username",
         hintText: "Enter your username",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -201,7 +202,7 @@ class _SignInFormState extends State<SignInForm> {
           addError(error: kMissingPasswordError);
         }
 
-        if (passwordValidatorRegExp.hasMatch(value)) {
+        if (weakPasswordValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidPasswordError);
         } else {
           addError(error: kInvalidPasswordError);
@@ -214,13 +215,14 @@ class _SignInFormState extends State<SignInForm> {
           addError(error: kMissingPasswordError);
         }
 
-        if (!passwordValidatorRegExp.hasMatch(value)) {
+        if (!weakPasswordValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidPasswordError);
         }
 
         return null;
       },
       decoration: const InputDecoration(
+        floatingLabelStyle: TextStyle(color: kPrimaryColor),
         labelText: "Password",
         hintText: "Enter your password",
         floatingLabelBehavior: FloatingLabelBehavior.always,

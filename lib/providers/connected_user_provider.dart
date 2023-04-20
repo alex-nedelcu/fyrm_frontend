@@ -4,7 +4,8 @@ import 'package:fyrm_frontend/api/authentication/dto/login_response_dto.dart';
 class ConnectedUserProvider with ChangeNotifier {
   late LoginResponseDto? _connectedUserDetails;
 
-  set connectedUserDetails(LoginResponseDto? connectedUserDetails) => _connectedUserDetails = connectedUserDetails;
+  set connectedUserDetails(LoginResponseDto? connectedUserDetails) =>
+      _connectedUserDetails = connectedUserDetails;
 
   int? get userId => _connectedUserDetails?.userId;
 
@@ -16,13 +17,19 @@ class ConnectedUserProvider with ChangeNotifier {
 
   String? get email => _connectedUserDetails?.email;
 
+  String? get firstName => _connectedUserDetails?.firstName;
+
+  String? get lastName => _connectedUserDetails?.lastName;
+
+  String? get gender => _connectedUserDetails?.gender;
+
+  String? get university => _connectedUserDetails?.university;
+
   String? get description => _connectedUserDetails?.description;
 
-  String? get birthDate => _connectedUserDetails?.birthDate;
+  int? get birthYear => _connectedUserDetails?.birthYear;
 
   bool? get isSearching => _connectedUserDetails?.isSearching;
-
-  int get notificationCount => 5;
 
   set description(String? description) {
     _connectedUserDetails?.description = description;

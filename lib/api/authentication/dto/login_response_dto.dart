@@ -4,10 +4,14 @@ class LoginResponseDto {
   String? tokenType;
   String? username;
   String? email;
+  String? firstName;
+  String? lastName;
+  String? gender;
+  String? university;
   String? role;
   String? description;
   bool? isSearching;
-  String? birthDate;
+  int? birthYear;
   String? message;
   int statusCode;
 
@@ -17,10 +21,14 @@ class LoginResponseDto {
     this.tokenType,
     this.username,
     this.email,
+    this.firstName,
+    this.lastName,
+    this.gender,
+    this.university,
     this.role,
     this.description,
     this.isSearching,
-    this.birthDate,
+    this.birthYear,
     this.message,
     required this.statusCode,
   });
@@ -35,13 +43,21 @@ class LoginResponseDto {
 
   static String get emailJsonField => "email";
 
+  static String get firstNameJsonField => "firstName";
+
+  static String get lastNameJsonField => "lastName";
+
+  static String get genderJsonField => "gender";
+
+  static String get universityJsonField => "university";
+
   static String get roleJsonField => "role";
 
   static String get descriptionJsonField => "description";
 
   static String get isSearchingJsonField => "isSearching";
 
-  static String get birthDateJsonField => "birthDate";
+  static String get birthYearJsonField => "birthYear";
 
   static String get errorMessagesJsonField => "messages";
 }
