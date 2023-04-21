@@ -9,15 +9,6 @@ class LoginRequestDto {
         passwordJsonField: password,
       };
 
-  LoginRequestDto copy({
-    String? username,
-    String? password,
-  }) =>
-      LoginRequestDto(
-        username: username ?? this.username,
-        password: password ?? this.password,
-      );
-
   static String get usernameJsonField => "username";
 
   static String get passwordJsonField => "password";

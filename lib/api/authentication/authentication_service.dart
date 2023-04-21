@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:fyrm_frontend/api/authentication/authentication_api.dart';
 import 'package:fyrm_frontend/api/authentication/dto/login_request_dto.dart';
 import 'package:fyrm_frontend/api/authentication/dto/login_response_dto.dart';
+import 'package:fyrm_frontend/api/authentication/dto/password_reset_request_dto.dart';
+import 'package:fyrm_frontend/api/authentication/dto/password_reset_response_dto.dart';
 import 'package:fyrm_frontend/api/authentication/dto/signup_request_dto.dart';
 import 'package:fyrm_frontend/api/authentication/dto/signup_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
@@ -65,18 +67,52 @@ class AuthenticationService {
     return signupResponseDto;
   }
 
-  Future<int> confirmAccount(
+  Future<int> confirmAccountByUserId(
       {required int userId, required String confirmationCode}) async {
-    http.Response response = await authenticationApi.confirmAccount(
+    http.Response response = await authenticationApi.confirmAccountByUserId(
       userId: userId,
       confirmationCode: confirmationCode,
     );
     return response.statusCode;
   }
 
-  Future<int> resendConfirmationCode({required int userId}) async {
+  Future<int> confirmAccountByEmail(
+      {required String email, required String confirmationCode}) async {
+    http.Response response = await authenticationApi.confirmAccountByEmail(
+      email: email,
+      confirmationCode: confirmationCode,
+    );
+    return response.statusCode;
+  }
+
+  Future<PasswordResetResponseDto> resetPassword({
+    required String confirmationCode,
+    required String email,
+    required String password,
+  }) async {
+    PasswordResetRequestDto resetPasswordRequestDto = PasswordResetRequestDto(
+      email: email,
+      password: password,
+    );
+
+    http.Response response = await authenticationApi.resetPassword(
+      passwordResetRequestDto: resetPasswordRequestDto,
+      confirmationCode: confirmationCode,
+    );
+
+    final decodedResponse = jsonDecode(response.body);
+    return _buildPasswordResetResponse(response.statusCode, decodedResponse);
+  }
+
+  Future<int> sendConfirmationCodeByUserId({required int userId}) async {
     http.Response response =
-        await authenticationApi.resendConfirmationCode(userId: userId);
+        await authenticationApi.sendConfirmationCodeByUserId(userId: userId);
+    return response.statusCode;
+  }
+
+  Future<int> sendConfirmationCodeByEmail({required String email}) async {
+    http.Response response =
+        await authenticationApi.sendConfirmationCodeByEmail(email: email);
     return response.statusCode;
   }
 
@@ -89,6 +125,26 @@ class AuthenticationService {
         await authenticationApi.login(loginRequestDto: loginRequestDto);
     final decodedResponse = jsonDecode(response.body);
     return _buildLoginResponse(response.statusCode, decodedResponse);
+  }
+
+  PasswordResetResponseDto _buildPasswordResetResponse(
+      int statusCode, dynamic decodedResponse) {
+    PasswordResetResponseDto passwordResetResponseDto;
+
+    if (ApiHelper.isSuccess(statusCode)) {
+      passwordResetResponseDto =
+          PasswordResetResponseDto(statusCode: statusCode);
+    } else {
+      List<dynamic>? errors =
+          decodedResponse[PasswordResetResponseDto.errorMessagesJsonField]
+              as List<dynamic>?;
+      String? displayedError = errors?.first as String?;
+
+      passwordResetResponseDto = PasswordResetResponseDto(
+          statusCode: statusCode, message: displayedError);
+    }
+
+    return passwordResetResponseDto;
   }
 
   LoginResponseDto _buildLoginResponse(

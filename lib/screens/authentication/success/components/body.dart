@@ -4,17 +4,20 @@ import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/screens/authentication/sign_in/sign_in_screen.dart';
 
 class Body extends StatelessWidget {
-  const Body({super.key});
+  String text;
+
+  Body({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(height: SizeConfiguration.screenHeight * 0.04),
-        Image.asset("assets/images/success.png", height: SizeConfiguration.screenHeight * 0.4),
+        Image.asset("assets/images/success.png",
+            height: SizeConfiguration.screenHeight * 0.4),
         SizedBox(height: SizeConfiguration.screenHeight * 0.08),
         Text(
-          "Account confirmed",
+          text,
           style: TextStyle(
             fontSize: getProportionateScreenWidth(30),
             fontWeight: FontWeight.bold,
