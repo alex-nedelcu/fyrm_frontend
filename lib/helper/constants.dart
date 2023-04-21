@@ -26,10 +26,16 @@ const String kExpectedErrorMessage =
     "You fell into an expected wrong behaviour";
 const String kFormValidationErrorsMessage =
     "Please check form validation issues";
+const String kConfirmationCodeValidationErrorsMessage =
+    "Please check the error message";
 const String kBadCredentials = "Invalid username or password";
+const String kMissingConfirmationCodeDigit =
+    "Please fill in the confirmation code";
 const String kResendConfirmationCodeSuccess = "Confirmation code was resent";
 const String kResendConfirmationCodeFailure =
     "Confirmation code could not be resent";
+const String kSendConfirmationCodeFailure =
+    "Confirmation code could not be sent. Please make sure that the email address you provided is correct.";
 const String kConfirmAccountSuccess = "Your account is confirmed";
 const String kConfirmAccountFailure = "Confirmation code is invalid";
 const String kFinaliseRentConnectionFailure =

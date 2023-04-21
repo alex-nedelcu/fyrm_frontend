@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/api/authentication/authentication_service.dart';
-import 'package:fyrm_frontend/api/authentication/dto/signup_response_dto.dart';
 import 'package:fyrm_frontend/api/util/api_helper.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/helper/toast.dart';
+import 'package:fyrm_frontend/screens/authentication/otp/components/otp_form.dart';
 import 'package:fyrm_frontend/screens/authentication/success/success_screen.dart';
 
-import 'otp_form.dart';
-
 class Body extends StatefulWidget {
-  final SignupResponseDto signupResponse;
+  final String email;
 
-  const Body({Key? key, required this.signupResponse}) : super(key: key);
+  const Body({Key? key, required this.email}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -23,8 +21,8 @@ class _BodyState extends State<Body> {
   bool isToastShown = false;
 
   void onConfirm(String confirmationCode) async {
-    int statusCode = await authenticationService.confirmAccountByUserId(
-      userId: widget.signupResponse.userId!,
+    int statusCode = await authenticationService.confirmAccountByEmail(
+      email: widget.email,
       confirmationCode: confirmationCode,
     );
 
@@ -40,9 +38,9 @@ class _BodyState extends State<Body> {
   }
 
   void onResend() async {
-    int statusCode = await authenticationService.sendConfirmationCodeByUserId(
-      userId: widget.signupResponse.userId!,
-    );
+    int statusCode = await authenticationService.sendConfirmationCodeByEmail(
+        email: widget.email);
+
     if (ApiHelper.isSuccess(statusCode)) {
       handleToast(
           statusCode: statusCode, message: kResendConfirmationCodeSuccess);
@@ -82,7 +80,7 @@ class _BodyState extends State<Body> {
                 SizedBox(height: SizeConfiguration.screenHeight * 0.04),
                 Text("Account confirmation", style: headingStyle),
                 Text(
-                  "We sent your code to ${widget.signupResponse.email!}",
+                  "We sent your code to ${widget.email}",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),

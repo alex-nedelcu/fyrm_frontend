@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
+import 'package:fyrm_frontend/components/form_error.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
+import 'package:fyrm_frontend/helper/toast.dart';
 
 class OtpForm extends StatefulWidget {
   final void Function(String confirmationCode) onConfirmCallback;
@@ -13,6 +15,8 @@ class OtpForm extends StatefulWidget {
 }
 
 class _OtpFormState extends State<OtpForm> {
+  final List<String?> errors = [];
+  bool isToastShown = false;
   String? confirmationCodeFirstCharacter;
   String? confirmationCodeSecondCharacter;
   String? confirmationCodeThirdCharacter;
@@ -25,6 +29,38 @@ class _OtpFormState extends State<OtpForm> {
   FocusNode? pin4FocusNode;
   FocusNode? pin5FocusNode;
   FocusNode? pin6FocusNode;
+
+  void addError({String? error}) {
+    if (!errors.contains(error)) {
+      setState(() {
+        errors.add(error);
+      });
+    }
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error)) {
+      setState(() {
+        errors.remove(error);
+      });
+    }
+  }
+
+  void handleToast({int? statusCode, String? message}) {
+    if (isToastShown) {
+      return;
+    }
+
+    isToastShown = true;
+
+    showToastWrapper(
+      context: context,
+      statusCode: statusCode,
+      optionalMessage: message,
+    );
+
+    isToastShown = false;
+  }
 
   @override
   void initState() {
@@ -53,11 +89,22 @@ class _OtpFormState extends State<OtpForm> {
   }
 
   void onConfirm() {
-    String confirmationCode = _assembleConfirmationCode();
-    widget.onConfirmCallback(confirmationCode);
+    String? confirmationCode = _assembleConfirmationCode();
+
+    if (confirmationCode != null) {
+      widget.onConfirmCallback(confirmationCode);
+      removeError(error: kMissingConfirmationCodeDigit);
+    } else {
+      addError(error: kMissingConfirmationCodeDigit);
+      handleToast(message: kConfirmationCodeValidationErrorsMessage);
+    }
   }
 
-  String _assembleConfirmationCode() {
+  String? _assembleConfirmationCode() {
+    if (isAnyDigitNotFilled()) {
+      return null;
+    }
+
     return confirmationCodeFirstCharacter! +
         confirmationCodeSecondCharacter! +
         confirmationCodeThirdCharacter! +
@@ -66,12 +113,21 @@ class _OtpFormState extends State<OtpForm> {
         confirmationCodeSixthCharacter!;
   }
 
+  bool isAnyDigitNotFilled() {
+    return confirmationCodeFirstCharacter == null ||
+        confirmationCodeSecondCharacter == null ||
+        confirmationCodeThirdCharacter == null ||
+        confirmationCodeFourthCharacter == null ||
+        confirmationCodeFifthCharacter == null ||
+        confirmationCodeSixthCharacter == null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
       child: Column(
         children: [
-          SizedBox(height: SizeConfiguration.screenHeight * 0.15),
+          SizedBox(height: SizeConfiguration.screenHeight * 0.08),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -174,7 +230,10 @@ class _OtpFormState extends State<OtpForm> {
               ),
             ],
           ),
-          SizedBox(height: SizeConfiguration.screenHeight * 0.15),
+          if (errors.isNotEmpty)
+            SizedBox(height: SizeConfiguration.screenHeight * 0.02),
+          FormError(errors: errors),
+          SizedBox(height: SizeConfiguration.screenHeight * 0.08),
           DefaultButton(
             text: "Confirm",
             press: onConfirm,

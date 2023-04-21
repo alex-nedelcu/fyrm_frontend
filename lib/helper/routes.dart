@@ -1,8 +1,11 @@
 import 'package:flutter/widgets.dart';
-import 'package:fyrm_frontend/screens/authentication/account_confirmation_success/account_confirmation_success_screen.dart';
+import 'package:fyrm_frontend/screens/authentication/confirm_account/confirm_account_screen.dart';
+import 'package:fyrm_frontend/screens/authentication/email_prompt/email_prompt_screen.dart';
 import 'package:fyrm_frontend/screens/authentication/otp/otp_screen.dart';
+import 'package:fyrm_frontend/screens/authentication/password_reset/password_reset_screen.dart';
 import 'package:fyrm_frontend/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:fyrm_frontend/screens/authentication/sign_up/sign_up_screen.dart';
+import 'package:fyrm_frontend/screens/authentication/success/success_screen.dart';
 import 'package:fyrm_frontend/screens/authentication/supported_universities/supported_universities_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat/chat_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/chat_detail/chat_detail_screen.dart';
@@ -23,8 +26,7 @@ final Map<String, WidgetBuilder> routes = {
   SignInScreen.routeName: (context) => const SignInScreen(),
   SignUpScreen.routeName: (context) => const SignUpScreen(),
   OtpScreen.routeName: (context) => const OtpScreen(),
-  AccountConfirmationSuccessScreen.routeName: (context) =>
-      const AccountConfirmationSuccessScreen(),
+  SuccessScreen.routeName: (context) => const SuccessScreen(),
   ProfileMenuScreen.routeName: (context) => const ProfileMenuScreen(),
   MyProfileScreen.routeName: (context) => const MyProfileScreen(),
   SearchProfilesScreen.routeName: (context) => const SearchProfilesScreen(),
@@ -42,4 +44,7 @@ final Map<String, WidgetBuilder> routes = {
   StatisticsScreen.routeName: (context) => const StatisticsScreen(),
   SupportedUniversitiesScreen.routeName: (context) =>
       const SupportedUniversitiesScreen(),
+  EmailPromptScreen.routeName: (context) => const EmailPromptScreen(),
+  ConfirmAccountScreen.routeName: (context) => const ConfirmAccountScreen(),
+  PasswordResetScreen.routeName: (context) => const PasswordResetScreen(),
 };

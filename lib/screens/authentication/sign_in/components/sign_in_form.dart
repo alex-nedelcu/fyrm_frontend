@@ -6,11 +6,13 @@ import 'package:fyrm_frontend/components/custom_suffix_icon_as_image.dart';
 import 'package:fyrm_frontend/components/default_button.dart';
 import 'package:fyrm_frontend/components/form_error.dart';
 import 'package:fyrm_frontend/helper/constants.dart';
+import 'package:fyrm_frontend/helper/enums.dart';
 import 'package:fyrm_frontend/helper/keyboard.dart';
 import 'package:fyrm_frontend/helper/size_configuration.dart';
 import 'package:fyrm_frontend/helper/toast.dart';
 import 'package:fyrm_frontend/providers/connected_user_provider.dart';
 import 'package:fyrm_frontend/providers/web_socket_provider.dart';
+import 'package:fyrm_frontend/screens/authentication/email_prompt/email_prompt_screen.dart';
 import 'package:fyrm_frontend/screens/bottom_nav_bar_links/home/home_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +30,6 @@ class _SignInFormState extends State<SignInForm> {
   bool isToastShown = false;
   String? username;
   String? password;
-  bool? remember = false;
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -117,25 +118,43 @@ class _SignInFormState extends State<SignInForm> {
           buildUsernameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordField(),
-          if (errors.isNotEmpty)
-            SizedBox(height: SizeConfiguration.screenHeight * 0.02),
-          FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(15)),
           Row(
             children: [
+              GestureDetector(
+                onTap: () => {
+                  Navigator.pushNamed(context, EmailPromptScreen.routeName,
+                      arguments: EmailPromptScreenArguments(
+                          flow: EmailPromptFlow.confirmAccount)),
+                },
+                child: const Text(
+                  "Confirm account",
+                  style: TextStyle(
+                    fontSize: 15,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
               const Spacer(),
               GestureDetector(
                 onTap: () => {
-                  // TODO: handle change password
+                  Navigator.pushNamed(context, EmailPromptScreen.routeName,
+                      arguments: EmailPromptScreenArguments(
+                          flow: EmailPromptFlow.resetPassword)),
                 },
                 child: const Text(
                   "Reset password",
                   style: TextStyle(
-                      fontSize: 15, decoration: TextDecoration.underline),
+                    fontSize: 15,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               )
             ],
           ),
+          if (errors.isNotEmpty)
+            SizedBox(height: SizeConfiguration.screenHeight * 0.02),
+          FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Continue",
