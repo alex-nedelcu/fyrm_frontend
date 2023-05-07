@@ -381,7 +381,7 @@ class _SearchProfileFormState extends State<SearchProfileForm> {
           buildFormField(
             topSpacing: 25,
             title: "Choose rent location",
-            helpNote: "a 3km radius will be considered",
+            helpNote: "an approximate radius will be considered",
             component: FutureBuilder<Position>(
               future: locationService.getUserPosition(),
               builder: (context, snapshot) => snapshot.hasData
