@@ -20,7 +20,7 @@ class WebSocketProvider with ChangeNotifier {
   void initializeStompClient(String tokenType, String token) {
     _stompClient = StompClient(
       config: StompConfig.SockJS(
-        url: "http://localhost:8080/fyrm-ws",
+        url: "http://192.168.1.132:8080/fyrm-ws",
         onConnect: onWebSocketConnect,
         stompConnectHeaders: {"Authorization": "$tokenType $token"},
         webSocketConnectHeaders: {"Authorization": "$tokenType $token"},
