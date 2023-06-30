@@ -9,7 +9,7 @@ Follow [this tutorial](https://medium.com/front-end-weekly/how-to-test-your-flut
 ### Troubleshooting
   - **map is greyed out ->** check whether the IP of the current device is still listed in the allowed IPs of the API key
   - **connection refused when running application on physical device ->**
-    - check whether `externalBaseUrl` is still the one provided
+    - check whether `externalBaseUrl` and `url` inside `StompConfig.SockJS` are still the ones provided
     - in order to find to current external IP address of the device run:
     ```shell
     ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -1

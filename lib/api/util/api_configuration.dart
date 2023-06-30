@@ -9,7 +9,8 @@ class ApiConfiguration {
 
   static Map<String, String> headersWithAuthorization(String authorization) {
     var writeOperationHeadersWithAuthorization = writeOperationHeaders;
-    writeOperationHeadersWithAuthorization.putIfAbsent('Authorization', () => authorization);
+    writeOperationHeadersWithAuthorization.putIfAbsent(
+        'Authorization', () => authorization);
     return writeOperationHeadersWithAuthorization;
   }
 }

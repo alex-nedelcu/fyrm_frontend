@@ -87,14 +87,22 @@ class WebSocketProvider with ChangeNotifier {
     );
   }
 
-  Future<void> fetchMessages({required String tokenType, required String token, required int userId}) async {
-    messages = await chatService.findAllMessagesByUser(tokenType: tokenType, token: token, userId: userId);
+  Future<void> fetchMessages(
+      {required String tokenType,
+      required String token,
+      required int userId}) async {
+    messages = await chatService.findAllMessagesByUser(
+        tokenType: tokenType, token: token, userId: userId);
     notifyListeners();
   }
 
-  Future<void> fetchNotifications({required String tokenType, required String token, required int userId}) async {
-    notifications = await notificationService.findAllNotificationsReceivedByUser(
-        tokenType: tokenType, token: token, userId: userId);
+  Future<void> fetchNotifications(
+      {required String tokenType,
+      required String token,
+      required int userId}) async {
+    notifications =
+        await notificationService.findAllNotificationsReceivedByUser(
+            tokenType: tokenType, token: token, userId: userId);
     notifyListeners();
   }
 
@@ -104,21 +112,30 @@ class WebSocketProvider with ChangeNotifier {
     required int userId,
     required int notificationId,
   }) async {
-    await notificationService.markAsRead(tokenType: tokenType, token: token, notificationId: notificationId);
-    await fetchNotifications(tokenType: tokenType, token: token, userId: userId);
+    await notificationService.markAsRead(
+        tokenType: tokenType, token: token, notificationId: notificationId);
+    await fetchNotifications(
+        tokenType: tokenType, token: token, userId: userId);
   }
 
   Future<void> markAllNotificationsAsRead(
-      {required String tokenType, required String token, required int userId}) async {
-    await notificationService.markAllAsRead(tokenType: tokenType, token: token, userId: userId);
-    await fetchNotifications(tokenType: tokenType, token: token, userId: userId);
+      {required String tokenType,
+      required String token,
+      required int userId}) async {
+    await notificationService.markAllAsRead(
+        tokenType: tokenType, token: token, userId: userId);
+    await fetchNotifications(
+        tokenType: tokenType, token: token, userId: userId);
   }
 
-  List<Conversation> messagesToConversations({required int requesterId, String? filterUsername}) {
-    Map<int, List<ChatMessageDto>> correspondentMessagesOrderedDescBySentAt = {};
+  List<Conversation> messagesToConversations(
+      {required int requesterId, String? filterUsername}) {
+    Map<int, List<ChatMessageDto>> correspondentMessagesOrderedDescBySentAt =
+        {};
 
     for (var message in messages.reversed) {
-      int correspondentId = message.fromId == requesterId ? message.toId! : message.fromId!;
+      int correspondentId =
+          message.fromId == requesterId ? message.toId! : message.fromId!;
 
       correspondentMessagesOrderedDescBySentAt.update(
         correspondentId,
@@ -132,9 +149,11 @@ class WebSocketProvider with ChangeNotifier {
           final correspondentId = entry.key;
           final messages = entry.value;
           final latestMessage = messages.first;
-          final correspondentUsername =
-              (requesterId == latestMessage.fromId) ? latestMessage.toUsername! : latestMessage.fromUsername!;
-          final preview = "${latestMessage.fromUsername}: ${latestMessage.content!}";
+          final correspondentUsername = (requesterId == latestMessage.fromId)
+              ? latestMessage.toUsername!
+              : latestMessage.fromUsername!;
+          final preview =
+              "${latestMessage.fromUsername}: ${latestMessage.content!}";
           final date = latestMessage.sentOnDayMonthYearFormat!;
           final time = latestMessage.sentAtHoursMinutesFormat!;
 
@@ -147,7 +166,8 @@ class WebSocketProvider with ChangeNotifier {
             messages: messages,
           );
         })
-        .where((conversation) => conversation.correspondentUsername.contains(filterUsername ?? ""))
+        .where((conversation) =>
+            conversation.correspondentUsername.contains(filterUsername ?? ""))
         .toList();
   }
 
@@ -172,7 +192,8 @@ class WebSocketProvider with ChangeNotifier {
 
   int unreadNotificationCount({required int requesterId}) {
     return notifications
-        .where((notification) => (notification.toId == requesterId) && !notification.isRead!)
+        .where((notification) =>
+            (notification.toId == requesterId) && !notification.isRead!)
         .toList()
         .length;
   }
