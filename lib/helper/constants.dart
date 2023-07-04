@@ -15,7 +15,7 @@ final RegExp firstNameValidatorRegExp = RegExp(r"^[a-zA-Z\s-]{1,128}$");
 final RegExp lastNameValidatorRegExp = RegExp(r"^[a-zA-Z\s-]{1,128}$");
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-final RegExp weakPasswordValidatorRegExp = RegExp(r"^[a-zA-Z]{3,128}$");
+final RegExp weakPasswordValidatorRegExp = RegExp(r"^[a-zA-Z0-9]{3,128}$");
 final RegExp strongPasswordValidatorRegExp =
     RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
 

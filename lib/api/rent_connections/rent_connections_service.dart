@@ -28,7 +28,8 @@ class RentConnectionsService {
       authorization: authorization,
       userId: userId,
     );
-    final initiatorStatusDto = InitiatorStatusDto.fromJSON(jsonDecode(response.body));
+    final initiatorStatusDto =
+        InitiatorStatusDto.fromJSON(jsonDecode(response.body));
 
     return initiatorStatusDto;
   }
@@ -47,7 +48,8 @@ class RentConnectionsService {
     http.Response response = await rentConnectionsApi.finaliseRentConnection(
         authorization: authorization,
         id: rentConnectionId,
-        finaliseRentConnectionDto: FinaliseRentConnectionDto(rentConnectionStatus: finalisation));
+        finaliseRentConnectionDto:
+            FinaliseRentConnectionDto(rentConnectionStatus: finalisation));
 
     return response.statusCode;
   }
@@ -61,8 +63,10 @@ class RentConnectionsService {
       token: token,
     );
 
-    http.Response response = await rentConnectionsApi.getActiveRentConnectionCount(authorization: authorization);
-    final activeRentConnectionCountDto = ActiveRentConnectionCountDto.fromJSON(jsonDecode(response.body));
+    http.Response response = await rentConnectionsApi
+        .getActiveRentConnectionCount(authorization: authorization);
+    final activeRentConnectionCountDto =
+        ActiveRentConnectionCountDto.fromJSON(jsonDecode(response.body));
 
     return activeRentConnectionCountDto.count;
   }
@@ -78,7 +82,9 @@ class RentConnectionsService {
       token: token,
     );
 
-    List<int> searchProfileIds = selectedSearchProfiles.map((searchProfile) => searchProfile.id!).toList();
+    List<int> searchProfileIds = selectedSearchProfiles
+        .map((searchProfile) => searchProfile.id!)
+        .toList();
     int proposalMaximumSize = findProposalMaximumSize(selectedSearchProfiles);
 
     final getRentMateProposalDto = GetRentMateProposalDto(
@@ -97,16 +103,15 @@ class RentConnectionsService {
 
   int findProposalMaximumSize(List<SearchProfileDto> searchProfiles) {
     try {
-      return 1 +
-          searchProfiles
-              .map((searchProfile) => searchProfile.rentMateCountOptions)
-              .reduce((accumulator, options) {
-                accumulator.addAll(options);
-                return accumulator;
-              })
-              .map((option) => int.parse(option.replaceAll(RegExp(r'[^0-9]'), '')))
-              .toList()
-              .reduce(max);
+      return searchProfiles
+          .map((searchProfile) => searchProfile.rentMateCountOptions)
+          .reduce((accumulator, options) {
+            accumulator.addAll(options);
+            return accumulator;
+          })
+          .map((option) => int.parse(option.replaceAll(RegExp(r'[^0-9]'), '')))
+          .toList()
+          .reduce(max);
     } catch (_) {
       return kDefaultProposalSize;
     }
