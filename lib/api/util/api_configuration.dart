@@ -1,6 +1,7 @@
 class ApiConfiguration {
   static const String localBaseUrl = "http://localhost:8080/api/v1/fyrm";
-  static const String externalBaseUrl = "http://172.20.10.11:8080/api/v1/fyrm";
+  static const String externalBaseUrl =
+      "http://172.30.114.124:8080/api/v1/fyrm";
   static const String baseUrl = externalBaseUrl;
   static Map<String, String> writeOperationHeaders = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
